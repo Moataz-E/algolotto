@@ -1,0 +1,2 @@
+# algolotto
+Algorand Lottery
