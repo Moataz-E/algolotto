@@ -4,5 +4,9 @@
 }
 
 .logo-img {
-    width: 45%;
+    height: 3em;
+}
+
+iframe {
+    pointer-events: none;
 }
