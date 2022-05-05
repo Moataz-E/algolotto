@@ -3,7 +3,7 @@
 }
 
 .header {
-    background-color: #d539b5;
+    background: #d539b5;
     color: #fafcff;
 }
 
@@ -27,7 +27,20 @@ ul.header-menu>.ant-menu-item-active::after {
 
 .banner {
     padding-top: 3em;
+}
 
+
+.banner-bar {
+    color: #d539b5;
+}
+
+.banner-title {
+    color: #d539b5;
+    font-size: 2em;
+}
+
+.banner-subtext {
+    color: #000 !important;
 }
 
 iframe {

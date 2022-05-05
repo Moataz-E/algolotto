@@ -4,6 +4,7 @@ import { Layout, Image, Button, Menu, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 
 import Signer from "./components/signer";
+import BannerAnimatedContent from "./components/banner";
 
 import "./App.css";
 
@@ -35,12 +36,12 @@ function AppHeader(props) {
 
 function Banner() {
   return (
-    <Row justify="center" className="banner">
-      <Col span={6} offset={6}>
+    <Row justify="center" align="middle" className="banner">
+      <Col span={6}>
         <Image src="/logo512.png" preview={false}></Image>
       </Col>
-      <Col span={6} offset={6}>
-        <p></p>
+      <Col span={6} offset={1} className="banner-right">
+        <BannerAnimatedContent />
       </Col>
     </Row>
   )
