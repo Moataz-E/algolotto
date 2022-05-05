@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Layout, Drawer, Button, Menu, Row, Col } from 'antd';
+import { Layout, Image, Button, Menu, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
 
 import Signer from "./components/signer";
@@ -20,12 +20,12 @@ function AppHeader(props) {
 
   return (
     <Header {...props}>
-      <Row justify="end">
+      <Row justify="end" className="header">
         <Col span={6}>
           <a href="/"><img className="logo-img" src="/white.png" alt="logo" /></a>
         </Col>
-        <Col span={6} offset={8}>
-          <Menu mode="horizontal" className="header" items={headerItems} />
+        <Col span={6} offset={10}>
+          <Menu mode="horizontal" className="header-menu" items={headerItems} />
         </Col>
 
       </Row>
@@ -33,13 +33,26 @@ function AppHeader(props) {
   )
 }
 
+function Banner() {
+  return (
+    <Row justify="center" className="banner">
+      <Col span={6} offset={6}>
+        <Image src="/logo512.png" preview={false}></Image>
+      </Col>
+      <Col span={6} offset={6}>
+        <p></p>
+      </Col>
+    </Row>
+  )
+}
 
 function App() {
   return (
-    <Layout>
+    <Layout className="App">
       <AppHeader className="header" />
       <Content style={{ padding: '0 50px' }}>
-        <Signer />
+        <Banner />
+        {/* <Signer /> */}
       </Content>
       <Footer style={{ textAlign: 'center' }}>Lotto Labs ©2021</Footer>
     </Layout>

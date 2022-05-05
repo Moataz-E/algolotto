@@ -1,10 +1,33 @@
+.App {
+    background-color: #ffff;
+}
+
 .header {
     background-color: #d539b5;
-    color: #ffff;
+    color: #fafcff;
+}
+
+.header-menu {
+    background-color: #d539b5;
+    color: #fafcff;
+    border: none !important;
+}
+
+ul.header-menu>.ant-menu-item-active {
+    color: #eac3ea !important;
+}
+
+ul.header-menu>.ant-menu-item-active::after {
+    border-bottom-color: #eac3ea !important;
 }
 
 .logo-img {
     height: 3em;
+}
+
+.banner {
+    padding-top: 3em;
+
 }
 
 iframe {
