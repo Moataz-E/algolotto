@@ -1,24 +1,30 @@
 import React, { useState } from 'react';
 import { Row, Col, Card } from 'antd';
 
+import {
+  DollarCircleTwoTone,
+  LockTwoTone,
+  HeartTwoTone
+} from '@ant-design/icons';
+
 
 const bubbles = [
   {
-    img: `https://gw.alipayobjects.com/zos/rmsportal/eLtHtrKjXfabZfRchvVT.svg`,
-    href: `zh-cn/g2/3.x/index.html`,
+    img: <DollarCircleTwoTone twoToneColor="#d539b5" className="bubble-image" />,
+    href: ``,
     title: 'Weekly Draws',
-    description: 'Draw results announced every Sunday of the week.',
+    description: 'Draw results announced every Sunday at 3:00PM UTC.',
   },
   {
-    img: `https://gw.alipayobjects.com/zos/rmsportal/eLtHtrKjXfabZfRchvVT.svg`,
+    img: <LockTwoTone twoToneColor="#d539b5" className="bubble-image" />,
     title: 'Trustworthy & Secure',
-    href: `zh-cn/g6/1.x/index.html`,
-    description: 'Verifiable draw results and audited smart contracts.',
+    href: ``,
+    description: 'Public verifiable draw results and audited smart contracts.',
   },
   {
-    img: `https://gw.alipayobjects.com/zos/rmsportal/eLtHtrKjXfabZfRchvVT.svg`,
+    img: <HeartTwoTone twoToneColor="#d539b5" className="bubble-image" />,
     title: 'Altruistic',
-    href: `zh-cn/f2/3.x/index.html`,
+    href: ``,
     description: '15% of all ALGO spent on tickets is allocated to the Algolotto Community Fund (ACF) for funding projects in the Algorand ecosystem.',
   },
 ];
@@ -39,7 +45,7 @@ export default function InfoBubbles() {
   const children = bubbles.map((card, i) => (
     <Col className="card-wrapper" key={i.toString()} span={4} md={6} xs={24}>
       <Card className="banner-card" title={card.title} bordered={true} style={{ textAlign: 'center' }}>
-        <img src={card.img} alt="" className="card-img-top" />
+        {card.img}
         <div className="banner-card-body">
           <span className="description text-secondary">{card.description}</span>
         </div>
