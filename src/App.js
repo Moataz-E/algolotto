@@ -17,7 +17,6 @@ function AppHeader(props) {
 
   const headerItems = [
     { label: 'About' },
-    { label: 'FAQ' },
     { label: <Button shape="round"><Link to="app">Lanuch dApp</Link></Button> }
   ]
 
