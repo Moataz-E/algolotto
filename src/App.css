@@ -15,11 +15,21 @@
 }
 
 ul.header-menu>.ant-menu-item-active {
-  color: #eac3ea !important;
+  color: #ffff !important;
 }
 
 ul.header-menu>.ant-menu-item-active::after {
-  border-bottom-color: #eac3ea !important;
+  border-bottom-color: #ffff !important;
+}
+
+ul.header-menu>.ant-menu-item-selected {
+  color: #ffff !important;
+  font-weight: bold;
+}
+
+ul.header-menu>.ant-menu-item-selected::after {
+  border-bottom-color: #ffff !important;
+  border-bottom-width: 10rem;
 }
 
 .logo-img {
