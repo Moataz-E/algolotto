@@ -3,7 +3,11 @@ import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
 import { Typography } from 'antd';
 
+import "./banner.css"
+
+
 const { Title } = Typography;
+
 
 export default function BannerAnimatedContent() {
 

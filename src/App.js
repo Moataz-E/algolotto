@@ -57,7 +57,7 @@ function App() {
         <InfoBubbles />
         {/* <Signer /> */}
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Lotto Labs ©2021</Footer>
+      <Footer className="footer">Lotto Labs ©2021</Footer>
     </Layout>
   );
 }

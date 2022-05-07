@@ -7,6 +7,8 @@ import {
   HeartTwoTone
 } from '@ant-design/icons';
 
+import "./info_bubbles.css"
+
 
 const bubbles = [
   {

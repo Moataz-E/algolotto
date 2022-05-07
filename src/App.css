@@ -26,56 +26,11 @@ ul.header-menu>.ant-menu-item-active::after {
   height: 3em;
 }
 
-.banner {
-  padding-top: 3em;
-}
-
-.banner-bar {
-  color: #d539b5;
-}
-
-.banner-title {
-  color: #d539b5;
-  font-size: 2em;
-}
-
-.banner-subtext {
-  color: #000 !important;
-}
-
 iframe {
   pointer-events: none;
 }
 
-.info-bubbles {
-  min-height: 1464px;
-  padding-top: 10rem;
-}
-
-.banner-card {
+.footer {
   text-align: center;
-  background: linear-gradient(to bottom, #ffff, #ffe5fa);
-  box-shadow: 0px 2px 8px #d539b5;
-  max-width: 340px;
-  width: 94%;
-  border-radius: 4px;
-  height: 25em;
-  position: relative;
-}
-
-.banner-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0px 10px 20px #d539b5;
-}
-
-.banner-card-body {
-  padding-top: 1em;
-}
-
-.banner-card .ant-card-head-title {
-  font-size: 1.5em;
-}
-
-.bubble-image {
-  font-size: 7em;
+  background: #ffe5fa;
 }

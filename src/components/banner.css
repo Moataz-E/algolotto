@@ -1,0 +1,16 @@
+.banner {
+    padding-top: 3em;
+}
+
+.banner-bar {
+    color: #d539b5;
+}
+
+.banner-title {
+    color: #d539b5;
+    font-size: 2em;
+}
+
+.banner-subtext {
+    color: #000 !important;
+}
