@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Route, Routes, Link } from 'react-router-dom';
 
 import { Layout, Image, Button, Menu, Row, Col } from 'antd';
 import 'antd/dist/antd.css';
@@ -17,7 +18,7 @@ function AppHeader(props) {
   const headerItems = [
     { label: 'About' },
     { label: 'FAQ' },
-    { label: <Button shape="round"><a href="app/">Lanuch dApp</a></Button> }
+    { label: <Button shape="round"><Link to="app">Lanuch dApp</Link></Button> }
   ]
 
   return (
@@ -47,8 +48,7 @@ function Banner() {
   )
 }
 
-
-function App() {
+function Home() {
   return (
     <Layout className="App">
       <AppHeader className="header" />
@@ -60,6 +60,26 @@ function App() {
       <Footer className="footer">Lotto Labs ©2021</Footer>
     </Layout>
   );
+}
+
+function DApp() {
+  return (
+    <Layout className="App">
+      <AppHeader className="header" />
+      <p>This is the App</p>
+      <Footer className="footer">Lotto Labs ©2021</Footer>
+    </Layout>
+  );
+}
+
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="app" element={<DApp />} />
+    </Routes>
+  )
 }
 
 export default App;

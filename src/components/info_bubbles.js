@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col, Card } from 'antd';
 
 import {
@@ -30,17 +30,6 @@ const bubbles = [
     description: '15% of all ALGO spent on tickets is allocated to the Algolotto Community Fund (ACF) for funding projects in the Algorand ecosystem.',
   },
 ];
-
-const pointPos = [
-  { x: -90, y: -20 },
-  { x: 35, y: -25 },
-  { x: -120, y: 125 },
-  { x: -100, y: 165 },
-  { x: 95, y: -5 },
-  { x: 90, y: 160, opacity: 0.2 },
-  { x: 110, y: 50 },
-];
-
 
 export default function InfoBubbles() {
 
