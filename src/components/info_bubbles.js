@@ -17,7 +17,7 @@ const bubbles = [
   },
   {
     img: <LockTwoTone twoToneColor="#d539b5" className="bubble-image" />,
-    title: 'Trustworthy & Secure',
+    title: 'Secure',
     href: ``,
     description: 'Public verifiable draw results and audited smart contracts.',
   },
