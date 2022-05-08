@@ -1,3 +1,4 @@
+import TweenOne from 'rc-tween-one'
 import React from 'react';
 import { Row, Col, Card } from 'antd';
 
@@ -34,18 +35,20 @@ const bubbles = [
 export default function InfoBubbles() {
 
   const children = bubbles.map((card, i) => (
-    <Col className="card-wrapper" key={i.toString()} span={4} md={6} xs={24}>
-      <Card className="banner-card" title={card.title} bordered={true} style={{ textAlign: 'center' }}>
-        {card.img}
-        <div className="banner-card-body">
-          <span className="description text-secondary">{card.description}</span>
-        </div>
-      </Card>
-    </Col>
+    <Col key={i.toString()} span={4} md={6} xs={24}>
+      <TweenOne animation={{ y: -20 }}>
+        <Card className="banner-card" title={card.title} bordered={true} style={{ textAlign: 'center' }}>
+          {card.img}
+          <div className="banner-card-body">
+            <span className="description text-secondary">{card.description}</span>
+          </div>
+        </Card>
+      </TweenOne>
+    </Col >
   ));
 
   return (
-    <Row justify="center" align="middle" className="banner">
+    <Row justify="center" align="middle" className="info-bubbles">
       {children}
     </Row>
   );
