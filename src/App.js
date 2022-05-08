@@ -16,7 +16,7 @@ const { Header, Content, Footer } = Layout;
 function AppHeader(props) {
 
   const headerItems = [
-    { label: 'About' },
+    { label: 'Docs' },
     { label: <Button shape="round"><Link to="app">Lanuch dApp</Link></Button> }
   ]
 
