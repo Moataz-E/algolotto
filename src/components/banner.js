@@ -79,7 +79,7 @@ export default function BannerAnimatedContent() {
         <Texty
           className="banner-title"
           type="mask-top"
-          delay={400}
+          delay={200}
           enter={getEnter}
           interval={geInterval}
           component={TweenOne}
