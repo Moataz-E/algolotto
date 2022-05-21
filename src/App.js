@@ -43,7 +43,7 @@ function Home() {
         <InfoBubbles />
         {/* <Signer /> */}
       </Content>
-      <Footer className="footer">Lotto Labs ©2021</Footer>
+      <Footer className="footer">Hachi Sittah Technologies ©2021</Footer>
     </Layout>
   );
 }
@@ -53,7 +53,7 @@ function DApp() {
     <Layout className="App">
       <AppHeader className="header" />
       <p>This is the App</p>
-      <Footer className="footer">Lotto Labs ©2021</Footer>
+      <Footer className="footer">Hachi Sittah Technologies ©2021</Footer>
     </Layout>
   );
 }
