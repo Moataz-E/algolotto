@@ -131,12 +131,12 @@ function BannerAnimatedContent() {
 export default function Banner() {
   return (
     <Row justify="center" align="middle" className="banner">
-      <Col span={6} md={9} xs={12} sm={10}>
-        <TweenOne animation={{ y: -20 }}>
+      <Col span={6} md={9} xs={{ span: 10 }} sm={{ span: 10 }}>
+        <TweenOne animation={{ x: 20 }}>
           <Image src="/logo512.png" preview={false}></Image>
         </TweenOne>
       </Col>
-      <Col span={6} md={9} offset={1} xs={11} sm={9} className="banner-right">
+      <Col span={6} md={9} xs={{ span: 22 }} sm={{ span: 16, offset: 1 }} className="banner-right">
         <BannerAnimatedContent />
       </Col>
     </Row>
