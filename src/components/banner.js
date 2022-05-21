@@ -1,7 +1,10 @@
+import React from 'react';
+import { Typography, Image, Row, Col } from 'antd';
+
 import Texty from 'rc-texty';
 import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
-import { Typography } from 'antd';
+
 
 import "./banner.css"
 
@@ -9,7 +12,7 @@ import "./banner.css"
 const { Title } = Typography;
 
 
-export default function BannerAnimatedContent() {
+function BannerAnimatedContent() {
 
   const geInterval = (e) => {
     switch (e.index) {
@@ -123,4 +126,19 @@ export default function BannerAnimatedContent() {
       </Title>
     </div>
   );
+}
+
+export default function Banner() {
+  return (
+    <Row justify="center" align="middle" className="banner">
+      <Col span={6} md={9} xs={12} sm={10}>
+        <TweenOne animation={{ y: -20 }}>
+          <Image src="/logo512.png" preview={false}></Image>
+        </TweenOne>
+      </Col>
+      <Col span={6} md={9} offset={1} xs={11} sm={9} className="banner-right">
+        <BannerAnimatedContent />
+      </Col>
+    </Row>
+  )
 }
