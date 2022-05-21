@@ -100,7 +100,7 @@ function BannerAnimatedContent() {
                 delay: -300,
                 scale: 0.9,
                 ease: 'easeInOutQuint',
-                duration: 1000,
+                duration: 800,
               },
               { scale: 1, width: '100%', delay: -300, duration: 1000, ease: 'easeInOutQuint' },
             ],
@@ -118,7 +118,7 @@ function BannerAnimatedContent() {
           className="banner-subtext"
           type="bottom"
           split={getSplit}
-          delay={2200}
+          delay={1500}
           interval={30}
         >
           Win Big and Grow Algorand!
