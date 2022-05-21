@@ -5,7 +5,7 @@ slug: /
 
 # Overview
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Algolotto is a games of change operator built on the [Algorand](https://www.algorand.com/) blockchain. The principal game is a simple weekly lottery game.
 
 ## Getting Started
 
