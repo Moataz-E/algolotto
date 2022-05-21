@@ -35,7 +35,7 @@ const bubbles = [
 export default function InfoBubbles() {
 
   const children = bubbles.map((card, i) => (
-    <Col key={i.toString()} span={4} md={6} xs={24}>
+    <Col key={i.toString()} span={4} md={6} xs={16}>
       <TweenOne animation={{ y: -20 }}>
         <Card className="banner-card" title={card.title} bordered={true} style={{ textAlign: 'center' }}>
           {card.img}
