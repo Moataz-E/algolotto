@@ -4,6 +4,14 @@ Lottery Smart Contract
 * Each time a user purchases a ticket, a ticket number equal to the tickets
     sold + 1 is assigned to him.
 
+Initialize
+-----------
+* Set contract owner to transaction sender.
+* Set donation addres to designated address.
+* Set ticket cost to designated ticket cost.
+* Set tickets sold to 0.
+* Set next draw epoch to one week from now.
+
 Purchase Ticket
 ---------------
 * Deduct cost of tickets from transaction.
@@ -43,12 +51,22 @@ Emergency Dispense
 from pyteal import *
 from pyteal_helpers import program
 
+
+MICRO_ALGO = 1
+ALGO = MICRO_ALGO * (10 ** 6)
+TICKET_COST_ALGO = ALGO * 1
+WEEK_IN_SECONDS = 604800
+
+DONATION_ADDR = Txn.sender()
+
+
 def approval():
     # globals
     global_owner = Bytes("owner")  # byteslice
     global_donation_addr = Bytes("donation_addr")  # byteslice
     global_tickets_sold = Bytes("tickets_sold")  # uint64
     global_next_draw_epoch = Bytes("next_draw_epoch")  # uint64
+    global_ticket_algo_cost = Bytes("ticket_cost")  # uint64
 
     # locals
     local_tickets = Bytes("tickets")  # uint64
@@ -59,12 +77,6 @@ def approval():
     op_purchase = Bytes("purchase")
     # Triggers the draw if the minimum time has elapsed.
     op_trigger = Bytes("trigger")
-
-    on_init = Seq([
-        App.globalPut(global_owner, Txn.sender()),
-        App.globalPut(global_donation_addr, Txn.sender()),
-        Approve(),
-    ]),
 
     # Conditions
     # is_draw_time = Global.latest_timestamp()
@@ -81,6 +93,20 @@ def approval():
     @Subroutine(TealType.none)
     def trigger_draw():
         pass
+
+    ## Intialize Contract
+    # 1. Set Owner to Transaction Sender.
+    # 2. Set Donation address.
+    # 3. Set ticket size
+    init_round_epoch = Add(Global.latest_timestamp(), Int(WEEK_IN_SECONDS))
+    on_init = Seq([
+        App.globalPut(global_owner, Txn.sender()),
+        App.globalPut(global_donation_addr, DONATION_ADDR),
+        App.globalPut(global_ticket_algo_cost, TICKET_COST_ALGO),
+        App.globalPut(global_tickets_sold, Int(0)),
+        App.globalPut(global_next_draw_epoch, init_round_epoch),
+        Approve(),
+    ]),
 
     return program.event(
         init=on_init,
