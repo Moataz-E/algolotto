@@ -37,7 +37,7 @@ Reward Winner
 * If true, send prize pot to winning wallet and reward umpire with 1% of prize
     pot floored at 1 ALGO and capped at 10 ALGO.
 
-New Round
+Restart Draw
 ---------
 * Reset tickets sold to 0.
 * Increment global state round number by one.
@@ -47,6 +47,11 @@ Emergency Dispense
 ------------------
 * If there is an malfunction with the state of the program, add an option
     that would return funds to the users and destroy the contract.
+
+Randomness
+----------
+Hash of the block timestamp and a shuffled concatenation of the ddresses of 
+some of the participants in the lottery.
 """
 from pyteal import *
 from pyteal_helpers import program
@@ -61,14 +66,14 @@ DONATION_ADDR = Txn.sender()
 
 
 def approval():
-    # globals
+    ## Globals
     global_owner = Bytes("owner")  # byteslice
     global_donation_addr = Bytes("donation_addr")  # byteslice
     global_tickets_sold = Bytes("tickets_sold")  # uint64
     global_next_draw_epoch = Bytes("next_draw_epoch")  # uint64
     global_ticket_algo_cost = Bytes("ticket_cost")  # uint64
 
-    # locals
+    ## Locals
     local_tickets = Bytes("tickets")  # uint64
     local_draw_epoch = Bytes("draw_epoch")  # uint64
 
@@ -76,14 +81,11 @@ def approval():
     # Purchase tickets
     op_purchase = Bytes("purchase")
     # Triggers the draw if the minimum time has elapsed.
-    op_trigger = Bytes("trigger")
-
-    # Conditions
-    # is_draw_time = Global.latest_timestamp()
-
-    ## Randomness
-    # hash of the block timestamp and a shuffled concatenation of the
-    # addresses of some of the participants in the lottery.
+    op_draw = Bytes("draw")
+    # Rewards winner of lottery
+    op_reward = Bytes("reward")
+    # Restarts a new round
+    op_restart = Bytes("restart")
 
     @Subroutine(TealType.none)
     def purchase_ticket():
@@ -94,10 +96,15 @@ def approval():
     def trigger_draw():
         pass
 
+    @Subroutine(TealType.none)
+    def dispense_reward():
+        pass
+
+    @Subroutine(TealType.none)
+    def restart_draw():
+        pass
+
     ## Intialize Contract
-    # 1. Set Owner to Transaction Sender.
-    # 2. Set Donation address.
-    # 3. Set ticket size
     init_round_epoch = Add(Global.latest_timestamp(), Int(WEEK_IN_SECONDS))
     on_init = Seq([
         App.globalPut(global_owner, Txn.sender()),
@@ -118,8 +125,16 @@ def approval():
                     purchase_ticket(),
                 ],
                 [
-                    Txn.application_args[0] == op_trigger,
+                    Txn.application_args[0] == op_draw,
                     trigger_draw(),
+                ],
+                [
+                    Txn.application_args[0] == op_reward,
+                    dispense_reward(),
+                ],
+                [
+                    Txn.application_args[0] == op_restart,
+                    restart_draw(),
                 ],
             ),
         )
