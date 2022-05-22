@@ -26,7 +26,7 @@ Trigger Draw
 * Validate drawn is false and latest_timestamp() is after next draw epoch.
 * Ensure transaction has enough gas to execute the next few statements.
 * Set drawn to true
-* Psuedo-randomly select winning ticket between 0 and (tickets_sold - 1).
+* Psuedo-randomly select winning ticket between 1 and tickets_sold.
 * Store value of winning ticket in global variable.
 
 Reward Winner
@@ -58,7 +58,7 @@ some of the participants in the lottery.
 
 Limitations
 -----------
-* 
+* Maximum tickets per wallet: 15
 """
 from pyteal import *
 from pyteal_helpers import program
@@ -73,7 +73,7 @@ DONATION_ADDR = Txn.sender()
 
 
 def approval():
-    ## Globals
+    ## Globals ################################################################
     global_owner = Bytes("owner")  # byteslice
     global_donation_addr = Bytes("donation_addr")  # byteslice
     global_drawn = Bytes("drawn")  # uint64
@@ -82,12 +82,15 @@ def approval():
     global_next_draw_epoch = Bytes("next_draw_epoch")  # uint64
     global_ticket_algo_cost = Bytes("ticket_cost")  # uint64
 
-    ## Locals
-    local_tickets = Bytes("tickets")  # uint64
-    local_draw_ = Bytes("draw_epoch")  # uint64
+    ## Locals #################################################################
+    ticket_vars = [f"t{i}" for i in range(1, 16)]
+    local_tickets = [Bytes(t_var) for t_var in ticket_vars]  # uint64 x 15
+    local_draw_round = Bytes("draw_round")  # uint64
 
-    ## Operations
+    ## Operations #############################################################
+
     # Purchase tickets
+    # Inputs: num_of_tickets
     op_purchase = Bytes("purchase")
     # Triggers the draw if the minimum time has elapsed.
     op_draw = Bytes("draw")
@@ -96,24 +99,41 @@ def approval():
     # Restarts a new round
     op_restart = Bytes("restart")
 
+    ## General ################################################################
+    def generic_checks(grp_size):
+        return [
+            program.check_self(group_size=Int(grp_size), group_index=Int(0)),
+            program.check_rekey_zero(1)
+        ]
+
+    ## Purchase Tickets #######################################################
+    purchase_pre_checks = Assert(
+
+    )
+
     @Subroutine(TealType.none)
     def purchase_ticket():
-        pass
+        return Seq(
+            *generic_checks(1),
+            purchase_pre_checks,
+        )
 
-
+    ## Trigger Draw ###########################################################
     @Subroutine(TealType.none)
     def trigger_draw():
         pass
 
+    ## Dispense Reward ########################################################
     @Subroutine(TealType.none)
     def dispense_reward():
         pass
 
+    ## Restart Draw ###########################################################
     @Subroutine(TealType.none)
     def restart_draw():
         pass
 
-    ## Intialize Contract
+    ## Intialize Contract #####################################################
     init_round_epoch = Add(Global.latest_timestamp(), Int(WEEK_IN_SECONDS))
     on_init = Seq([
         App.globalPut(global_owner, Txn.sender()),
