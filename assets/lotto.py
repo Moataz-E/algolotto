@@ -11,6 +11,8 @@ Initialize
 * Set ticket cost to designated ticket cost.
 * Set tickets sold to 0.
 * Set next draw epoch to one week from now.
+* Set round number to 1.
+* Set drawn to False.
 
 Purchase Ticket
 ---------------
@@ -36,6 +38,7 @@ Reward Winner
     round) and that wallet is a holder of the winning ticket.
 * If true, send prize pot to winning wallet and reward umpire with 1% of prize
     pot floored at 1 ALGO and capped at 10 ALGO.
+* Set drawn to False.
 
 Restart Draw
 ---------
@@ -50,8 +53,12 @@ Emergency Dispense
 
 Randomness
 ----------
-Hash of the block timestamp and a shuffled concatenation of the ddresses of 
+Hash of the block timestamp and a shuffled concatenation of the addresses of 
 some of the participants in the lottery.
+
+Limitations
+-----------
+* 
 """
 from pyteal import *
 from pyteal_helpers import program
@@ -69,13 +76,15 @@ def approval():
     ## Globals
     global_owner = Bytes("owner")  # byteslice
     global_donation_addr = Bytes("donation_addr")  # byteslice
+    global_drawn = Bytes("drawn")  # uint64
+    global_round_num = Bytes("round_num")  # uint64
     global_tickets_sold = Bytes("tickets_sold")  # uint64
     global_next_draw_epoch = Bytes("next_draw_epoch")  # uint64
     global_ticket_algo_cost = Bytes("ticket_cost")  # uint64
 
     ## Locals
     local_tickets = Bytes("tickets")  # uint64
-    local_draw_epoch = Bytes("draw_epoch")  # uint64
+    local_draw_ = Bytes("draw_epoch")  # uint64
 
     ## Operations
     # Purchase tickets
@@ -112,6 +121,8 @@ def approval():
         App.globalPut(global_ticket_algo_cost, TICKET_COST_ALGO),
         App.globalPut(global_tickets_sold, Int(0)),
         App.globalPut(global_next_draw_epoch, init_round_epoch),
+        App.globalPut(global_round_num, Int(1)),
+        App.globalPut(global_drawn, Int(0)),
         Approve(),
     ]),
 
