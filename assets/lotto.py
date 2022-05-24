@@ -90,13 +90,16 @@ def approval():
     ## Operations #############################################################
 
     # Purchase tickets
-    # Inputs: num_of_tickets
+    # Additional Inputs: num_of_tickets
     op_purchase = Bytes("purchase")
     # Triggers the draw if the minimum time has elapsed.
+    # Additional Inputs: None
     op_draw = Bytes("draw")
     # Rewards winner of lottery
+    # Additonal Inputs: winner_address
     op_reward = Bytes("reward")
     # Restarts a new round
+    # Additional Inputs: None
     op_restart = Bytes("restart")
 
     ## General ################################################################
@@ -108,14 +111,56 @@ def approval():
 
     ## Purchase Tickets #######################################################
     purchase_pre_checks = Assert(
-
+        And(
+            App.optedIn(Int(0), Global.current_application_id()),
+            Int(1)
+        )
     )
 
     @Subroutine(TealType.none)
+    def reset_tickets(account: Expr):
+        return Seq(*[
+            App.localPut(account, ticket_var, Int(0))
+            for ticket_var in local_tickets
+        ])
+
+    @Subroutine(TealType.none)
+    def process_purchase():
+        pass
+
+    @Subroutine(TealType.uint64)
+    def is_old_participant(draw_round, t0):
+        """True is wallet previously bought a lottery ticket."""
+        return Return(
+            And(
+                draw_round != global_round_num,
+                t0 != Int(0)
+            )
+        )
+
+    # Three starting states
+    #   1. No tickets purchased before.
+    #   2. Purchased tickets in previous round -> reset_tickets.
+    #   2. Bought tickets in current round but need to buy more.
+    #   3. Bought maximum ticket allocation.
+    @Subroutine(TealType.none)
     def purchase_ticket():
+        sch_draw_round = ScratchVar(TealType.uint64)
+        sch_draw_round.store(
+            App.localGet(Txn.sender(), Bytes("draw_round")))
+        sch_first_ticket = ScratchVar(TealType.uint64)
+        sch_first_ticket.store(
+            App.localGet(Txn.sender(), Bytes("t0")))
         return Seq(
-            *generic_checks(1),
+            *generic_checks(2),
             purchase_pre_checks,
+            Cond(
+                [
+                    is_old_participant(
+                        sch_draw_round.load(), sch_first_ticket.load()), 
+                    reset_tickets()
+                ]
+            )
         )
 
     ## Trigger Draw ###########################################################
