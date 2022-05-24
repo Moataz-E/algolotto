@@ -130,21 +130,19 @@ def approval():
 
     @Subroutine(TealType.uint64)
     def is_old_participant(draw_round, t0):
-        """True is wallet previously bought a lottery ticket."""
+        """True if wallet previously bought a lottery ticket."""
         return Return(
-            And(
-                draw_round != global_round_num,
-                t0 != Int(0)
-            )
+            And(draw_round != global_round_num, t0 != Int(0))
         )
 
     # Three starting states
-    #   1. No tickets purchased before.
+    #   1. No tickets purchased before ever.
     #   2. Purchased tickets in previous round -> reset_tickets.
     #   2. Bought tickets in current round but need to buy more.
-    #   3. Bought maximum ticket allocation.
+    #   3. Bought maximum tickets in current round allocation.
     @Subroutine(TealType.none)
     def purchase_ticket():
+        tickets_to_buy = Txn.application_args[1]
         sch_draw_round = ScratchVar(TealType.uint64)
         sch_draw_round.store(
             App.localGet(Txn.sender(), Bytes("draw_round")))
@@ -154,13 +152,18 @@ def approval():
         return Seq(
             *generic_checks(2),
             purchase_pre_checks,
-            Cond(
-                [
-                    is_old_participant(
-                        sch_draw_round.load(), sch_first_ticket.load()), 
-                    reset_tickets()
-                ]
-            )
+            Cond([
+                is_old_participant(
+                    sch_draw_round.load(), sch_first_ticket.load()),
+                reset_tickets()
+            ]),
+            # validate valid number of tickets to buy
+            # find first empty ticket number slot
+            # validate user has enough money for purchase
+            # deduct cost of purchase from user
+            # save total_tickets_sold + 1 to empty ticket slot
+            # loop through empty slots and save increment of total tickets sold
+            # Last step - update global state: increment total_tickets sold.
         )
 
     ## Trigger Draw ###########################################################
