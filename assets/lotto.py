@@ -120,10 +120,18 @@ def approval():
 
     @Subroutine(TealType.none)
     def reset_tickets(account: Expr):
-        return Seq(*[
-            App.localPut(account, ticket_var, Int(0))
-            for ticket_var in local_tickets
-        ])
+        i = ScratchVar()
+        init = i.store(Int(0))
+        cond = i.load() < Int(MAX_TICKETS)
+        it = i.store(i.load() + Int(1))
+        return Seq(
+            For(init, cond, it).Do(
+                App.globalPut(
+                    account, Extract(i.load(), Int(7), Int(1)), Int(0)
+                )
+            ),
+            
+        )
 
     @Subroutine(TealType.none)
     def process_purchase():
