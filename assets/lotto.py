@@ -70,6 +70,7 @@ TICKET_COST_ALGO = ALGO * 1
 WEEK_IN_SECONDS = 604800
 
 DONATION_ADDR = Txn.sender()
+MAX_TICKETS = 15
 
 
 def approval():
@@ -83,7 +84,7 @@ def approval():
     global_ticket_algo_cost = Bytes("ticket_cost")  # uint64
 
     ## Locals #################################################################
-    ticket_vars = [f"t{i}" for i in range(1, 16)]
+    ticket_vars = [f"t{i}" for i in range(1, MAX_TICKETS+1)]
     local_tickets = [Bytes(t_var) for t_var in ticket_vars]  # uint64 x 15
     local_draw_round = Bytes("draw_round")  # uint64
 
@@ -133,6 +134,25 @@ def approval():
         """True if wallet previously bought a lottery ticket."""
         return Return(
             And(draw_round != global_round_num, t0 != Int(0))
+        )
+
+    @Subroutine(TealType.uint64)
+    def existing_tickets():
+        i = ScratchVar()
+        current_ticket = ScratchVar()
+        init = i.store(Int(0))
+        cond = i.load() < Int(MAX_TICKETS)
+        it = i.store(i.load() + Int(1))
+        return Seq(
+            For(init, cond, it).Do(
+                Seq([
+                    current_ticket.store(
+                        App.globalGet(Extract(i.load(), Int(7), Int(1)))
+                    ),
+                    If(current_ticket == Int(0)).Then(Break())
+                ])
+            ),
+            Return(i.load())
         )
 
     # Three starting states
