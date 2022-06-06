@@ -186,7 +186,7 @@ def approval():
     on_init = Seq([
         App.globalPut(global_owner, Txn.sender()),
         App.globalPut(global_donation_addr, DONATION_ADDR),
-        App.globalPut(global_ticket_algo_cost, TICKET_COST_ALGO),
+        App.globalPut(global_ticket_algo_cost, Int(TICKET_COST_ALGO)),
         App.globalPut(global_tickets_sold, Int(0)),
         App.globalPut(global_next_draw_epoch, init_round_epoch),
         App.globalPut(global_round_num, Int(1)),
@@ -216,6 +216,7 @@ def approval():
                     restart_draw(),
                 ],
             ),
+            Reject()
         )
     )
 
