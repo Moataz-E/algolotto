@@ -126,7 +126,7 @@ def approval():
         it = i.store(i.load() + Int(1))
         return Seq(
             For(init, cond, it).Do(
-                App.globalPut(
+                App.localPut(
                     account, Extract(i.load(), Int(7), Int(1)), Int(0)
                 )
             ),
@@ -183,7 +183,7 @@ def approval():
             Cond([
                 is_old_participant(
                     sch_draw_round.load(), sch_first_ticket.load()),
-                reset_tickets()
+                reset_tickets(Txn.sender())
             ]),
             # validate valid number of tickets to buy
             # find first empty ticket number slot
