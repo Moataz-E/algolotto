@@ -220,7 +220,7 @@ def approval():
         App.globalPut(global_round_num, Int(1)),
         App.globalPut(global_drawn, Int(0)),
         Approve(),
-    ]),
+    ])
 
     return program.event(
         init=on_init,
