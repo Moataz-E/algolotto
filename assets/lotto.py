@@ -235,6 +235,7 @@ def approval():
                     sch_draw_round.load(), sch_first_ticket.load())
             ).Then(reset_tickets(Txn.sender())),
             process_purchase(Txn.sender(), tickets_to_buy),
+            Approve()
         )
 
     ## Trigger Draw ###########################################################
