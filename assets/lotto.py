@@ -172,19 +172,19 @@ def approval():
     def purchase_ticket():
         tickets_to_buy = Txn.application_args[1]
         sch_draw_round = ScratchVar(TealType.uint64)
-        sch_draw_round.store(
-            App.localGet(Txn.sender(), Bytes("draw_round")))
         sch_first_ticket = ScratchVar(TealType.uint64)
-        sch_first_ticket.store(
-            App.localGet(Txn.sender(), Bytes("t0")))
         return Seq(
+            sch_draw_round.store(
+                App.localGet(Txn.sender(), Bytes("draw_round"))),
+            sch_first_ticket.store(
+                App.localGet(Txn.sender(), Bytes("t0"))),
             *generic_checks(2),
             purchase_pre_checks,
             Cond([
                 is_old_participant(
                     sch_draw_round.load(), sch_first_ticket.load()),
                 reset_tickets(Txn.sender())
-            ]),
+            ])
             # validate valid number of tickets to buy
             # find first empty ticket number slot
             # validate user has enough money for purchase
@@ -197,17 +197,17 @@ def approval():
     ## Trigger Draw ###########################################################
     @Subroutine(TealType.none)
     def trigger_draw():
-        pass
+        return Approve()
 
     ## Dispense Reward ########################################################
     @Subroutine(TealType.none)
     def dispense_reward():
-        pass
+        return Approve()
 
     ## Restart Draw ###########################################################
     @Subroutine(TealType.none)
     def restart_draw():
-        pass
+        return Approve()
 
     ## Intialize Contract #####################################################
     init_round_epoch = Add(Global.latest_timestamp(), Int(WEEK_IN_SECONDS))
