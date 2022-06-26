@@ -207,9 +207,13 @@ def approval():
         return Seq([
             existing_tickets.store(get_existing_tickets()),
             Assert(is_valid_purchase(existing_tickets, tickets_to_buy)),
-            store_tickets(account, existing_tickets, tickets_to_buy)
-            # TODO: update other user local state such as round number to 
-            # be current
+            store_tickets(account, existing_tickets, tickets_to_buy),
+            # Update account's round number to be current
+            App.localPut(
+                account, 
+                local_draw_round, 
+                App.globalGet(global_round_num)
+            )
         ])
 
     # Three starting states
