@@ -135,6 +135,7 @@ def approval():
             Gtxn[1].type_enum() == TxnType.Payment,
             Gtxn[1].receiver() == Global.current_application_address(),
             Gtxn[1].close_remainder_to() == Global.zero_address(),
+            # Ensure user sent correct amount to purchase tickets
             (Gtxn[1].amount() >= 
                 (tickets_to_buy * App.globalGet(global_ticket_cost))),
         ))
@@ -174,16 +175,38 @@ def approval():
         )
 
     @Subroutine(TealType.none)
-    def store_tickets():
-        return Return()
+    def store_tickets(
+            account, existing_tickets: ScratchVar, tickets_to_buy: Expr):
+        i = ScratchVar()
+        current_ticket = ScratchVar()
+        init = i.store(existing_tickets.load())
+        cond = i.load() < (existing_tickets.load() + tickets_to_buy)
+        it = i.store(i.load() + Int(1))
+        return Seq(
+            # Retrieve the next ticket number to be sold this round
+            current_ticket.store(App.globalGet(global_tickets_sold)),
+            # Set ticket slots equivalent to tickets purchased
+            For(init, cond, it).Do(
+                Seq([
+                    current_ticket.store(current_ticket.load() + Int(1)),
+                    # Set ticket slot to next ticket number
+                    App.localPut(
+                        account, 
+                        Extract(i.load(), Int(7), Int(1)), 
+                        current_ticket.load()
+                    )
+
+                ])
+            )
+        )
 
     @Subroutine(TealType.none)
-    def process_purchase(tickets_to_buy):
+    def process_purchase(account, tickets_to_buy):
         existing_tickets = ScratchVar(TealType.uint64)
         return Seq([
             existing_tickets.store(get_existing_tickets()),
             Assert(is_valid_purchase(existing_tickets, tickets_to_buy)),
-            store_tickets()
+            store_tickets(account, existing_tickets, tickets_to_buy)
         ])
 
     # Three starting states
@@ -208,10 +231,8 @@ def approval():
                 is_old_participant(
                     sch_draw_round.load(), sch_first_ticket.load())
             ).Then(reset_tickets(Txn.sender())),
-            process_purchase(tickets_to_buy),
+            process_purchase(Txn.sender(), tickets_to_buy),
             # find first empty ticket number slot
-            # validate user has enough money for purchase
-            # deduct cost of purchase from user
             # save total_tickets_sold + 1 to empty ticket slot
             # loop through empty slots and save increment of total tickets sold
             # update other user local state such as round number to be current
