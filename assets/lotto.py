@@ -111,12 +111,12 @@ def approval():
         ]
 
     ## Purchase Tickets #######################################################
-    purchase_pre_checks = Assert(
-        And(
-            App.optedIn(Int(0), Global.current_application_id()),
-            Int(1)
+    @Subroutine(TealType.none)
+    def purchase_pre_checks(tickets_to_buy):
+        return Seq(
+            Assert(App.optedIn(Int(0), Global.current_application_id())),
+            Assert(tickets_to_buy <= Int(MAX_TICKETS))
         )
-    )
 
     @Subroutine(TealType.none)
     def reset_tickets(account: Expr):
@@ -133,19 +133,15 @@ def approval():
             
         )
 
-    @Subroutine(TealType.none)
-    def process_purchase():
-        pass
-
     @Subroutine(TealType.uint64)
     def is_old_participant(draw_round, t0):
         """True if wallet previously bought a lottery ticket."""
         return Return(
-            And(draw_round != global_round_num, t0 != Int(0))
+            And(draw_round < App.globalGet(global_round_num), t0 != Int(0))
         )
 
     @Subroutine(TealType.uint64)
-    def existing_tickets():
+    def get_existing_tickets():
         i = ScratchVar()
         current_ticket = ScratchVar()
         init = i.store(Int(0))
@@ -163,6 +159,17 @@ def approval():
             Return(i.load())
         )
 
+    @Subroutine(TealType.uint64)
+    def is_valid_purchase():
+        return Return(Int(1))
+
+    @Subroutine(TealType.none)
+    def process_purchase():
+        existing_tickets = ScratchVar(TealType.uint64)
+        return Seq([
+            existing_tickets.store(get_existing_tickets()),
+        ])
+
     # Three starting states
     #   1. No tickets purchased before ever.
     #   2. Purchased tickets in previous round -> reset_tickets.
@@ -174,23 +181,24 @@ def approval():
         sch_draw_round = ScratchVar(TealType.uint64)
         sch_first_ticket = ScratchVar(TealType.uint64)
         return Seq(
+            *generic_checks(2),
+            purchase_pre_checks(tickets_to_buy),
             sch_draw_round.store(
                 App.localGet(Txn.sender(), Bytes("draw_round"))),
             sch_first_ticket.store(
                 App.localGet(Txn.sender(), Bytes("t0"))),
-            *generic_checks(2),
-            purchase_pre_checks,
-            Cond([
+            If(
                 is_old_participant(
-                    sch_draw_round.load(), sch_first_ticket.load()),
-                reset_tickets(Txn.sender())
-            ])
+                    sch_draw_round.load(), sch_first_ticket.load())
+            ).Then(reset_tickets(Txn.sender())),
+            # process_purchase(),
             # validate valid number of tickets to buy
             # find first empty ticket number slot
             # validate user has enough money for purchase
             # deduct cost of purchase from user
             # save total_tickets_sold + 1 to empty ticket slot
             # loop through empty slots and save increment of total tickets sold
+            # update other user local state such as round number to be current
             # Last step - update global state: increment total_tickets sold.
         )
 
