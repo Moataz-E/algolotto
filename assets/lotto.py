@@ -197,7 +197,8 @@ def approval():
                     )
 
                 ])
-            )
+            ),
+            App.globalPut(global_tickets_sold, current_ticket.load())
         )
 
     @Subroutine(TealType.none)
@@ -207,6 +208,8 @@ def approval():
             existing_tickets.store(get_existing_tickets()),
             Assert(is_valid_purchase(existing_tickets, tickets_to_buy)),
             store_tickets(account, existing_tickets, tickets_to_buy)
+            # TODO: update other user local state such as round number to 
+            # be current
         ])
 
     # Three starting states
@@ -232,11 +235,6 @@ def approval():
                     sch_draw_round.load(), sch_first_ticket.load())
             ).Then(reset_tickets(Txn.sender())),
             process_purchase(Txn.sender(), tickets_to_buy),
-            # find first empty ticket number slot
-            # save total_tickets_sold + 1 to empty ticket slot
-            # loop through empty slots and save increment of total tickets sold
-            # update other user local state such as round number to be current
-            # Last step - update global state: increment total_tickets sold.
         )
 
     ## Trigger Draw ###########################################################
