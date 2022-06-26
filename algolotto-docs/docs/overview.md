@@ -15,4 +15,4 @@ Chance of winning is higher for wallets with more tickets.
 
 Once the prize has been dispensed, a new round will commence and partipants will be directed to purchase tickets for that round.
 
-Maximum purchasable tickets per waller per round is 15.
+Maximum purchasable tickets per wallet per round is 15.
