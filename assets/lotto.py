@@ -223,8 +223,24 @@ def approval():
 
     ## Dispense Reward ########################################################
     @Subroutine(TealType.none)
+    def send_prize(account: Expr, amount: Expr):
+        return Seq(
+            InnerTxnBuilder.Begin(),
+            InnerTxnBuilder.SetFields({
+                TxnField.type_enum: TxnType.Payment,
+                TxnField.receiver: account,
+                TxnField.amount: amount,
+                TxnField.fee: Int(0)
+            }),
+            InnerTxnBuilder.Submit()
+        )
+
+    @Subroutine(TealType.none)
     def dispense_reward():
-        return Approve()
+        return Seq(
+            # Ensure transaction fees cover cost of sending prize
+            Assert(Txn.fee() >= Global.min_txn_fee() * Int(2))
+        )
 
     ## Restart Draw ###########################################################
     @Subroutine(TealType.none)
