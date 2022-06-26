@@ -81,7 +81,7 @@ def approval():
     global_round_num = Bytes("round_num")  # uint64
     global_tickets_sold = Bytes("tickets_sold")  # uint64
     global_next_draw_epoch = Bytes("next_draw_epoch")  # uint64
-    global_ticket_algo_cost = Bytes("ticket_cost")  # uint64
+    global_ticket_cost = Bytes("ticket_cost")  # uint64
 
     ## Locals #################################################################
     ticket_vars = [f"t{i}" for i in range(1, MAX_TICKETS+1)]
@@ -135,6 +135,8 @@ def approval():
             Gtxn[1].type_enum() == TxnType.Payment,
             Gtxn[1].receiver() == Global.current_application_address(),
             Gtxn[1].close_remainder_to() == Global.zero_address(),
+            (Gtxn[1].amount() >= 
+                (tickets_to_buy * App.globalGet(global_ticket_cost))),
         ))
 
     @Subroutine(TealType.none)
@@ -173,7 +175,7 @@ def approval():
 
     @Subroutine(TealType.none)
     def store_tickets():
-        pass
+        return Return()
 
     @Subroutine(TealType.none)
     def process_purchase(tickets_to_buy):
@@ -252,7 +254,7 @@ def approval():
     on_init = Seq([
         App.globalPut(global_owner, Txn.sender()),
         App.globalPut(global_donation_addr, DONATION_ADDR),
-        App.globalPut(global_ticket_algo_cost, Int(TICKET_COST_ALGO)),
+        App.globalPut(global_ticket_cost, Int(TICKET_COST_ALGO)),
         App.globalPut(global_tickets_sold, Int(0)),
         App.globalPut(global_next_draw_epoch, init_round_epoch),
         App.globalPut(global_round_num, Int(1)),
