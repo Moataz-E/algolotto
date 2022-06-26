@@ -153,7 +153,7 @@ def approval():
                     current_ticket.store(
                         App.globalGet(Extract(i.load(), Int(7), Int(1)))
                     ),
-                    If(current_ticket == Int(0)).Then(Break())
+                    If(current_ticket.load() == Int(0)).Then(Break())
                 ])
             ),
             Return(i.load())
