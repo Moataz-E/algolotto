@@ -233,7 +233,7 @@ def approval():
             *generic_checks(2),
             is_valid_purchase_request(tickets_to_buy),
             sch_draw_round.store(
-                App.localGet(Txn.sender(), Bytes("draw_round"))),
+                App.localGet(Txn.sender(), local_draw_round)),
             sch_first_ticket.store(
                 App.localGet(Txn.sender(), Bytes("t0"))),
             # If user participated before, then reset all tickets state
