@@ -216,13 +216,16 @@ def approval():
             )
         ])
 
-    # Three starting states
-    #   1. No tickets purchased before ever.
-    #   2. Purchased tickets in previous round -> reset_tickets.
-    #   2. Bought tickets in current round but need to buy more.
-    #   3. Bought maximum tickets in current round allocation.
     @Subroutine(TealType.none)
-    def purchase_ticket():
+    def purchase_tickets():
+        """Purchase tickets.
+
+        Three starting states
+            1. No tickets purchased before ever.
+            2. Purchased tickets in previous round -> reset_tickets.
+            3. Bought tickets in current round but need to buy more.
+            4. Bought maximum tickets in current round allocation.        
+        """
         tickets_to_buy = Txn.application_args[1]
         sch_draw_round = ScratchVar(TealType.uint64)
         sch_first_ticket = ScratchVar(TealType.uint64)
@@ -293,7 +296,7 @@ def approval():
             Cond(
                 [
                     Txn.application_args[0] == op_purchase,
-                    purchase_ticket(),
+                    purchase_tickets(),
                 ],
                 [
                     Txn.application_args[0] == op_draw,
