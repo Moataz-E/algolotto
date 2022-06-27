@@ -289,9 +289,15 @@ def approval():
         Approve(),
     ])
 
+    opt_in = Seq([
+        reset_tickets(Txn.sender()),
+        App.localPut(Txn.sender(), local_draw_round, Int(0)),
+        Approve()
+    ])
+
     return program.event(
         init=on_init,
-        opt_in=Approve(),
+        opt_in=opt_in,
         no_op=Seq(
             Cond(
                 [
