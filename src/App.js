@@ -18,7 +18,7 @@ function AppHeader(props) {
 
   const headerItems = [
     { label: 'Docs' },
-    { label: <Button shape="round"><Link to="app">Lanuch dApp</Link></Button> }
+    { label: <Button shape="round"><Link to="/app">Lanuch dApp</Link></Button> }
   ]
 
   return (
@@ -64,7 +64,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="app" element={<DApp />} />
+      <Route path="/app" element={<DApp />} />
     </Routes>
   )
 }
