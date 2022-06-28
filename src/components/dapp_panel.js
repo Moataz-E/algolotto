@@ -10,7 +10,7 @@ import "./dapp_panel.css"
 export default function DAppPanel() {
   return (
     <Row justify="center" align="middle" className="dapp-panel-row">
-      <Col span={6} md={9} xc={{ span: 10 }} sm={{ span: 10 }} className="dapp-panel">
+      <Col lg={{ span: 8 }} md={{ span: 10 }} sm={{ span: 12 }} xs={{ span: 15 }} className="dapp-panel">
         <TweenOne animation={{ y: '-5rem' }}>
           <Card className="panel-card" title="Purchase Weekly Lottery" bordered={true} style={{ textAlign: 'center' }}>
             <div className="banner-card-body">
