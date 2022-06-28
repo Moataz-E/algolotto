@@ -7,6 +7,7 @@ import 'antd/dist/antd.css';
 import Banner from "./components/banner";
 import Signer from "./components/signer";
 import InfoBubbles from './components/info_bubbles';
+import DAppPanel from './components/dapp_panel';
 
 import "./App.css";
 
@@ -52,7 +53,7 @@ function DApp() {
   return (
     <Layout className="App">
       <AppHeader className="header" />
-      <p>This is the App</p>
+      <DAppPanel />
       <Footer className="footer">Hachi Sittah Technologies ©2022</Footer>
     </Layout>
   );
