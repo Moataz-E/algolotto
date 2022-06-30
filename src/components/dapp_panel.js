@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Card } from 'antd';
+import { Row, Col, Card, Button } from 'antd';
 
 import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
@@ -15,6 +15,7 @@ export default function DAppPanel() {
           <Card className="panel-card" title="Purchase Weekly Lottery" bordered={true} style={{ textAlign: 'center' }}>
             <div className="banner-card-body">
               <span className="description text-secondary">Display current round, draw date, tickets bought and box to purchase additional tickets</span>
+              <Button className="buy-button" shape="round" size="large" block>Buy</Button>
             </div>
           </Card>
         </TweenOne>

@@ -1,3 +1,9 @@
 .dapp-panel {
     margin-top: 10rem;
 }
+
+.buy-button {
+    background: #d539b5;
+    color: #fafcff;
+    margin-top: 0.5rem;
+}
