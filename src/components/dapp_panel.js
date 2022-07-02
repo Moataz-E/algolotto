@@ -14,7 +14,9 @@ export default function DAppPanel() {
         <TweenOne animation={{ y: '-5rem' }}>
           <Card className="panel-card" title="Purchase Weekly Lottery" bordered={true} style={{ textAlign: 'center' }}>
             <div className="banner-card-body">
-              <span className="description text-secondary">Display current round, draw date, tickets bought and box to purchase additional tickets</span>
+              <span className="description text-secondary">
+                Display current round, draw date, tickets bought and box to purchase additional tickets
+              </span>
               <Button className="buy-button" shape="round" size="large" block>Buy</Button>
             </div>
           </Card>
