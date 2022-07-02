@@ -2,6 +2,10 @@
     margin-top: 10rem;
 }
 
+.panel-card {
+    border-radius: 2rem;
+}
+
 .buy-button {
     background: #d539b5;
     color: #fafcff;
