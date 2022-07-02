@@ -149,10 +149,9 @@ def approval():
         return Seq(
             For(init, cond, it).Do(
                 App.localPut(
-                    account, Extract(i.load(), Int(7), Int(1)), Int(0)
+                    account, Extract(Itob(i.load()), Int(7), Int(1)), Int(0)
                 )
             ),
-            
         )
 
     @Subroutine(TealType.uint64)
