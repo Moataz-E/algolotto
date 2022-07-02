@@ -13,3 +13,25 @@ Algorand Lottery
         target: /data
 ```
 3. Initialize the docker containers by running `./sandbox up`.
+
+### Running a Smart Contract Locally
+1. Build the smart contract module folder by running `./build.sh assets.lotto`.
+2. Enter the algod container by running `./sandbox enter algod`. The smart contract TEAL files should now be available in the container in the `/data` directory.
+3. Deploy program to local sandbox environment using the command:
+```
+goal app create --creator <owner address> --approval-prog /data/approval.teal --clear-prog /data/clear.teal --global-byteslices <n> --global-ints <n> --local-byteslices <n> --local-ints <n>
+```
+
+### Testing Operations
+* To opt-in to the app:
+```
+goal app optin --app-id 1 --from $TWO 
+```
+* To purchase a ticket:
+```
+goal app call --app-id 1 --from $TWO --app-arg "str:purchase" --app-arg "int:1"
+```
+* To launch debuger for a given transaction dump
+```
+tealdbg debug -d tx.dr --listen 0.0.0.0
+```
