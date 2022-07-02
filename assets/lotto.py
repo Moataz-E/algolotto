@@ -226,7 +226,7 @@ def approval():
             3. Bought tickets in current round but need to buy more.
             4. Bought maximum tickets in current round allocation.        
         """
-        tickets_to_buy = Txn.application_args[1]
+        tickets_to_buy = Btoi(Txn.application_args[1])
         sch_draw_round = ScratchVar(TealType.uint64)
         sch_first_ticket = ScratchVar(TealType.uint64)
         return Seq(
