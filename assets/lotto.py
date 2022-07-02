@@ -230,7 +230,7 @@ def approval():
         sch_draw_round = ScratchVar(TealType.uint64)
         sch_first_ticket = ScratchVar(TealType.uint64)
         return Seq(
-            *generic_checks(1, 2),
+            *generic_checks(2, 2),
             is_valid_purchase_request(tickets_to_buy),
             sch_draw_round.store(
                 App.localGet(Txn.sender(), local_draw_round)),
