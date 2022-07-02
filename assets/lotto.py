@@ -192,7 +192,7 @@ def approval():
                     # Set ticket slot to next ticket number
                     App.localPut(
                         account, 
-                        Extract(i.load(), Int(7), Int(1)), 
+                        Extract(Itob(i.load()), Int(7), Int(1)), 
                         current_ticket.load()
                     )
 
