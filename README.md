@@ -31,7 +31,14 @@ goal app optin --app-id 1 --from $TWO
 ```
 goal app call --app-id 1 --from $TWO --app-arg "str:purchase" --app-arg "int:1"
 ```
+* To dump transaction for inspection
+```
+goal app call ... --dryrun-dump -o tx.dr
+```
 * To launch debuger for a given transaction dump
 ```
 tealdbg debug -d tx.dr --listen 0.0.0.0
 ```
+
+### Notes
+* Integer arguments still have to be converted using Btoi as specifying "int:x" as an argument only tells TEAL how to encode the argument but it is still passed as a byte.
