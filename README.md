@@ -39,6 +39,10 @@ goal app call ... --dryrun-dump -o tx.dr
 ```
 tealdbg debug -d tx.dr --listen 0.0.0.0
 ```
+* To view local storage of an account
+```
+goal app read --app-id 1 -f $TWO --local
+```
 
 ### Notes
 * Integer arguments still have to be converted using Btoi as specifying "int:x" as an argument only tells TEAL how to encode the argument but it is still passed as a byte.
