@@ -104,17 +104,18 @@ def approval():
     op_restart = Bytes("restart")
 
     ## General ################################################################
-    def generic_checks(grp_size):
+    def generic_checks(grp_size, trx_args):
         return [
             program.check_self(group_size=Int(grp_size), group_index=Int(0)),
-            program.check_rekey_zero(1)
+            program.check_rekey_zero(1),
+            Assert(Txn.application_args.length() == Int(trx_args))
         ]
 
     ## Purchase Tickets #######################################################
     @Subroutine(TealType.none)
     def is_valid_purchase_request(tickets_to_buy):
         return Seq(
-            Assert(App.optedIn(Int(0), Global.current_application_id())),
+            Assert(App.optedIn(Txn.sender(), Global.current_application_id())),
             Assert(tickets_to_buy <= Int(MAX_TICKETS))
         )
 
@@ -229,7 +230,7 @@ def approval():
         sch_draw_round = ScratchVar(TealType.uint64)
         sch_first_ticket = ScratchVar(TealType.uint64)
         return Seq(
-            *generic_checks(1),
+            *generic_checks(1, 2),
             is_valid_purchase_request(tickets_to_buy),
             sch_draw_round.store(
                 App.localGet(Txn.sender(), local_draw_round)),
