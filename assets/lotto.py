@@ -165,7 +165,7 @@ def approval():
             For(init, cond, it).Do(
                 Seq([
                     current_ticket.store(
-                        App.globalGet(Extract(i.load(), Int(7), Int(1)))
+                        App.globalGet(Extract(Itob(i.load()), Int(7), Int(1)))
                     ),
                     If(current_ticket.load() == Int(0)).Then(Break())
                 ])
