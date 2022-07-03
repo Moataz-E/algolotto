@@ -29,6 +29,13 @@ Trigger Draw
 * Psuedo-randomly select winning ticket between 1 and tickets_sold.
 * Store value of winning ticket in global variable.
 
+Pseudo-Random Variables
+-----------------------
+* txn.Sender().
+* txn.TxID().
+* Hash of random elements of the scratch space.
+* Global.latest_timestamp().
+
 Reward Winner
 --------------
 * Identify holder of the winning ticket off-chain.
