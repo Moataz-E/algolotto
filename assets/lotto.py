@@ -131,7 +131,7 @@ def approval():
         """Validate ticket purchase"""
         return Return(And(
             # Ensure not purchasing more than required tickets
-            (existing_tickets.load() + tickets_to_buy) < Int(MAX_TICKETS),
+            (existing_tickets.load() + tickets_to_buy) <= Int(MAX_TICKETS),
             # Second transaction is a payment transaction
             Gtxn[1].type_enum() == TxnType.Payment,
             Gtxn[1].receiver() == Global.current_application_address(),
