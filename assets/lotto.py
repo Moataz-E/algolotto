@@ -264,7 +264,6 @@ def approval():
             )
         )
 
-
     @Subroutine(TealType.none)
     def trigger_draw():
         return Seq(
@@ -287,10 +286,25 @@ def approval():
         )
 
     @Subroutine(TealType.none)
+    def reset():
+        return Seq(
+            App.globalPut(global_ticket_cost, Int(0)),
+            App.globalPut(
+                global_round_num, 
+                App.globalGet(global_round_num) + Int(1)
+            ),
+            App.globalPut(
+                global_next_draw_epoch,
+                Global.latest_timestamp() + Int(WEEK_IN_SECONDS)
+            )
+        )
+
+    @Subroutine(TealType.none)
     def dispense_and_restart():
         return Seq(
             # Ensure transaction fees cover cost of sending prize
-            Assert(Txn.fee() >= Global.min_txn_fee() * Int(2))
+            Assert(Txn.fee() >= Global.min_txn_fee() * Int(2)),
+            reset()
         )
 
     ## Intialize Contract #####################################################
