@@ -259,6 +259,7 @@ def approval():
     @Subroutine(TealType.none)
     def can_draw():
         return Seq(
+            Assert(App.globalGet(global_tickets_sold) > 0),
             Assert(App.globalGet(global_drawn) == 0),
             Assert(
                 Global.latest_timestamp() >
@@ -270,6 +271,7 @@ def approval():
     @Subroutine(TealType.none)
     def trigger_draw():
         return Seq(
+            App.globalPut(global_drawn, Int(1)),
             can_draw()
         )
 
