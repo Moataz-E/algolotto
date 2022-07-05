@@ -257,8 +257,21 @@ def approval():
 
     ## Trigger Draw ###########################################################
     @Subroutine(TealType.none)
+    def can_draw():
+        return Seq(
+            Assert(App.globalGet(global_drawn) == 0),
+            Assert(
+                Global.latest_timestamp() >
+                App.globalGet(global_next_draw_epoch)
+            )
+        )
+
+
+    @Subroutine(TealType.none)
     def trigger_draw():
-        return Approve()
+        return Seq(
+            can_draw()
+        )
 
     ## Dispense Reward ########################################################
     @Subroutine(TealType.none)
