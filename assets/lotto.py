@@ -103,12 +103,9 @@ def approval():
     # Triggers the draw if the minimum time has elapsed.
     # Additional Inputs: None
     op_draw = Bytes("draw")
-    # Rewards winner of lottery
+    # Rewards winner of lottery and restart draw
     # Additonal Inputs: winner_address
-    op_reward = Bytes("reward")
-    # Restarts a new round
-    # Additional Inputs: None
-    op_restart = Bytes("restart")
+    op_dispense_restart = Bytes("dispense_and_restart")
 
     ## General ################################################################
     def generic_checks(grp_size, trx_args):
@@ -275,7 +272,7 @@ def approval():
             can_draw()
         )
 
-    ## Dispense Reward ########################################################
+    ## Dispense Reward and Restart ############################################
     @Subroutine(TealType.none)
     def send_prize(account: Expr, amount: Expr):
         return Seq(
@@ -290,16 +287,11 @@ def approval():
         )
 
     @Subroutine(TealType.none)
-    def dispense_reward():
+    def dispense_and_restart():
         return Seq(
             # Ensure transaction fees cover cost of sending prize
             Assert(Txn.fee() >= Global.min_txn_fee() * Int(2))
         )
-
-    ## Restart Draw ###########################################################
-    @Subroutine(TealType.none)
-    def restart_draw():
-        return Approve()
 
     ## Intialize Contract #####################################################
     init_round_epoch = Add(Global.latest_timestamp(), Int(WEEK_IN_SECONDS))
@@ -334,12 +326,8 @@ def approval():
                     trigger_draw(),
                 ],
                 [
-                    Txn.application_args[0] == op_reward,
-                    dispense_reward(),
-                ],
-                [
-                    Txn.application_args[0] == op_restart,
-                    restart_draw(),
+                    Txn.application_args[0] == op_dispense_restart,
+                    dispense_and_restart(),
                 ],
             ),
             Reject()
