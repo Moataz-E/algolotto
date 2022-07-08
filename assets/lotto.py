@@ -77,6 +77,7 @@ MICRO_ALGO = 1
 ALGO = MICRO_ALGO * (10 ** 6)
 TICKET_COST_ALGO = ALGO * 1
 WEEK_IN_SECONDS = 604800
+COMMISION = Int(100)  # 1 / 100
 
 DONATION_ADDR = Txn.sender()
 MAX_TICKETS = 15
@@ -333,8 +334,15 @@ def approval():
             ),
         )
 
+    @Subroutine(TealType.uint64)
+    def calc_total():
+        return Return(
+            App.globalGet(global_tickets_sold) *
+            App.globalGet(global_ticket_cost)
+        )
+
     @Subroutine(TealType.none)
-    def send_prize(account: Expr, amount: Expr):
+    def send_algo(account: Expr, amount):
         return Seq(
             InnerTxnBuilder.Begin(),
             InnerTxnBuilder.SetFields({
@@ -365,12 +373,22 @@ def approval():
     @Subroutine(TealType.none)
     def dispense_and_restart():
         winner_addr = Txn.application_args[1]
+        total = ScratchVar()
+        commision = ScratchVar()
         return Seq(
             *generic_checks(1, 1),
-            # Ensure transaction fees cover cost of sending prize
-            Assert(Txn.fee() >= Global.min_txn_fee() * Int(2)),
+            # Ensure transaction fees cover cost of sending two trxs
+            Assert(Txn.fee() >= Global.min_txn_fee() * Int(3)),
+            # Validate given wallet address is winner of current round
             is_winner(winner_addr),
-            # TODO: Send money to winner
+            # Calculate total pot amount
+            total.store(calc_total()),
+            # Calculate commision
+            commision.store(total.load() / COMMISION),
+            # Send prize money to winner
+            send_algo(winner_addr, total.load() - commision.load()),
+            # Send commision to umpire
+            send_algo(Txn.sender(), commision.load()),
             # Reset state and start next round
             reset()
         )
