@@ -122,7 +122,8 @@ def approval():
     def is_valid_purchase_request(tickets_to_buy):
         return Seq(
             Assert(App.optedIn(Txn.sender(), Global.current_application_id())),
-            Assert(tickets_to_buy <= Int(MAX_TICKETS))
+            Assert(tickets_to_buy <= Int(MAX_TICKETS)),
+            Assert(App.globalGet(global_drawn) == Int(0))
         )
 
     @Subroutine(TealType.uint64)
