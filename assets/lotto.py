@@ -42,7 +42,8 @@ Reward Winner
 * Call application with reward operation and include address of wallet
     holding winning ticket.
 * Check wallet was participant in current draw (local round == current global 
-    round) and that wallet is a holder of the winning ticket.
+    round), wallet is a holder of the winning ticket, and that wallet
+    has opted into this contract.
 * If true, send prize pot to winning wallet and reward umpire with 1% of prize
     pot floored at 1 ALGO and capped at 10 ALGO.
 * Set drawn to False.
