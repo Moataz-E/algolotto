@@ -80,6 +80,9 @@ WEEK_IN_SECONDS = 604800
 DONATION_ADDR = Txn.sender()
 MAX_TICKETS = 15
 
+TRUE = Int(1)
+FALSE = Int(0)
+
 
 def approval():
     ## Globals ################################################################
@@ -291,6 +294,44 @@ def approval():
         )
 
     ## Dispense Reward and Restart ############################################
+    @Subroutine(TealType.uint64)
+    def has_winning_ticket(addr: Expr):
+        i = ScratchVar()
+        current_ticket = ScratchVar()
+        init = i.store(Int(0))
+        cond = i.load() < Int(MAX_TICKETS)
+        it = i.store(i.load() + Int(1))
+        return Seq(
+            For(init, cond, it).Do(
+                Seq([
+                    current_ticket.store(
+                        App.localGet(
+                            addr,
+                            Extract(Itob(i.load()), Int(7), Int(1))
+                        )
+                    ),
+                    If(current_ticket.load() == App.globalGet(global_winner))
+                    .Then(Return(TRUE))
+                ])
+            ),
+            Return(FALSE)
+        )
+
+    @Subroutine(TealType.none)
+    def is_winner(addr: Expr):
+        """Validate that address is holder of the winning ticket."""
+        return Seq(
+            # Confirm that the winner's wallet has opted in
+            Assert(App.optedIn(addr, Global.current_application_id())),
+            # Confirm that the winner is the holder of the winning ticket
+            Assert(has_winning_ticket(addr) == TRUE),
+            # Confirm the winner bought his tickets in the current round
+            Assert(
+                App.localGet(
+                    addr, local_draw_round) == App.globalGet(global_round_num)
+            ),
+        )
+
     @Subroutine(TealType.none)
     def send_prize(account: Expr, amount: Expr):
         return Seq(
@@ -322,11 +363,14 @@ def approval():
 
     @Subroutine(TealType.none)
     def dispense_and_restart():
+        winner_addr = Txn.application_args[1]
         return Seq(
             *generic_checks(1, 1),
             # Ensure transaction fees cover cost of sending prize
             Assert(Txn.fee() >= Global.min_txn_fee() * Int(2)),
+            is_winner(winner_addr),
             # TODO: Send money to winner
+            # Reset state and start next round
             reset()
         )
 
