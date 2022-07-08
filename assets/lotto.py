@@ -89,6 +89,7 @@ def approval():
     global_tickets_sold = Bytes("tickets_sold")  # uint64
     global_next_draw_epoch = Bytes("next_draw_epoch")  # uint64
     global_ticket_cost = Bytes("ticket_cost")  # uint64
+    global_winner = Bytes("winner")  # uint64
 
     ## Locals #################################################################
     ticket_vars = [f"t{i}" for i in range(1, MAX_TICKETS+1)]
@@ -264,11 +265,26 @@ def approval():
             )
         )
 
+    # TODO: need a better way of randomly selecting tickets
+    @Subroutine(TealType.uint64)
+    def select_winner():
+        return Return(
+            Add(
+                Mod(
+                    Global.latest_timestamp(), 
+                    App.globalGet(global_tickets_sold)
+                ),
+                Int(1)
+            )
+        )
+
     @Subroutine(TealType.none)
     def trigger_draw():
         return Seq(
+            can_draw(),
             App.globalPut(global_drawn, Int(1)),
-            can_draw()
+            App.globalPut(global_winner, select_winner()),
+            Approve()
         )
 
     ## Dispense Reward and Restart ############################################
@@ -304,6 +320,7 @@ def approval():
         return Seq(
             # Ensure transaction fees cover cost of sending prize
             Assert(Txn.fee() >= Global.min_txn_fee() * Int(2)),
+            # TODO: Send money to winner
             reset()
         )
 
@@ -317,6 +334,7 @@ def approval():
         App.globalPut(global_next_draw_epoch, init_round_epoch),
         App.globalPut(global_round_num, Int(1)),
         App.globalPut(global_drawn, Int(0)),
+        App.globalPut(global_winner, Int(0)),
         Approve(),
     ])
 
