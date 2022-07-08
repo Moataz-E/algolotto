@@ -126,7 +126,7 @@ def approval():
         return Seq(
             Assert(App.optedIn(Txn.sender(), Global.current_application_id())),
             Assert(tickets_to_buy <= Int(MAX_TICKETS)),
-            Assert(App.globalGet(global_drawn) == Int(0))
+            Assert(App.globalGet(global_drawn) == FALSE)
         )
 
     @Subroutine(TealType.uint64)
@@ -263,7 +263,7 @@ def approval():
     def can_draw():
         return Seq(
             Assert(App.globalGet(global_tickets_sold) > Int(0)),
-            Assert(App.globalGet(global_drawn) == Int(0)),
+            Assert(App.globalGet(global_drawn) == FALSE),
             Assert(
                 Global.latest_timestamp() >
                 App.globalGet(global_next_draw_epoch)
