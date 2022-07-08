@@ -307,7 +307,7 @@ def approval():
     @Subroutine(TealType.none)
     def reset():
         return Seq(
-            App.globalPut(global_ticket_cost, Int(0)),
+            App.globalPut(global_tickets_sold, Int(0)),
             App.globalPut(
                 global_round_num, 
                 App.globalGet(global_round_num) + Int(1)
@@ -315,12 +315,15 @@ def approval():
             App.globalPut(
                 global_next_draw_epoch,
                 Global.latest_timestamp() + Int(WEEK_IN_SECONDS)
-            )
+            ),
+            App.globalPut(global_drawn, Int(0)),
+            App.globalPut(global_winner, Int(0))
         )
 
     @Subroutine(TealType.none)
     def dispense_and_restart():
         return Seq(
+            *generic_checks(1, 1),
             # Ensure transaction fees cover cost of sending prize
             Assert(Txn.fee() >= Global.min_txn_fee() * Int(2)),
             # TODO: Send money to winner
