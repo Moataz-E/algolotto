@@ -49,10 +49,11 @@ Reward Winner
 * Set drawn to False.
 
 Restart Draw
----------
+-------------
 * Reset tickets sold to 0.
 * Increment global state round number by one.
 * Set next draw epoch to a week's time from now.
+* Reset drawn back to FALSE.
 
 Emergency Dispense
 ------------------
