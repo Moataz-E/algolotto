@@ -44,3 +44,12 @@ iframe {
   text-align: center;
   background: #ffe5fa;
 }
+
+.footer-dapp {
+  text-align: center;
+  background: #ffe5fa;
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+}

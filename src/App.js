@@ -54,7 +54,7 @@ function DApp() {
     <Layout className="App">
       <AppHeader className="header" />
       <DAppPanel />
-      <Footer className="footer">Hachi Sittah Technologies ©2022</Footer>
+      <Footer className="footer-dapp">Hachi Sittah Technologies ©2022</Footer>
     </Layout>
   );
 }
