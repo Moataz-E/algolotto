@@ -11,6 +11,26 @@
     color: #fafcff;
     margin-top: 0.5rem;
 }
+
+.buy-button:hover {
+    font-size: 1.1rem !important;
+    background: #d539b5;
+    color: #fafcff;
+    border-width: 0rem;
+}
+
+.buy-button::selection {
+    background: #d539b5 !important;
+    font-weight: bold;
+}
+
+.buy-button:focus {
+    background: #d539b5;
+    font-weight: bold;
+    color: #fafcff;
+    border-width: 0rem;
+}
+
 .myalgo-connect-btn {
     border-color: #d539b5;
     border-width: 0.2rem;
