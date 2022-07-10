@@ -11,3 +11,8 @@
     color: #fafcff;
     margin-top: 0.5rem;
 }
+.myalgo-connect-btn {
+    border-color: #d539b5;
+    border-width: 0.2rem;
+    text-align: center;
+}
