@@ -70,19 +70,48 @@ function AlgoInfo() {
   return <div><strong>Latest Algorand Block: </strong> {latestBlock}</div>
 }
 
+function LottoInfo() {
+  return (
+    <ul className="no-bp">
+      <li><strong>Current Lottery Round: </strong></li>
+      <li><strong>Draw Date: </strong></li>
+      <li><strong>Ticket Price: </strong></li>
+    </ul>
+  )
+}
+
+function AccountInfo(props) {
+  const { userAccount } = props;
+
+  return (
+    <span>
+      <hr />
+      <ul className="no-bp">
+        <li><strong>Connected Wallet: </strong>{userAccount.slice(0, 4)}... {userAccount.slice(-4)}</li>
+        <li><strong>Tickets Bought (current round): </strong></li>
+      </ul>
+    </span>
+  )
+}
+
 
 function DAppCard() {
-  const [userAccount, setUserAccount] = useState("")
+  const [userAccount, setUserAccount] = useState("");
+
+  function isConnected() {
+    return (userAccount !== "");
+  }
 
   return (
     <Card className="panel-card" title="Purchase Weekly Lottery" bordered={true} style={{ textAlign: 'left' }}>
       <div className="banner-card-body">
         <AlgoInfo />
-        <span className="description text-secondary">
-          Display current round, draw date, tickets bought and box to purchase additional tickets
-        </span>
-        <span>{userAccount}</span>
-        <WalletConnect setUserAccount={setUserAccount} />
+        <hr />
+        <LottoInfo />
+        {isConnected()
+          ? <AccountInfo userAccount={userAccount} />
+          : <WalletConnect setUserAccount={setUserAccount} />
+        }
         <BuyTicket />
       </div>
     </Card>

@@ -58,3 +58,8 @@
     color: black;
     border-color: #d539b5;
 }
+
+ul.no-bp {
+    list-style-type: '';
+    padding-left: 0rem;
+}
