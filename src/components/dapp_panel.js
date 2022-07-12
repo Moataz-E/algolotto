@@ -16,7 +16,9 @@ const BLOCK_REFRESH_MS = 5000
 
 const algodClient = new algosdk.Algodv2(ALGOD_TOKEN, ALGOD_SERVER, ALGOD_PORT);
 
-function WalletConnect() {
+function WalletConnect(props) {
+  const { setUserAccount } = props;
+
   const myalgoSettings = {
     shouldSelectOneAccount: false,
     openManager: false
@@ -26,8 +28,7 @@ function WalletConnect() {
   const connect = async (e) => {
     e.preventDefault()
     const accounts = await myAlgoConnect.connect(myalgoSettings);
-    console.log(accounts);
-    // const sender = accounts[0].address;
+    setUserAccount(accounts[0].address);
   };
 
   return (
@@ -71,6 +72,8 @@ function AlgoInfo() {
 
 
 function DAppCard() {
+  const [userAccount, setUserAccount] = useState("")
+
   return (
     <Card className="panel-card" title="Purchase Weekly Lottery" bordered={true} style={{ textAlign: 'left' }}>
       <div className="banner-card-body">
@@ -78,7 +81,8 @@ function DAppCard() {
         <span className="description text-secondary">
           Display current round, draw date, tickets bought and box to purchase additional tickets
         </span>
-        <WalletConnect />
+        <span>{userAccount}</span>
+        <WalletConnect setUserAccount={setUserAccount} />
         <BuyTicket />
       </div>
     </Card>
