@@ -12,9 +12,19 @@ const ALGOD_TOKEN = "";
 const ALGOD_SERVER = "https://node.testnet.algoexplorerapi.io";
 const ALGOD_PORT = "";
 
+const INDEXER_TOKEN = { "X-Algo-API-Token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" };
+const INDEXER_SERVER = "http://localhost";
+const INDEXER_PORT = 4001;
+
+const ONE_ADDR = "LHDAEQ7QDPK4CB56GPWNW5FQHW5N2B3D4PUP3E3MWI6OXGW5UH7WBZXTNI"
+const APP_CONTRACT = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
+const APP_ID = 1
+
 const BLOCK_REFRESH_MS = 5000
+const MICROALOS = Math.pow(10, 6)
 
 const algodClient = new algosdk.Algodv2(ALGOD_TOKEN, ALGOD_SERVER, ALGOD_PORT);
+const indexerClient = new algosdk.Indexer(INDEXER_TOKEN, INDEXER_SERVER, INDEXER_PORT);
 
 function WalletConnect(props) {
   const { setUserAccount } = props;
@@ -71,11 +81,50 @@ function AlgoInfo() {
 }
 
 function LottoInfo() {
+  const [appState, setAppState] = useState(null);
+
+  function parseAppState(globalStateRaw) {
+    const appStateObj = globalStateRaw.reduce((o, x) => {
+      const key = Buffer.from(x.key, "base64").toString("ascii")
+      const type = x.value.type;
+      let value = ""
+      if (type === 1) {
+        // Value is of type bytes
+        value = x.value.bytes;
+      } else if (type === 2) {
+        // Value is of type uint
+        value = x.value.uint;
+      }
+      return { ...o, [key]: value }
+    }, {})
+    setAppState(appStateObj);
+  }
+
+  async function getAppDetails() {
+    const appDetails = await indexerClient.lookupApplications(APP_ID).do();
+    parseAppState(appDetails.params["global-state"]);
+  }
+
+  function getDrawDate() {
+    if (appState) {
+      const draw_ts = appState.next_draw_epoch;
+      const draw_date = new Date(draw_ts * 1000);
+      return draw_date.toDateString("en-GB") + " " + draw_date.toTimeString("en-GB")
+    } else {
+      return "";
+    }
+  }
+
+  useEffect(() => {
+    getAppDetails();
+  })
+
   return (
     <ul className="no-bp">
-      <li><strong>Current Lottery Round: </strong></li>
-      <li><strong>Draw Date: </strong></li>
-      <li><strong>Ticket Price: </strong></li>
+      <li><strong>Current Lottery Round: </strong>{appState?.round_num}</li>
+      <li><strong>Total Tickets Sold: </strong>{appState?.tickets_sold}</li>
+      <li><strong>Ticket Price: </strong>{appState?.ticket_cost / MICROALOS} ALGO</li>
+      <li><strong>Draw Date: </strong> {getDrawDate()}</li>
     </ul>
   )
 }
@@ -93,7 +142,6 @@ function AccountInfo(props) {
     </span>
   )
 }
-
 
 function DAppCard() {
   const [userAccount, setUserAccount] = useState("");
