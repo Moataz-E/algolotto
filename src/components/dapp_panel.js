@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import algosdk from 'algosdk';
-import { Row, Col, Card, Button } from 'antd';
+import { Row, Col, Card, Button, Select } from 'antd';
 import MyAlgoConnect from '@randlabs/myalgo-connect';
 
 import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
 
 import "./dapp_panel.css";
+
+const { Option } = Select;
 
 const ALGOD_TOKEN = "";
 const ALGOD_SERVER = "https://node.testnet.algoexplorerapi.io";
@@ -53,8 +55,37 @@ function WalletConnect(props) {
     </Button>)
 }
 
-function BuyTicket() {
-  return <Button className="buy-connect-button" shape="round" size="large" block>Buy</Button>
+function BuyTicket(props) {
+  const { tickets } = props;
+
+  function purchaseTickets(e) {
+    console.log(e);
+  }
+
+  function ticketSelect() {
+    return (
+      <Select defaultValue="1" size="large" className="ticket-select">
+        {Array.from({ length: 15 - tickets.length }, (_, i) => i + 1).map(
+          (i) => <Option value={i} key={i}>{i}</Option>)
+        }
+      </Select>
+    )
+  }
+
+  return (
+    <div>
+      {ticketSelect()}
+      <Button
+        className="buy-connect-button"
+        shape="round"
+        size="large"
+        block
+        onSubmit={purchaseTickets}
+      >
+        Buy Tickets
+      </Button>
+    </div>
+  )
 }
 
 function LottoInfo() {
@@ -107,9 +138,35 @@ function LottoInfo() {
 }
 
 function AccountInfo(props) {
-  const { userAccount } = props;
+  const { userAccount, tickets } = props;
 
+  function printTickets() {
+    // TODO: only display tickets if user's current round is equal to app's current round.
+    if (tickets) {
+      return tickets.join(", ");
+    } else {
+      return "None";
+    }
+  }
+
+  return (
+    <span>
+      <hr />
+      <ul className="no-bp">
+        <li><strong>Connected Wallet: </strong>{userAccount.slice(0, 4)}... {userAccount.slice(-4)}</li>
+        <li><strong>Owned Ticket Numbers (current round): </strong>{printTickets()}</li>
+      </ul>
+    </span>
+  )
+}
+
+function DAppCard() {
+  const [userAccount, setUserAccount] = useState("");
   const [tickets, setTickets] = useState(null);
+
+  function isConnected() {
+    return (userAccount !== "");
+  }
 
   function getTicketsFromKeyVals(lottoKeyValues) {
     const ticketVars = lottoKeyValues.filter((x) => x.key.length === 4);
@@ -132,41 +189,17 @@ function AccountInfo(props) {
 
   useEffect(() => {
     getUserTickets();
-  })
-
-  function printTickets() {
-    // TODO: only display tickets if user's current round is equal to app's current round.
-    if (tickets) {
-      return tickets.join(", ");
-    } else {
-      return "None";
-    }
-  }
-
-  return (
-    <span>
-      <hr />
-      <ul className="no-bp">
-        <li><strong>Connected Wallet: </strong>{userAccount.slice(0, 4)}... {userAccount.slice(-4)}</li>
-        <li><strong>Owned Tickets (current round): </strong>{printTickets()}</li>
-      </ul>
-    </span>
-  )
-}
-
-function DAppCard() {
-  const [userAccount, setUserAccount] = useState("");
-
-  function isConnected() {
-    return (userAccount !== "");
-  }
+  }, [])
 
   return (
     <Card className="panel-card" title="Purchase Weekly Lottery" bordered={true} style={{ textAlign: 'left' }}>
       <div className="banner-card-body">
         <LottoInfo />
         {isConnected()
-          ? <div><AccountInfo userAccount={userAccount} /><BuyTicket /></div>
+          ? <div>
+            <AccountInfo userAccount={userAccount} tickets={tickets} />
+            <BuyTicket tickets={tickets} />
+          </div>
           : <WalletConnect setUserAccount={setUserAccount} />
         }
       </div>
