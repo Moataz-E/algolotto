@@ -7,56 +7,29 @@
     border-radius: 2rem;
 }
 
-.buy-button {
+.buy-connect-button {
     background: #d539b5;
     color: #fafcff;
     margin-top: 0.5rem;
 }
 
-.buy-button:hover {
+.buy-connect-button:hover {
     font-size: 1.1rem !important;
     background: #d539b5;
     color: #fafcff;
     border-width: 0rem;
 }
 
-.buy-button::selection {
+.buy-connect-button::selection {
     background: #d539b5 !important;
     font-weight: bold;
 }
 
-.buy-button:focus {
+.buy-connect-button:focus {
     background: #d539b5;
     font-weight: bold;
     color: #fafcff;
     border-width: 0rem;
-}
-
-.myalgo-connect-btn {
-    border-color: #d539b5;
-    border-width: 0.2rem;
-    text-align: center;
-}
-
-.myalgo-connect-btn:hover {
-    font-size: 1.1rem !important;
-    background: #fafcff;
-    border-color: #d539b5;
-    color: black;
-}
-
-.myalgo-connect-btn::selection {
-    background: #fafcff;
-    font-weight: bold;
-    border-color: #d539b5;
-}
-
-.myalgo-connect-btn:focus {
-    background: #fafcff;
-    font-weight: bold;
-    border-width: 0rem;
-    color: black;
-    border-color: #d539b5;
 }
 
 ul.no-bp {

@@ -43,7 +43,7 @@ function WalletConnect(props) {
 
   return (
     <Button
-      className="myalgo-connect-btn"
+      className="buy-connect-button"
       shape="round"
       size="large"
       block
@@ -54,7 +54,7 @@ function WalletConnect(props) {
 }
 
 function BuyTicket() {
-  return <Button className="buy-button" shape="round" size="large" block>Buy</Button>
+  return <Button className="buy-connect-button" shape="round" size="large" block>Buy</Button>
 }
 
 function LottoInfo() {
@@ -130,14 +130,11 @@ function DAppCard() {
   return (
     <Card className="panel-card" title="Purchase Weekly Lottery" bordered={true} style={{ textAlign: 'left' }}>
       <div className="banner-card-body">
-        <AlgoInfo />
-        <hr />
         <LottoInfo />
         {isConnected()
-          ? <AccountInfo userAccount={userAccount} />
+          ? <div><AccountInfo userAccount={userAccount} /><BuyTicket /></div>
           : <WalletConnect setUserAccount={setUserAccount} />
         }
-        <BuyTicket />
       </div>
     </Card>
   )
