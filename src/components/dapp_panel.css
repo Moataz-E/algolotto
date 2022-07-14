@@ -63,3 +63,7 @@ ul.no-bp {
     list-style-type: '';
     padding-left: 0rem;
 }
+
+.dapp-header {
+    padding-right: 2rem;
+}

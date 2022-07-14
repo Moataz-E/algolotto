@@ -57,29 +57,6 @@ function BuyTicket() {
   return <Button className="buy-button" shape="round" size="large" block>Buy</Button>
 }
 
-function AlgoInfo() {
-  const [latestBlock, setLatestBlock] = useState("");
-
-  async function getLatestBlock(e) {
-    try {
-      const status = await algodClient.status().do();
-      setLatestBlock(status["last-round"]);
-    } catch {
-      console.log(e)
-    }
-  }
-
-  useEffect(() => {
-    getLatestBlock();
-    const interval = setInterval(() => {
-      getLatestBlock();
-    }, BLOCK_REFRESH_MS);
-    return () => clearInterval(interval);
-  }, [])
-
-  return <div><strong>Latest Algorand Block: </strong> {latestBlock}</div>
-}
-
 function LottoInfo() {
   const [appState, setAppState] = useState(null);
 
@@ -166,15 +143,48 @@ function DAppCard() {
   )
 }
 
+function DAppHeader() {
+  const [latestBlock, setLatestBlock] = useState("");
+
+  async function getLatestBlock(e) {
+    try {
+      const status = await algodClient.status().do();
+      setLatestBlock(status["last-round"]);
+    } catch {
+      console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    getLatestBlock();
+    const interval = setInterval(() => {
+      getLatestBlock();
+    }, BLOCK_REFRESH_MS);
+    return () => clearInterval(interval);
+  }, [])
+
+  return (
+    <Row justify="end" align="middle" className="dapp-header">
+      <Col>
+        <span><strong>Latest Algorand Block: </strong> {latestBlock}</span>
+      </Col>
+    </Row>
+
+  )
+}
 
 export default function DAppPanel() {
   return (
-    <Row justify="center" align="middle" className="dapp-panel-row">
-      <Col lg={{ span: 8 }} md={{ span: 10 }} sm={{ span: 12 }} xs={{ span: 15 }} className="dapp-panel">
-        <TweenOne animation={{ y: '-5rem' }}>
-          <DAppCard />
-        </TweenOne>
-      </Col>
-    </Row>
+    <div>
+      <DAppHeader />
+      <Row justify="center" align="middle" className="dapp-panel-row">
+        <Col lg={{ span: 8 }} md={{ span: 10 }} sm={{ span: 12 }} xs={{ span: 15 }} className="dapp-panel">
+          <TweenOne animation={{ y: '-5rem' }}>
+            <DAppCard />
+          </TweenOne>
+        </Col>
+      </Row>
+    </div>
+
   )
 }
