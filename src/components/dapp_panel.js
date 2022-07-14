@@ -16,7 +16,7 @@ const INDEXER_TOKEN = { "X-Algo-API-Token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 const INDEXER_SERVER = "http://localhost";
 const INDEXER_PORT = 4001;
 
-const ONE_ADDR = "LHDAEQ7QDPK4CB56GPWNW5FQHW5N2B3D4PUP3E3MWI6OXGW5UH7WBZXTNI"
+const TWO_ADDR = "LZMV3V7XNQNN6T53DU6ENIGRWTE5DP5SYTSD6MTJ6RKEMK4IKX2XXONF3U"
 const APP_CONTRACT = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
 const APP_ID = 1
 
@@ -109,12 +109,46 @@ function LottoInfo() {
 function AccountInfo(props) {
   const { userAccount } = props;
 
+  const [tickets, setTickets] = useState(null);
+
+  function getTicketsFromKeyVals(lottoKeyValues) {
+    const ticketVars = lottoKeyValues.filter((x) => x.key.length === 4);
+    const tickets = ticketVars.filter((x) => x.value.uint !== 0);
+    return tickets.map(t => t.value.uint).sort();
+  }
+
+  function getAppLocalState(accountInfo) {
+    const appsLocalState = accountInfo["apps-local-state"];
+    const lottoLocalState = appsLocalState.filter((x) => x.id === APP_ID)[0];
+    return lottoLocalState["key-value"];
+  }
+
+  async function getUserTickets() {
+    const accountInfo = await indexerClient.lookupAccountByID(TWO_ADDR).do();
+    const lottoKeyValues = getAppLocalState(accountInfo);
+    const tickets = getTicketsFromKeyVals(lottoKeyValues);
+    setTickets(tickets);
+  }
+
+  useEffect(() => {
+    getUserTickets();
+  })
+
+  function printTickets() {
+    // TODO: only display tickets if user's current round is equal to app's current round.
+    if (tickets) {
+      return tickets.join(", ");
+    } else {
+      return "None";
+    }
+  }
+
   return (
     <span>
       <hr />
       <ul className="no-bp">
         <li><strong>Connected Wallet: </strong>{userAccount.slice(0, 4)}... {userAccount.slice(-4)}</li>
-        <li><strong>Tickets Bought (current round): </strong></li>
+        <li><strong>Owned Tickets (current round): </strong>{printTickets()}</li>
       </ul>
     </span>
   )
