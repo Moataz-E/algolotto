@@ -125,7 +125,7 @@ function LottoInfo() {
 
   useEffect(() => {
     getAppDetails();
-  })
+  }, [])
 
   return (
     <ul className="no-bp">
