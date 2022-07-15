@@ -151,7 +151,6 @@ function AccountInfo(props) {
 
   return (
     <span>
-      <hr />
       <ul className="no-bp">
         <li><strong>Connected Wallet: </strong>{userAccount.slice(0, 4)}... {userAccount.slice(-4)}</li>
         <li><strong>Owned Ticket Numbers (current round): </strong>{printTickets()}</li>
@@ -192,9 +191,13 @@ function DAppCard() {
   }, [])
 
   return (
-    <Card className="panel-card" title="Purchase Weekly Lottery" bordered={true} style={{ textAlign: 'left' }}>
-      <div className="banner-card-body">
-        <LottoInfo />
+    <Row>
+      <Card className="panel-card" title="Weekly Lottery" bordered={true} style={{ textAlign: 'left' }}>
+        <div className="banner-card-body">
+          <LottoInfo />
+        </div>
+      </Card>
+      <Card className="panel-card">
         {isConnected()
           ? <div>
             <AccountInfo userAccount={userAccount} tickets={tickets} />
@@ -202,8 +205,8 @@ function DAppCard() {
           </div>
           : <WalletConnect setUserAccount={setUserAccount} />
         }
-      </div>
-    </Card>
+      </Card>
+    </Row>
   )
 }
 
