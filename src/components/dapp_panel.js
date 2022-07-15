@@ -192,7 +192,7 @@ function DAppCard() {
 
   return (
     <Row>
-      <Card className="panel-card" title="Weekly Lottery" bordered={true} style={{ textAlign: 'left' }}>
+      <Card className="panel-card" title="Weekly Raffle" bordered={true} style={{ textAlign: 'left' }}>
         <div className="banner-card-body">
           <LottoInfo />
         </div>
