@@ -22,8 +22,9 @@ const TWO_ADDR = "LZMV3V7XNQNN6T53DU6ENIGRWTE5DP5SYTSD6MTJ6RKEMK4IKX2XXONF3U"
 const APP_CONTRACT = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
 const APP_ID = 1
 
-const BLOCK_REFRESH_MS = 5000
-const MICROALOS = Math.pow(10, 6)
+const BLOCK_REFRESH_MS = 5000;
+const STATE_REFRESH_MS = 13000;
+const MICROALOS = Math.pow(10, 6);
 
 const algodClient = new algosdk.Algodv2(ALGOD_TOKEN, ALGOD_SERVER, ALGOD_PORT);
 const indexerClient = new algosdk.Indexer(INDEXER_TOKEN, INDEXER_SERVER, INDEXER_PORT);
@@ -125,6 +126,10 @@ function LottoInfo() {
 
   useEffect(() => {
     getAppDetails();
+    const interval = setInterval(() => {
+      getAppDetails();
+    }, STATE_REFRESH_MS);
+    return () => clearInterval(interval);
   }, [])
 
   return (
@@ -170,7 +175,7 @@ function DAppCard() {
   function getTicketsFromKeyVals(lottoKeyValues) {
     const ticketVars = lottoKeyValues.filter((x) => x.key.length === 4);
     const tickets = ticketVars.filter((x) => x.value.uint !== 0);
-    return tickets.map(t => t.value.uint).sort();
+    return tickets.map(t => t.value.uint).sort(function (a, b) { return a - b; });
   }
 
   function getAppLocalState(accountInfo) {
@@ -188,6 +193,10 @@ function DAppCard() {
 
   useEffect(() => {
     getUserTickets();
+    const interval = setInterval(() => {
+      getUserTickets();
+    }, STATE_REFRESH_MS);
+    return () => clearInterval(interval);
   }, [])
 
   return (
