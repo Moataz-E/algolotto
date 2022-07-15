@@ -16,7 +16,7 @@ const bubbles = [
     img: <DollarCircleTwoTone twoToneColor="#d539b5" className="bubble-image" />,
     href: ``,
     title: 'Weekly Draws',
-    description: 'Draw results announced every Sunday at 3:00PM UTC.',
+    description: 'A new winner every week. Draws end a week after the previous draw concludes.',
   },
   {
     img: <LockTwoTone twoToneColor="#d539b5" className="bubble-image" />,
