@@ -7,16 +7,13 @@ import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
 
 import "./dapp_panel.css";
+import { INDX_CONFIG } from "../config";
 
 const { Option } = Select;
 
 const ALGOD_TOKEN = "";
 const ALGOD_SERVER = "https://node.testnet.algoexplorerapi.io";
 const ALGOD_PORT = "";
-
-const INDEXER_TOKEN = { "X-Algo-API-Token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" };
-const INDEXER_SERVER = "http://localhost";
-const INDEXER_PORT = 4001;
 
 const TWO_ADDR = "LZMV3V7XNQNN6T53DU6ENIGRWTE5DP5SYTSD6MTJ6RKEMK4IKX2XXONF3U"
 const APP_CONTRACT = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
@@ -27,7 +24,6 @@ const STATE_REFRESH_MS = 13000;
 const MICROALOS = Math.pow(10, 6);
 
 const algodClient = new algosdk.Algodv2(ALGOD_TOKEN, ALGOD_SERVER, ALGOD_PORT);
-const indexerClient = new algosdk.Indexer(INDEXER_TOKEN, INDEXER_SERVER, INDEXER_PORT);
 
 function WalletConnect(props) {
   const { setUserAccount } = props;
@@ -89,7 +85,8 @@ function BuyTicket(props) {
   )
 }
 
-function LottoInfo() {
+function LottoInfo(props) {
+  const { indexerClient } = props;
   const [appState, setAppState] = useState(null);
 
   function parseAppState(globalStateRaw) {
@@ -164,7 +161,8 @@ function AccountInfo(props) {
   )
 }
 
-function DAppCard() {
+function DAppCard(props) {
+  const { indexerClient } = props;
   const [userAccount, setUserAccount] = useState("");
   const [tickets, setTickets] = useState(null);
 
@@ -203,7 +201,7 @@ function DAppCard() {
     <Row>
       <Card className="panel-card" title="Weekly Raffle" bordered={true} style={{ textAlign: 'left' }}>
         <div className="banner-card-body">
-          <LottoInfo />
+          <LottoInfo indexerClient={indexerClient} />
         </div>
       </Card>
       <Card className="panel-card">
@@ -250,13 +248,22 @@ function DAppHeader() {
 }
 
 export default function DAppPanel() {
+  const [network, setNetwork] = useState("localhost");
+  const [indexerClient, setIndexerClient] = useState(
+    new algosdk.Indexer(
+      INDX_CONFIG[network].token,
+      INDX_CONFIG[network].server,
+      INDX_CONFIG[network].port
+    )
+  );
+
   return (
     <div>
       <DAppHeader />
       <Row justify="center" align="middle" className="dapp-panel-row">
         <Col lg={{ span: 8 }} md={{ span: 10 }} sm={{ span: 12 }} xs={{ span: 15 }} className="dapp-panel">
           <TweenOne animation={{ y: '-5rem' }}>
-            <DAppCard />
+            <DAppCard indexerClient={indexerClient} />
           </TweenOne>
         </Col>
       </Row>
