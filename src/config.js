@@ -1,4 +1,5 @@
-// Indexer Config
+const NETWORKS = ["localhost", "testnet"];
+
 const INDX_CONFIG = {
   "mainnet": {
     host: "",
@@ -22,5 +23,6 @@ const INDX_CONFIG = {
 }
 
 module.exports = {
-  INDX_CONFIG
+  INDX_CONFIG,
+  NETWORKS
 }

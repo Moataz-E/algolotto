@@ -41,9 +41,14 @@ ul.no-bp {
 
 .dapp-header {
     padding-right: 2rem;
+    padding-top: 0.5rem;
 }
 
 .ticket-select {
     width: 100%;
     text-align: center;
+}
+
+.header-item {
+    margin-right: 1rem;
 }

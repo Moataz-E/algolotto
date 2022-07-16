@@ -7,7 +7,7 @@ import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
 
 import "./dapp_panel.css";
-import { INDX_CONFIG } from "../config";
+import { INDX_CONFIG, NETWORKS } from "../config";
 
 const { Option } = Select;
 
@@ -217,7 +217,8 @@ function DAppCard(props) {
   )
 }
 
-function DAppHeader() {
+function DAppHeader(props) {
+  const { network, setNetwork } = props;
   const [latestBlock, setLatestBlock] = useState("");
 
   async function getLatestBlock(e) {
@@ -240,7 +241,10 @@ function DAppHeader() {
   return (
     <Row justify="end" align="middle" className="dapp-header">
       <Col>
-        <span><strong>Latest Algorand Block: </strong> {latestBlock}</span>
+        <span className="header-item"><strong>Latest Block: </strong> {latestBlock}</span>
+        <Select className="header-item" defaultValue={network} onSelect={(e) => setNetwork(e)}>
+          {NETWORKS.map((x) => <Option key={x} value={x}>{x}</Option>)}
+        </Select>
       </Col>
     </Row>
 
@@ -248,7 +252,7 @@ function DAppHeader() {
 }
 
 export default function DAppPanel() {
-  const [network, setNetwork] = useState("localhost");
+  const [network, setNetwork] = useState(NETWORKS[0]);
   const [indexerClient, setIndexerClient] = useState(
     new algosdk.Indexer(
       INDX_CONFIG[network].token,
@@ -259,7 +263,7 @@ export default function DAppPanel() {
 
   return (
     <div>
-      <DAppHeader />
+      <DAppHeader network={network} setNetwork={setNetwork} />
       <Row justify="center" align="middle" className="dapp-panel-row">
         <Col lg={{ span: 8 }} md={{ span: 10 }} sm={{ span: 12 }} xs={{ span: 15 }} className="dapp-panel">
           <TweenOne animation={{ y: '-5rem' }}>
