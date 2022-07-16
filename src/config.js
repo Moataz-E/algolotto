@@ -22,7 +22,28 @@ const INDX_CONFIG = {
   }
 }
 
+const ALGOD_CONFIG = {
+  "mainnet": {
+    host: "",
+    port: "",
+    token: {
+      "X-API-Key": "",
+    },
+  },
+  "testnet": {
+    host: "https://node.testnet.algoexplorerapi.io",
+    port: "",
+    token: "",
+  },
+  "localhost": {
+    host: "http://localhost",
+    port: 4001,
+    token: { "X-Algo-API-Token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+  }
+}
+
 module.exports = {
   INDX_CONFIG,
+  ALGOD_CONFIG,
   NETWORKS
 }

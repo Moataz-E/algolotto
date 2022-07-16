@@ -7,13 +7,9 @@ import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
 
 import "./dapp_panel.css";
-import { INDX_CONFIG, NETWORKS } from "../config";
+import { INDX_CONFIG, ALGOD_CONFIG, NETWORKS } from "../config";
 
 const { Option } = Select;
-
-const ALGOD_TOKEN = "";
-const ALGOD_SERVER = "https://node.testnet.algoexplorerapi.io";
-const ALGOD_PORT = "";
 
 const TWO_ADDR = "LZMV3V7XNQNN6T53DU6ENIGRWTE5DP5SYTSD6MTJ6RKEMK4IKX2XXONF3U"
 const APP_CONTRACT = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
@@ -22,8 +18,6 @@ const APP_ID = 1
 const BLOCK_REFRESH_MS = 5000;
 const STATE_REFRESH_MS = 13000;
 const MICROALOS = Math.pow(10, 6);
-
-const algodClient = new algosdk.Algodv2(ALGOD_TOKEN, ALGOD_SERVER, ALGOD_PORT);
 
 function WalletConnect(props) {
   const { setUserAccount } = props;
@@ -217,7 +211,7 @@ function DAppCard(props) {
 }
 
 function DAppHeader(props) {
-  const { network, setNetwork } = props;
+  const { network, setNetwork, algodClient } = props;
   const [latestBlock, setLatestBlock] = useState("");
 
   async function getLatestBlock(e) {
@@ -235,7 +229,7 @@ function DAppHeader(props) {
       getLatestBlock();
     }, BLOCK_REFRESH_MS);
     return () => clearInterval(interval);
-  }, [])
+  }, [algodClient])
 
   return (
     <Row justify="end" align="middle" className="dapp-header">
@@ -253,27 +247,45 @@ function DAppHeader(props) {
 export default function DAppPanel() {
   const [userAccount, setUserAccount] = useState("");
   const [network, setNetwork] = useState(NETWORKS[0]);
+
+  const [algodClient, setAlgodClient] = useState(
+    new algosdk.Algodv2(
+      ALGOD_CONFIG[network].token,
+      ALGOD_CONFIG[network].host,
+      ALGOD_CONFIG[network].port
+    )
+  )
+
   const [indexerClient, setIndexerClient] = useState(
     new algosdk.Indexer(
       INDX_CONFIG[network].token,
-      INDX_CONFIG[network].server,
+      INDX_CONFIG[network].host,
       INDX_CONFIG[network].port
     )
   );
 
   useEffect(() => {
+    // Set client
+    const algod = new algosdk.Algodv2(
+      ALGOD_CONFIG[network].token,
+      ALGOD_CONFIG[network].host,
+      ALGOD_CONFIG[network].port
+    );
+    setAlgodClient(algod);
+
+    // Set indexer
     const indexer = new algosdk.Indexer(
       INDX_CONFIG[network].token,
-      INDX_CONFIG[network].server,
+      INDX_CONFIG[network].host,
       INDX_CONFIG[network].port
     );
     setIndexerClient(indexer);
-    setUserAccount("")
+    setUserAccount("");
   }, [network])
 
   return (
     <div>
-      <DAppHeader network={network} setNetwork={setNetwork} />
+      <DAppHeader network={network} setNetwork={setNetwork} algodClient={algodClient} />
       <Row justify="center" align="middle" className="dapp-panel-row">
         <Col lg={{ span: 8 }} md={{ span: 10 }} sm={{ span: 12 }} xs={{ span: 15 }} className="dapp-panel">
           <TweenOne animation={{ y: '-5rem' }}>
