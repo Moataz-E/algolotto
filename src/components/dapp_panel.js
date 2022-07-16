@@ -162,8 +162,7 @@ function AccountInfo(props) {
 }
 
 function DAppCard(props) {
-  const { indexerClient } = props;
-  const [userAccount, setUserAccount] = useState("");
+  const { indexerClient, userAccount, setUserAccount } = props;
   const [tickets, setTickets] = useState(null);
 
   function isConnected() {
@@ -252,6 +251,7 @@ function DAppHeader(props) {
 }
 
 export default function DAppPanel() {
+  const [userAccount, setUserAccount] = useState("");
   const [network, setNetwork] = useState(NETWORKS[0]);
   const [indexerClient, setIndexerClient] = useState(
     new algosdk.Indexer(
@@ -261,17 +261,30 @@ export default function DAppPanel() {
     )
   );
 
+  useEffect(() => {
+    const indexer = new algosdk.Indexer(
+      INDX_CONFIG[network].token,
+      INDX_CONFIG[network].server,
+      INDX_CONFIG[network].port
+    );
+    setIndexerClient(indexer);
+    setUserAccount("")
+  }, [network])
+
   return (
     <div>
       <DAppHeader network={network} setNetwork={setNetwork} />
       <Row justify="center" align="middle" className="dapp-panel-row">
         <Col lg={{ span: 8 }} md={{ span: 10 }} sm={{ span: 12 }} xs={{ span: 15 }} className="dapp-panel">
           <TweenOne animation={{ y: '-5rem' }}>
-            <DAppCard indexerClient={indexerClient} />
+            <DAppCard
+              indexerClient={indexerClient}
+              userAccount={userAccount}
+              setUserAccount={setUserAccount}
+            />
           </TweenOne>
         </Col>
       </Row>
     </div>
-
   )
 }
