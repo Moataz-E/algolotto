@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import algosdk from 'algosdk';
-import { Row, Col, Card, Button, Select } from 'antd';
+import { Row, Col, Card, Button, Select, Tooltip } from 'antd';
 import MyAlgoConnect from '@randlabs/myalgo-connect';
 
 import 'rc-texty/assets/index.css';
@@ -8,6 +8,7 @@ import TweenOne from 'rc-tween-one';
 
 import "./dapp_panel.css";
 import { INDX_CONFIG, ALGOD_CONFIG, NETWORKS } from "../config";
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -125,7 +126,7 @@ function LottoInfo(props) {
 
   return (
     <ul className="no-bp">
-      <li><strong>Current Lottery Round: </strong>{appState?.round_num}</li>
+      <li><strong>Current Raffle Round: </strong>{appState?.round_num}</li>
       <li><strong>Total Tickets Sold: </strong>{appState?.tickets_sold}</li>
       <li><strong>Ticket Price: </strong>{appState?.ticket_cost / MICROALOS} ALGO</li>
       <li><strong>Draw Date: </strong> {getDrawDate()}</li>
@@ -134,7 +135,7 @@ function LottoInfo(props) {
 }
 
 function AccountInfo(props) {
-  const { userAccount, tickets } = props;
+  const { userAccount, tickets, userRound } = props;
 
   function printTickets() {
     // TODO: only display tickets if user's current round is equal to app's current round.
@@ -149,7 +150,19 @@ function AccountInfo(props) {
     <span>
       <ul className="no-bp">
         <li><strong>Connected Wallet: </strong>{userAccount.slice(0, 4)}... {userAccount.slice(-4)}</li>
-        <li><strong>Owned Ticket Numbers (current round): </strong>{printTickets()}</li>
+        <li>
+          <strong>Tickets Round</strong>
+          <Tooltip title="Raffle round in which the participant's tickets were bought." className="form-tooltip">
+            <QuestionCircleOutlined />
+          </Tooltip>:
+          &nbsp;{tickets ? userRound : "No Participation"}
+        </li>
+        <li>
+          <strong>Owned Raffle Numbers</strong>
+          <Tooltip title="Serial numbers of tickets owned by the participant." className="form-tooltip">
+            <QuestionCircleOutlined />
+          </Tooltip>:
+          {printTickets()}</li>
       </ul>
     </span>
   )
@@ -158,6 +171,7 @@ function AccountInfo(props) {
 function DAppCard(props) {
   const { indexerClient, userAccount, setUserAccount } = props;
   const [tickets, setTickets] = useState(null);
+  const [userRound, setUserRound] = useState(null);
 
   function isConnected() {
     return (userAccount !== "");
@@ -169,23 +183,33 @@ function DAppCard(props) {
     return tickets.map(t => t.value.uint).sort(function (a, b) { return a - b; });
   }
 
+  function getUserRoundFromKeyVals(lottoKeyValues) {
+    const otherVars = lottoKeyValues.filter((x) => x.key.length !== 4);
+    const userRound = otherVars.filter(
+      (x) => Buffer.from(x.key, "base64").toString("ascii") === "draw_round"
+    )
+    return userRound?.pop().value.uint;
+  }
+
   function getAppLocalState(accountInfo) {
     const appsLocalState = accountInfo["apps-local-state"];
     const lottoLocalState = appsLocalState.filter((x) => x.id === APP_ID)[0];
     return lottoLocalState["key-value"];
   }
 
-  async function getUserTickets() {
+  async function getUserState() {
     const accountInfo = await indexerClient.lookupAccountByID(TWO_ADDR).do();
     const lottoKeyValues = getAppLocalState(accountInfo);
     const tickets = getTicketsFromKeyVals(lottoKeyValues);
+    const userRound = getUserRoundFromKeyVals(lottoKeyValues);
     setTickets(tickets);
+    setUserRound(userRound);
   }
 
   useEffect(() => {
-    getUserTickets();
+    getUserState();
     const interval = setInterval(() => {
-      getUserTickets();
+      getUserState();
     }, STATE_REFRESH_MS);
     return () => clearInterval(interval);
   }, [])
@@ -200,7 +224,7 @@ function DAppCard(props) {
       <Card className="panel-card">
         {isConnected()
           ? <div>
-            <AccountInfo userAccount={userAccount} tickets={tickets} />
+            <AccountInfo userAccount={userAccount} tickets={tickets} userRound={userRound} />
             <BuyTicket tickets={tickets} />
           </div>
           : <WalletConnect setUserAccount={setUserAccount} />
