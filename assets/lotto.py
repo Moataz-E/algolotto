@@ -68,6 +68,8 @@ some of the participants in the lottery.
 Limitations
 -----------
 * Maximum tickets per wallet: 15
+* When raffle ends without a winner, to reset the game one needs to pay
+* a transaction fee without expectation of reward (the manager of the raffle).
 """
 from pyteal import *
 from pyteal_helpers import program
@@ -371,13 +373,18 @@ def approval():
         )
 
     @Subroutine(TealType.none)
-    def dispense_and_restart():
+    def no_participation():
+        return Seq(
+            Assert(Txn.fee() >= Global.min_txn_fee() * Int(1))
+        )
+
+    @Subroutine(TealType.none)
+    def handle_participation():
         winner_addr = Txn.application_args[1]
         total = ScratchVar()
         commision = ScratchVar()
         return Seq(
-            *generic_checks(1, 1),
-            # Ensure transaction fees cover cost of sending two trxs
+            # Ensure transaction fees cover cost of sending three trxs
             Assert(Txn.fee() >= Global.min_txn_fee() * Int(3)),
             # Validate given wallet address is winner of current round
             is_winner(winner_addr),
@@ -388,9 +395,25 @@ def approval():
             # Send prize money to winner
             send_algo(winner_addr, total.load() - commision.load()),
             # Send commision to umpire
-            send_algo(Txn.sender(), commision.load()),
+            send_algo(Txn.sender(), commision.load())
+        )
+
+    @Subroutine(TealType.none)
+    def dispense_and_restart():
+        return Seq(
+            *generic_checks(1, 1),
+            Assert(
+                Or(
+                    App.globalGet(global_drawn) == TRUE,
+                    App.globalGet(global_tickets_sold) == Int(0)
+                )
+            ),
+            If(App.globalGet(global_tickets_sold) == Int(0))
+            .Then(no_participation())
+            .Else(handle_participation()),
             # Reset state and start next round
-            reset()
+            reset(),
+            Approve()
         )
 
     ## Intialize Contract #####################################################
