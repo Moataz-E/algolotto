@@ -318,6 +318,7 @@ export default function DAppPanel() {
               indexerClient={indexerClient}
               userAccount={userAccount}
               setUserAccount={setUserAccount}
+              algodClient={algodClient}
             />
           </TweenOne>
         </Col>
