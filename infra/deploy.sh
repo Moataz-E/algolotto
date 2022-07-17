@@ -17,6 +17,7 @@ goal app create \
 # Opt-in to contract
 goal app optin --app-id 1 --from $TWO
 
+# Purchase ####################################################################
 # Create purchase ticket transaction
 goal app call --app-id 1 --from $TWO --app-arg "str:purchase" --app-arg "int:4" -o purchase.tx
 
@@ -36,3 +37,9 @@ goal clerk sign -i purchase_split-1.tx -o purchase-signed-1.tx
 cat purchase-signed-0.tx purchase-signed-1.tx > purchase-signed.tx
 # goal clerk dryrun --dryrun-dump -t purchase-signed.tx -o tx.dr
 goal clerk rawsend -f purchase-signed.tx
+
+# Trigger Draw ################################################################
+goal app call --app-id 1 --from $TWO --app-arg "str:draw"
+
+# Dispense and Restart ########################################################
+goal app call --app-id 1 --from $TWO --app-arg "str:dispense_and_restart" --app-arg "addr:$TWO" --fee 3000
