@@ -288,7 +288,7 @@ def approval():
     @Subroutine(TealType.none)
     def trigger_draw():
         return Seq(
-            *generic_checks(1, 0),
+            *generic_checks(1, 1),
             can_draw(),
             App.globalPut(global_drawn, Int(1)),
             App.globalPut(global_winner, select_winner()),
