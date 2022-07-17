@@ -401,7 +401,7 @@ def approval():
     @Subroutine(TealType.none)
     def dispense_and_restart():
         return Seq(
-            *generic_checks(1, 1),
+            *generic_checks(1, 2),
             Assert(
                 Or(
                     App.globalGet(global_drawn) == TRUE,
