@@ -12,6 +12,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
+const ONE_ADDR = "LHDAEQ7QDPK4CB56GPWNW5FQHW5N2B3D4PUP3E3MWI6OXGW5UH7WBZXTNI"
 const TWO_ADDR = "LZMV3V7XNQNN6T53DU6ENIGRWTE5DP5SYTSD6MTJ6RKEMK4IKX2XXONF3U"
 const APP_CONTRACT = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
 const APP_ID = 1
@@ -103,7 +104,7 @@ function LottoInfo(props) {
 
   async function getAppDetails() {
     const appDetails = await indexerClient.lookupApplications(APP_ID).do();
-    parseAppState(appDetails.params["global-state"]);
+    parseAppState(appDetails.application.params["global-state"]);
   }
 
   function getDrawDate() {
@@ -169,7 +170,7 @@ function AccountInfo(props) {
 }
 
 function DAppCard(props) {
-  const { indexerClient, userAccount, setUserAccount } = props;
+  const { indexerClient, userAccount, setUserAccount, algodClient } = props;
   const [tickets, setTickets] = useState(null);
   const [userRound, setUserRound] = useState(null);
 
@@ -192,7 +193,7 @@ function DAppCard(props) {
   }
 
   function getAppLocalState(accountInfo) {
-    const appsLocalState = accountInfo["apps-local-state"];
+    const appsLocalState = accountInfo.account["apps-local-state"];
     const lottoLocalState = appsLocalState.filter((x) => x.id === APP_ID)[0];
     return lottoLocalState["key-value"];
   }

@@ -17,8 +17,8 @@ const INDX_CONFIG = {
   },
   "localhost": {
     host: "http://localhost",
-    port: 4001,
-    token: { "X-Algo-API-Token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+    port: 8980,
+    token: "",
   }
 }
 
