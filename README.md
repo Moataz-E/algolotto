@@ -43,6 +43,14 @@ tealdbg debug -d tx.dr --listen 0.0.0.0
 ```
 goal app read --app-id 1 -f $TWO --local
 ```
+* To check balance of an account
+```
+goal account balance -a $TWO
+```
+* To send algo between accounts
+```
+goal clerk send -a 100000 -f $ONE -t $TWO
+```
 
 ### Notes
 * Integer arguments still have to be converted using Btoi as specifying "int:x" as an argument only tells TEAL how to encode the argument but it is still passed as a byte.
