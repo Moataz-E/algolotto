@@ -7,6 +7,7 @@ import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
 
 import "./dapp_panel.css";
+import { ToCommas } from '../utils';
 import { INDX_CONFIG, ALGOD_CONFIG, NETWORKS } from "../config";
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
@@ -19,7 +20,7 @@ const APP_ID = 1
 
 const BLOCK_REFRESH_MS = 5000;
 const STATE_REFRESH_MS = 13000;
-const MICROALOS = Math.pow(10, 6);
+const MICROALGOS = Math.pow(10, 6);
 
 function WalletConnect(props) {
   const { setUserAccount } = props;
@@ -129,14 +130,14 @@ function LottoInfo(props) {
     <ul className="no-bp">
       <li><strong>Current Raffle Round: </strong>{appState?.round_num}</li>
       <li><strong>Total Tickets Sold: </strong>{appState?.tickets_sold}</li>
-      <li><strong>Ticket Price: </strong>{appState?.ticket_cost / MICROALOS} ALGO</li>
+      <li><strong>Ticket Price: </strong>{appState?.ticket_cost / MICROALGOS} ALGO</li>
       <li><strong>Draw Date: </strong> {getDrawDate()}</li>
     </ul>
   )
 }
 
 function AccountInfo(props) {
-  const { userAccount, tickets, userRound } = props;
+  const { userAccount, tickets, userRound, userBalance } = props;
 
   function printTickets() {
     // TODO: only display tickets if user's current round is equal to app's current round.
@@ -151,6 +152,7 @@ function AccountInfo(props) {
     <span>
       <ul className="no-bp">
         <li><strong>Connected Wallet: </strong>{userAccount.slice(0, 4)}... {userAccount.slice(-4)}</li>
+        <li><strong>Account Balance: </strong>{ToCommas((userBalance / MICROALGOS).toFixed(2))} ALGO</li>
         <li>
           <strong>Tickets Round</strong>
           <Tooltip title="Raffle round in which the participant's tickets were bought." className="form-tooltip">
@@ -173,6 +175,7 @@ function DAppCard(props) {
   const { indexerClient, userAccount, setUserAccount, algodClient } = props;
   const [tickets, setTickets] = useState(null);
   const [userRound, setUserRound] = useState(null);
+  const [userBalance, setUserBalance] = useState(null);
 
   function isConnected() {
     return (userAccount !== "");
@@ -205,6 +208,7 @@ function DAppCard(props) {
     const userRound = getUserRoundFromKeyVals(lottoKeyValues);
     setTickets(tickets);
     setUserRound(userRound);
+    setUserBalance(accountInfo.account.amount);
   }
 
   useEffect(() => {
@@ -225,7 +229,12 @@ function DAppCard(props) {
       <Card className="panel-card">
         {isConnected()
           ? <div>
-            <AccountInfo userAccount={userAccount} tickets={tickets} userRound={userRound} />
+            <AccountInfo
+              userAccount={userAccount}
+              tickets={tickets}
+              userRound={userRound}
+              userBalance={userBalance}
+            />
             <BuyTicket tickets={tickets} />
           </div>
           : <WalletConnect setUserAccount={setUserAccount} />
