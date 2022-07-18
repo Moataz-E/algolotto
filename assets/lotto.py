@@ -252,7 +252,10 @@ def approval():
             sch_draw_round.store(
                 App.localGet(Txn.sender(), local_draw_round)),
             sch_first_ticket.store(
-                App.localGet(Txn.sender(), Itob(Int(0)))),
+                App.localGet(
+                    Txn.sender(), 
+                    Extract(Itob(Int(0)), Int(7), Int(1)))
+            ),
             # If user participated before, then reset all tickets state
             If(
                 is_old_participant(
