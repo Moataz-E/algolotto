@@ -61,10 +61,9 @@ function BuyTicket(props) {
   }
 
   function ticketSelect() {
-    let userTickets = tickets ? tickets : [];
     return (
       <Select defaultValue="1" size="large" className="ticket-select">
-        {Array.from({ length: 15 - userTickets.length }, (_, i) => i + 1).map(
+        {Array.from({ length: 15 - tickets.length }, (_, i) => i + 1).map(
           (i) => <Option value={i} key={i}>{i}</Option>)
         }
       </Select>
@@ -167,7 +166,7 @@ function AccountInfo(props) {
 
   function printTickets() {
     // TODO: only display tickets if user's current round is equal to app's current round.
-    if (tickets) {
+    if (tickets.length > 0) {
       return tickets.join(", ");
     } else {
       return "None";
@@ -212,9 +211,6 @@ function DAppCard(props) {
     const ticketVars = lottoKeyValues.filter((x) => x.key.length === 4);
     let tickets = ticketVars.filter((x) => x.value.uint !== 0);
     tickets = tickets.map(t => t.value.uint).sort(function (a, b) { return a - b; });
-    if (tickets === null) {
-      tickets = [];
-    }
     return tickets;
   }
 
@@ -240,13 +236,15 @@ function DAppCard(props) {
     const accountInfo = await indexerClient.lookupAccountByID(ONE_ADDR).do();
     const lottoKeyValues = getAppLocalState(accountInfo);
     if (lottoKeyValues) {
-      const tickets = getTicketsFromKeyVals(lottoKeyValues);
+      let tickets = getTicketsFromKeyVals(lottoKeyValues);
       const userRound = getUserRoundFromKeyVals(lottoKeyValues);
       setOptedIn(true);
       setTickets(tickets);
       setUserRound(userRound);
       setUserBalance(accountInfo.account.amount);
     }
+    let userTickets = tickets ? tickets : [];
+    setTickets(userTickets);
   }
 
   useEffect(() => {
