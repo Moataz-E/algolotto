@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import algosdk from 'algosdk';
-import { Row, Col, Card, Button, Select, Tooltip } from 'antd';
+import { Row, Col, Card, Button, Select, Tooltip, Image } from 'antd';
 import MyAlgoConnect from '@randlabs/myalgo-connect';
 
 import 'rc-texty/assets/index.css';
@@ -130,9 +130,12 @@ function LottoInfo(props) {
     <ul className="no-bp">
       <li><strong>Current Raffle Round: </strong>{appState?.round_num}</li>
       <li><strong>Total Tickets Sold: </strong>{appState?.tickets_sold}</li>
-      <li><strong>Ticket Price: </strong>{appState?.ticket_cost / MICROALGOS} ALGO</li>
+      <li><strong>Ticket Price: </strong>
+        {appState?.ticket_cost / MICROALGOS}
+        <Image className="currency-icon" src="/algorand_icon.png" preview={false}></Image>
+      </li>
       <li><strong>Draw Date: </strong> {getDrawDate()}</li>
-    </ul>
+    </ul >
   )
 }
 
