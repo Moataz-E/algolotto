@@ -328,8 +328,6 @@ def approval():
     def is_winner(addr: Expr):
         """Validate that address is holder of the winning ticket."""
         return Seq(
-            # Confirm that the winner's wallet has opted in
-            Assert(App.optedIn(addr, Global.current_application_id())),
             # Confirm that the winner is the holder of the winning ticket
             Assert(has_winning_ticket(addr) == TRUE),
             # Confirm the winner bought his tickets in the current round
