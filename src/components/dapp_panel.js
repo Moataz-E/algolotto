@@ -206,7 +206,7 @@ function AccountInfo(props) {
 
 function DAppCard(props) {
   const { indexerClient, userAccount, setUserAccount, algodClient } = props;
-  const [tickets, setTickets] = useState(null);
+  const [tickets, setTickets] = useState([]);
   const [userRound, setUserRound] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
   const [optedIn, setOptedIn] = useState(false);
@@ -252,8 +252,6 @@ function DAppCard(props) {
         setTickets(tickets);
         setUserRound(userRound);
       }
-      let userTickets = tickets ? tickets : [];
-      setTickets(userTickets);
     }
   }
 
