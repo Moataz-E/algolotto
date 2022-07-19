@@ -59,7 +59,7 @@ function BuyTicket(props) {
   function ticketSelect() {
     return (
       <Select defaultValue="1" size="large" className="ticket-select">
-        {Array.from({ length: 15 - tickets.length }, (_, i) => i + 1).map(
+        {Array.from({ length: 15 - tickets?.length }, (_, i) => i + 1).map(
           (i) => <Option value={i} key={i}>{i}</Option>)
         }
       </Select>
