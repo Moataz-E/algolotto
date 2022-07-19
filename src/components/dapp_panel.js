@@ -39,7 +39,7 @@ function WalletConnect(props) {
 
   return (
     <Button
-      className="buy-connect-button"
+      className="user-interaction-button"
       shape="round"
       size="large"
       block
@@ -50,9 +50,13 @@ function WalletConnect(props) {
 }
 
 function BuyTicket(props) {
-  const { tickets } = props;
+  const { tickets, optedIn } = props;
 
   function purchaseTickets(e) {
+    console.log(e);
+  }
+
+  function optIn(e) {
     console.log(e);
   }
 
@@ -67,20 +71,38 @@ function BuyTicket(props) {
     )
   }
 
-  return (
-    <div>
-      {ticketSelect()}
-      <Button
-        className="buy-connect-button"
+  function buyTickets() {
+    return (
+      <div>
+        {ticketSelect()}
+        <Button
+          className="user-interaction-button"
+          shape="round"
+          size="large"
+          block
+          onSubmit={purchaseTickets}
+        >
+          Buy Tickets
+        </Button>
+      </div>
+    )
+  }
+
+  function optIn() {
+    return (
+      < Button
+        className="user-interaction-button"
         shape="round"
         size="large"
         block
         onSubmit={purchaseTickets}
       >
-        Buy Tickets
-      </Button>
-    </div>
-  )
+        Opt In
+      </Button >
+    )
+  }
+
+  return (optedIn ? buyTickets() : optIn())
 }
 
 function LottoInfo(props) {
@@ -180,6 +202,7 @@ function DAppCard(props) {
   const [tickets, setTickets] = useState(null);
   const [userRound, setUserRound] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
+  const [optedIn, setOptedIn] = useState(false);
 
   function isConnected() {
     return (userAccount !== "");
@@ -219,6 +242,7 @@ function DAppCard(props) {
     if (lottoKeyValues) {
       const tickets = getTicketsFromKeyVals(lottoKeyValues);
       const userRound = getUserRoundFromKeyVals(lottoKeyValues);
+      setOptedIn(true);
       setTickets(tickets);
       setUserRound(userRound);
       setUserBalance(accountInfo.account.amount);
@@ -249,7 +273,7 @@ function DAppCard(props) {
               userRound={userRound}
               userBalance={userBalance}
             />
-            <BuyTicket tickets={tickets} />
+            <BuyTicket tickets={tickets} optedIn={optedIn} algodClient={algodClient} />
           </div>
           : <WalletConnect setUserAccount={setUserAccount} />
         }
