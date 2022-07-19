@@ -185,7 +185,10 @@ function AccountInfo(props) {
     <span>
       <ul className="no-bp">
         <li><strong>Connected Wallet: </strong>{userAccount.slice(0, 4)}... {userAccount.slice(-4)}</li>
-        <li><strong>Account Balance: </strong>{ToCommas((userBalance / MICROALGOS).toFixed(2))} ALGO</li>
+        <li><strong>Account Balance: </strong>{
+          ToCommas((userBalance / MICROALGOS).toFixed(2))}
+          <Image className="currency-icon" src="/algorand_icon.png" preview={false}></Image>
+        </li>
         <li>
           <strong>Tickets Round</strong>
           <Tooltip title="Raffle round in which the participant's tickets were bought." className="form-tooltip">
