@@ -87,21 +87,21 @@ function BuyTicket(props) {
     )
   }
 
-  function optIn() {
+  function optInButton() {
     return (
       < Button
         className="user-interaction-button"
         shape="round"
         size="large"
         block
-        onSubmit={purchaseTickets}
+        onSubmit={optIn}
       >
         Opt In
       </Button >
     )
   }
 
-  return (optedIn ? buyTickets() : optIn())
+  return (optedIn ? buyTickets() : optInButton())
 }
 
 function LottoInfo(props) {
