@@ -42,4 +42,4 @@ goal clerk rawsend -f purchase-signed.tx
 goal app call --app-id 1 --from $TWO --app-arg "str:draw"
 
 # Dispense and Restart ########################################################
-goal app call --app-id 1 --from $TWO --app-arg "str:dispense_and_restart" --app-arg "addr:$TWO" --fee 3000
+goal app call --app-id 1 --from $TWO --app-arg "str:dispense_and_restart" --app-arg "addr:$ONE" --fee 3000 --app-account $ONE
