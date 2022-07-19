@@ -13,11 +13,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const ONE_ADDR = "LHDAEQ7QDPK4CB56GPWNW5FQHW5N2B3D4PUP3E3MWI6OXGW5UH7WBZXTNI"
-const TWO_ADDR = "LZMV3V7XNQNN6T53DU6ENIGRWTE5DP5SYTSD6MTJ6RKEMK4IKX2XXONF3U"
-const APP_CONTRACT = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
 const APP_ID = 1
-
 const BLOCK_REFRESH_MS = 5000;
 const STATE_REFRESH_MS = 13000;
 const MICROALGOS = Math.pow(10, 6);
@@ -166,7 +162,7 @@ function AccountInfo(props) {
 
   function printTickets() {
     // TODO: only display tickets if user's current round is equal to app's current round.
-    if (tickets.length > 0) {
+    if (tickets && tickets.length > 0) {
       return tickets.join(", ");
     } else {
       return "None";
@@ -233,7 +229,7 @@ function DAppCard(props) {
   }
 
   async function getUserState() {
-    const accountInfo = await indexerClient.lookupAccountByID(ONE_ADDR).do();
+    const accountInfo = await indexerClient.lookupAccountByID(userAccount).do();
     const lottoKeyValues = getAppLocalState(accountInfo);
     if (lottoKeyValues) {
       let tickets = getTicketsFromKeyVals(lottoKeyValues);
@@ -248,9 +244,10 @@ function DAppCard(props) {
   }
 
   useEffect(() => {
-    getUserState();
     const interval = setInterval(() => {
-      getUserState();
+      if (userAccount) {
+        getUserState();
+      }
     }, STATE_REFRESH_MS);
     return () => clearInterval(interval);
   }, [])
