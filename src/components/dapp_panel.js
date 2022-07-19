@@ -18,14 +18,14 @@ const BLOCK_REFRESH_MS = 5000;
 const STATE_REFRESH_MS = 13000;
 const MICROALGOS = Math.pow(10, 6);
 
+const myalgoSettings = {
+  shouldSelectOneAccount: true,
+  openManager: false
+};
+const myAlgoConnect = new MyAlgoConnect();
+
 function WalletConnect(props) {
   const { setUserAccount } = props;
-
-  const myalgoSettings = {
-    shouldSelectOneAccount: false,
-    openManager: false
-  };
-  const myAlgoConnect = new MyAlgoConnect();
 
   const connect = async (e) => {
     e.preventDefault()
@@ -46,14 +46,26 @@ function WalletConnect(props) {
 }
 
 function BuyTicket(props) {
-  const { tickets, optedIn } = props;
+  const { userAccount, tickets, optedIn, algodClient, setOptedIn } = props;
 
   function purchaseTickets(e) {
     console.log(e);
   }
 
-  function optIn(e) {
-    console.log(e);
+  async function optIn(e) {
+    const params = await algodClient.getTransactionParams().do();
+    const txn = algosdk.makeApplicationOptInTxnFromObject({
+      suggestedParams: {
+        ...params,
+      },
+      from: userAccount,
+      appIndex: APP_ID
+    });
+    const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
+    const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
+    if (result?.txId) {
+      setOptedIn(true);
+    }
   }
 
   function ticketSelect() {
@@ -75,7 +87,7 @@ function BuyTicket(props) {
           shape="round"
           size="large"
           block
-          onSubmit={purchaseTickets}
+          onClick={purchaseTickets}
         >
           Buy Tickets
         </Button>
@@ -90,7 +102,7 @@ function BuyTicket(props) {
         shape="round"
         size="large"
         block
-        onSubmit={optIn}
+        onClick={optIn}
       >
         Opt In
       </Button >
@@ -251,7 +263,7 @@ function DAppCard(props) {
       getUserState();
     }, STATE_REFRESH_MS);
     return () => clearInterval(interval);
-  }, [userAccount])
+  }, [userAccount, optedIn])
 
   return (
     <Row>
@@ -269,7 +281,13 @@ function DAppCard(props) {
               userRound={userRound}
               userBalance={userBalance}
             />
-            <BuyTicket tickets={tickets} optedIn={optedIn} algodClient={algodClient} />
+            <BuyTicket
+              userAccount={userAccount}
+              tickets={tickets}
+              optedIn={optedIn}
+              algodClient={algodClient}
+              setOptedIn={setOptedIn}
+            />
           </div>
           : <WalletConnect setUserAccount={setUserAccount} />
         }
