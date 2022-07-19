@@ -229,28 +229,29 @@ function DAppCard(props) {
   }
 
   async function getUserState() {
-    const accountInfo = await indexerClient.lookupAccountByID(userAccount).do();
-    const lottoKeyValues = getAppLocalState(accountInfo);
-    if (lottoKeyValues) {
-      let tickets = getTicketsFromKeyVals(lottoKeyValues);
-      const userRound = getUserRoundFromKeyVals(lottoKeyValues);
-      setOptedIn(true);
-      setTickets(tickets);
-      setUserRound(userRound);
+    if (userAccount) {
+      const accountInfo = await indexerClient.lookupAccountByID(userAccount).do();
+      const lottoKeyValues = getAppLocalState(accountInfo);
       setUserBalance(accountInfo.account.amount);
+      if (lottoKeyValues) {
+        let tickets = getTicketsFromKeyVals(lottoKeyValues);
+        const userRound = getUserRoundFromKeyVals(lottoKeyValues);
+        setOptedIn(true);
+        setTickets(tickets);
+        setUserRound(userRound);
+      }
+      let userTickets = tickets ? tickets : [];
+      setTickets(userTickets);
     }
-    let userTickets = tickets ? tickets : [];
-    setTickets(userTickets);
   }
 
   useEffect(() => {
+    getUserState();
     const interval = setInterval(() => {
-      if (userAccount) {
-        getUserState();
-      }
+      getUserState();
     }, STATE_REFRESH_MS);
     return () => clearInterval(interval);
-  }, [])
+  }, [userAccount])
 
   return (
     <Row>
