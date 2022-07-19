@@ -183,7 +183,7 @@ function AccountInfo(props) {
           <Tooltip title="Raffle round in which the participant's tickets were bought." className="form-tooltip">
             <QuestionCircleOutlined />
           </Tooltip>:&nbsp;
-          {tickets ? userRound : "No Participation"}
+          {userRound ? userRound : "No Participation"}
         </li>
         <li>
           <strong>Owned Raffle Numbers</strong>
