@@ -57,9 +57,10 @@ function BuyTicket(props) {
   }
 
   function ticketSelect() {
+    let userTickets = tickets ? tickets : [];
     return (
       <Select defaultValue="1" size="large" className="ticket-select">
-        {Array.from({ length: 15 - tickets?.length }, (_, i) => i + 1).map(
+        {Array.from({ length: 15 - userTickets.length }, (_, i) => i + 1).map(
           (i) => <Option value={i} key={i}>{i}</Option>)
         }
       </Select>
@@ -186,8 +187,12 @@ function DAppCard(props) {
 
   function getTicketsFromKeyVals(lottoKeyValues) {
     const ticketVars = lottoKeyValues.filter((x) => x.key.length === 4);
-    const tickets = ticketVars.filter((x) => x.value.uint !== 0);
-    return tickets.map(t => t.value.uint).sort(function (a, b) { return a - b; });
+    let tickets = ticketVars.filter((x) => x.value.uint !== 0);
+    tickets = tickets.map(t => t.value.uint).sort(function (a, b) { return a - b; });
+    if (tickets === null) {
+      tickets = [];
+    }
+    return tickets;
   }
 
   function getUserRoundFromKeyVals(lottoKeyValues) {
@@ -199,19 +204,25 @@ function DAppCard(props) {
   }
 
   function getAppLocalState(accountInfo) {
-    const appsLocalState = accountInfo.account["apps-local-state"];
-    const lottoLocalState = appsLocalState.filter((x) => x.id === APP_ID)[0];
-    return lottoLocalState["key-value"];
+    const appsLocalState = accountInfo?.account["apps-local-state"];
+    if (appsLocalState) {
+      const lottoLocalState = appsLocalState.filter((x) => x.id === APP_ID)[0];
+      return lottoLocalState["key-value"];
+    } else {
+      return null;
+    }
   }
 
   async function getUserState() {
-    const accountInfo = await indexerClient.lookupAccountByID(TWO_ADDR).do();
+    const accountInfo = await indexerClient.lookupAccountByID(ONE_ADDR).do();
     const lottoKeyValues = getAppLocalState(accountInfo);
-    const tickets = getTicketsFromKeyVals(lottoKeyValues);
-    const userRound = getUserRoundFromKeyVals(lottoKeyValues);
-    setTickets(tickets);
-    setUserRound(userRound);
-    setUserBalance(accountInfo.account.amount);
+    if (lottoKeyValues) {
+      const tickets = getTicketsFromKeyVals(lottoKeyValues);
+      const userRound = getUserRoundFromKeyVals(lottoKeyValues);
+      setTickets(tickets);
+      setUserRound(userRound);
+      setUserBalance(accountInfo.account.amount);
+    }
   }
 
   useEffect(() => {
