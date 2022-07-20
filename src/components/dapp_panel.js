@@ -47,7 +47,14 @@ function WalletConnect(props) {
 }
 
 function BuyTicket(props) {
-  const { userAccount, tickets, optedIn, algodClient, setOptedIn } = props;
+  const {
+    userAccount,
+    tickets,
+    optedIn,
+    algodClient,
+    setOptedIn,
+    setTickets
+  } = props;
 
   const [ticketsQuantity, setTicketsQuantity] = useState(1);
   const [disableBuy, setDisableBuy] = useState(false);
@@ -89,7 +96,10 @@ function BuyTicket(props) {
       txnsArray.map(txn => txn.toByte()));
     signedTxns = signedTxns.map(txn => txn.blob);
     const result = await algodClient.sendRawTransaction(signedTxns).do();
-    console.log(result);
+    if (result?.txId) {
+      // TODO: find a better way to update user tickets state
+      setTickets(tickets.concat(["X"]));
+    }
   }
 
   async function optIn(e) {
@@ -110,7 +120,13 @@ function BuyTicket(props) {
 
   function ticketSelect() {
     return (
-      <Select defaultValue={"1"} size="large" className="ticket-select" onSelect={setTicketsQuantity}>
+      <Select
+        defaultValue={"1"}
+        size="large"
+        className="ticket-select"
+        onSelect={setTicketsQuantity}
+        disabled={disableBuy}
+      >
         {Array.from({ length: 15 - tickets.length }, (_, i) => i + 1).map(
           (i) => <Option value={i} key={i}>{i}</Option>)
         }
@@ -305,7 +321,7 @@ function DAppCard(props) {
       getUserState();
     }, STATE_REFRESH_MS);
     return () => clearInterval(interval);
-  }, [userAccount, optedIn])
+  }, [userAccount, optedIn, tickets])
 
   return (
     <Row>
@@ -329,6 +345,7 @@ function DAppCard(props) {
               optedIn={optedIn}
               algodClient={algodClient}
               setOptedIn={setOptedIn}
+              setTickets={setTickets}
             />
           </div>
           : <WalletConnect setUserAccount={setUserAccount} />
