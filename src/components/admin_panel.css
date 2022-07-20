@@ -1,0 +1,29 @@
+.dapp-panel {
+    margin-top: 10rem;
+    margin-bottom: 32rem;
+}
+
+.user-interaction-button {
+    background: #d539b5;
+    color: #fafcff;
+    margin-top: 0.5rem;
+}
+
+.user-interaction-button:hover {
+    font-size: 1.1rem !important;
+    background: #d539b5;
+    color: #fafcff;
+    border-width: 0rem;
+}
+
+.user-interaction-button::selection {
+    background: #d539b5 !important;
+    font-weight: bold;
+}
+
+.user-interaction-button:focus {
+    background: #d539b5;
+    font-weight: bold;
+    color: #fafcff;
+    border-width: 0rem;
+}

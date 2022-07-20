@@ -8,6 +8,7 @@ import Banner from "./components/banner";
 import Signer from "./components/signer";
 import InfoBubbles from './components/info_bubbles';
 import DAppPanel from './components/dapp_panel';
+import AdminPanel from './components/admin_panel';
 
 import "./App.css";
 
@@ -59,12 +60,23 @@ function DApp() {
   );
 }
 
+function Admin() {
+  return (
+    <Layout className="App">
+      <AppHeader className="header" />
+      <AdminPanel />
+      <Footer className="footer-dapp">Hachi Sittah Technologies ©2022</Footer>
+    </Layout>
+  );
+}
+
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/app" element={<DApp />} />
+      <Route path="/admin" element={<Admin />} />
     </Routes>
   )
 }
