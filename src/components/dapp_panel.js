@@ -13,7 +13,8 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const APP_ID = 1
+const APP_ID = 1;
+const APP_ADDR = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
 const BLOCK_REFRESH_MS = 5000;
 const STATE_REFRESH_MS = 13000;
 const MICROALGOS = Math.pow(10, 6);
@@ -48,8 +49,47 @@ function WalletConnect(props) {
 function BuyTicket(props) {
   const { userAccount, tickets, optedIn, algodClient, setOptedIn } = props;
 
-  function purchaseTickets(e) {
-    console.log(e);
+  const [ticketsQuantity, setTicketsQuantity] = useState(1);
+  const [disableBuy, setDisableBuy] = useState(false);
+
+  useEffect(() => {
+    if (tickets.length >= 15) {
+      setDisableBuy(true);
+    }
+  }, [tickets])
+
+  async function purchaseTickets() {
+    const ticketsCost = ticketsQuantity * MICROALGOS;
+    const params = await algodClient.getTransactionParams().do();
+    // Purchase Ticket Transaction
+    const txn1 = algosdk.makeApplicationNoOpTxnFromObject({
+      suggestedParams: {
+        ...params,
+      },
+      from: userAccount,
+      appIndex: APP_ID,
+      appArgs: [new Uint8Array(Buffer.from("purchase")), algosdk.encodeUint64(ticketsQuantity)]
+    });
+
+    // Payment Transaction
+    const txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+      suggestedParams: {
+        ...params,
+      },
+      from: userAccount,
+      to: APP_ADDR,
+      amount: ticketsCost
+    });
+
+    // Combine and send transactions
+    const txnsArray = [txn1, txn2];
+    const groupID = algosdk.computeGroupID(txnsArray)
+    for (let i = 0; i < 2; i++) txnsArray[i].group = groupID;
+    let signedTxns = await myAlgoConnect.signTransaction(
+      txnsArray.map(txn => txn.toByte()));
+    signedTxns = signedTxns.map(txn => txn.blob);
+    const result = await algodClient.sendRawTransaction(signedTxns).do();
+    console.log(result);
   }
 
   async function optIn(e) {
@@ -70,7 +110,7 @@ function BuyTicket(props) {
 
   function ticketSelect() {
     return (
-      <Select defaultValue="1" size="large" className="ticket-select">
+      <Select defaultValue={"1"} size="large" className="ticket-select" onSelect={setTicketsQuantity}>
         {Array.from({ length: 15 - tickets.length }, (_, i) => i + 1).map(
           (i) => <Option value={i} key={i}>{i}</Option>)
         }
@@ -88,6 +128,7 @@ function BuyTicket(props) {
           size="large"
           block
           onClick={purchaseTickets}
+          disabled={disableBuy}
         >
           Buy Tickets
         </Button>
