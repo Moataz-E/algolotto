@@ -8,13 +8,11 @@ import TweenOne from 'rc-tween-one';
 
 import "./dapp_panel.css";
 import { ToCommas } from '../utils';
-import { INDX_CONFIG, ALGOD_CONFIG, NETWORKS } from "../config";
+import { INDX_CONFIG, ALGOD_CONFIG, NETWORKS, APP_ID, APP_ADDR } from "../config";
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const APP_ID = 1;
-const APP_ADDR = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
 const BLOCK_REFRESH_MS = 5000;
 const STATE_REFRESH_MS = 10000;
 const MICROALGOS = Math.pow(10, 6);
