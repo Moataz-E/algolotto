@@ -16,7 +16,7 @@ const { Option } = Select;
 const APP_ID = 1;
 const APP_ADDR = "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM";
 const BLOCK_REFRESH_MS = 5000;
-const STATE_REFRESH_MS = 13000;
+const STATE_REFRESH_MS = 10000;
 const MICROALGOS = Math.pow(10, 6);
 
 const myalgoSettings = {
