@@ -8,7 +8,7 @@ import TweenOne from 'rc-tween-one';
 
 import "./dapp_panel.css";
 import { ToCommas } from '../utils';
-import { INDX_CONFIG, ALGOD_CONFIG, NETWORKS, APP_ID, APP_ADDR } from "../config";
+import { INDX_CONFIG, ALGOD_CONFIG, NETWORKS, APP_CONFIG } from "../config";
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -51,7 +51,9 @@ function BuyTicket(props) {
     optedIn,
     algodClient,
     setOptedIn,
-    setTickets
+    setTickets,
+    appId,
+    appAddress
   } = props;
 
   const [ticketsQuantity, setTicketsQuantity] = useState(1);
@@ -72,7 +74,7 @@ function BuyTicket(props) {
         ...params,
       },
       from: userAccount,
-      appIndex: APP_ID,
+      appIndex: appId,
       appArgs: [new Uint8Array(Buffer.from("purchase")), algosdk.encodeUint64(ticketsQuantity)]
     });
 
@@ -82,7 +84,7 @@ function BuyTicket(props) {
         ...params,
       },
       from: userAccount,
-      to: APP_ADDR,
+      to: appAddress,
       amount: ticketsCost
     });
 
@@ -107,7 +109,7 @@ function BuyTicket(props) {
         ...params,
       },
       from: userAccount,
-      appIndex: APP_ID
+      appIndex: appId
     });
     const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
     const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
@@ -168,7 +170,7 @@ function BuyTicket(props) {
 }
 
 function LottoInfo(props) {
-  const { indexerClient } = props;
+  const { indexerClient, appId } = props;
   const [appState, setAppState] = useState(null);
 
   function parseAppState(globalStateRaw) {
@@ -189,8 +191,12 @@ function LottoInfo(props) {
   }
 
   async function getAppDetails() {
-    const appDetails = await indexerClient.lookupApplications(APP_ID).do();
-    parseAppState(appDetails.application.params["global-state"]);
+    const appDetails = await indexerClient.lookupApplications(appId).do();
+    if (appDetails.application) {
+      parseAppState(appDetails.application.params["global-state"]);
+    } else {
+      parseAppState(appDetails.params["global-state"]);
+    }
   }
 
   function getDrawDate() {
@@ -263,7 +269,14 @@ function AccountInfo(props) {
 }
 
 function DAppCard(props) {
-  const { indexerClient, userAccount, setUserAccount, algodClient } = props;
+  const {
+    indexerClient,
+    userAccount,
+    setUserAccount,
+    algodClient,
+    appId,
+    appAddress
+  } = props;
   const [tickets, setTickets] = useState([]);
   const [userRound, setUserRound] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
@@ -289,9 +302,14 @@ function DAppCard(props) {
   }
 
   function getAppLocalState(accountInfo) {
-    const appsLocalState = accountInfo?.account["apps-local-state"];
+    let appsLocalState = null;
+    if (accountInfo.account) {
+      appsLocalState = accountInfo.account["apps-local-state"];
+    } else {
+      appsLocalState = accountInfo["apps-local-state"];
+    }
     if (appsLocalState) {
-      const lottoLocalState = appsLocalState.filter((x) => x.id === APP_ID)[0];
+      const lottoLocalState = appsLocalState.filter((x) => x.id === appId)[0];
       return lottoLocalState["key-value"];
     } else {
       return null;
@@ -302,7 +320,7 @@ function DAppCard(props) {
     if (userAccount) {
       const accountInfo = await indexerClient.lookupAccountByID(userAccount).do();
       const lottoKeyValues = getAppLocalState(accountInfo);
-      setUserBalance(accountInfo.account.amount);
+      setUserBalance(accountInfo.amount);
       if (lottoKeyValues) {
         let tickets = getTicketsFromKeyVals(lottoKeyValues);
         const userRound = getUserRoundFromKeyVals(lottoKeyValues);
@@ -325,7 +343,7 @@ function DAppCard(props) {
     <Row>
       <Card className="panel-card" title="Weekly Raffle" bordered={true} style={{ textAlign: 'left' }}>
         <div className="banner-card-body">
-          <LottoInfo indexerClient={indexerClient} />
+          <LottoInfo indexerClient={indexerClient} appId={appId} />
         </div>
       </Card>
       <Card className="panel-card">
@@ -344,6 +362,8 @@ function DAppCard(props) {
               algodClient={algodClient}
               setOptedIn={setOptedIn}
               setTickets={setTickets}
+              appId={appId}
+              appAddress={appAddress}
             />
           </div>
           : <WalletConnect setUserAccount={setUserAccount} />
@@ -390,6 +410,8 @@ function DAppHeader(props) {
 export default function DAppPanel() {
   const [userAccount, setUserAccount] = useState("");
   const [network, setNetwork] = useState(NETWORKS[0]);
+  const [appId, setAppId] = useState(APP_CONFIG[network].id);
+  const [appAddress, setAppAddress] = useState(APP_CONFIG[network].address);
 
   const [algodClient, setAlgodClient] = useState(
     new algosdk.Algodv2(
@@ -424,6 +446,8 @@ export default function DAppPanel() {
     );
     setIndexerClient(indexer);
     setUserAccount("");
+    setAppId(APP_CONFIG[network].id);
+    setAppAddress(APP_CONFIG[network].address);
   }, [network])
 
   return (
@@ -437,6 +461,8 @@ export default function DAppPanel() {
               userAccount={userAccount}
               setUserAccount={setUserAccount}
               algodClient={algodClient}
+              appId={appId}
+              appAddress={appAddress}
             />
           </TweenOne>
         </Col>

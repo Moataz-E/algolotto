@@ -1,4 +1,5 @@
 const NETWORKS = ["localhost", "testnet"];
+// const NETWORKS = ["testnet"];
 
 const INDX_CONFIG = {
   "mainnet": {
@@ -44,13 +45,24 @@ const ALGOD_CONFIG = {
   }
 }
 
-const APP_ID = 2;
-const APP_ADDR = "FHQPLJVRO7FVHYKCA2SGR3I7ZHHKHAQS4AGOAVGGGJQJYTTBVEJUGHN5JQ";
+const APP_CONFIG = {
+  "mainnet": {
+    id: "",
+    address: ""
+  },
+  "testnet": {
+    id: 100328257,
+    address: "ORLFFUY4L4MK2V2SDH7BZJR2PDOPN6CZ3NROM6IE7HO7WAWTB2TIRXQB7Y"
+  },
+  "localhost": {
+    id: 2,
+    address: "FHQPLJVRO7FVHYKCA2SGR3I7ZHHKHAQS4AGOAVGGGJQJYTTBVEJUGHN5JQ"
+  }
+}
 
 module.exports = {
   INDX_CONFIG,
   ALGOD_CONFIG,
   NETWORKS,
-  APP_ID,
-  APP_ADDR
+  APP_CONFIG
 }
