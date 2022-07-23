@@ -12,7 +12,7 @@ const INDX_CONFIG = {
     host: "https://testnet-algorand.api.purestake.io/ps2",
     port: "",
     token: {
-      "X-API-Key": "Xhkn7v7h972hj7Egx3fGr9RFbfXeGuoD6wSLKDyG",
+      "X-API-Key": "tG0lIkkHzp259H7bXipdh8EFauTxaMj25kOJiDaX",
     },
   },
   "localhost": {
@@ -31,9 +31,11 @@ const ALGOD_CONFIG = {
     },
   },
   "testnet": {
-    host: "https://node.testnet.algoexplorerapi.io",
+    host: "https://testnet-algorand.api.purestake.io/ps2",
     port: "",
-    token: "",
+    token: {
+      "X-API-Key": "tG0lIkkHzp259H7bXipdh8EFauTxaMj25kOJiDaX",
+    },
   },
   "localhost": {
     host: "http://localhost",

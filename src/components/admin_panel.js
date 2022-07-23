@@ -11,7 +11,7 @@ import { ALGOD_CONFIG, APP_ID } from "../config";
 
 const { TextArea } = Input;
 
-const NETWORK = "localhost";
+const NETWORK = "testnet";
 
 const myalgoSettings = {
   shouldSelectOneAccount: true,
