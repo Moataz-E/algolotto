@@ -215,7 +215,7 @@ function LottoInfo(props) {
       getAppDetails();
     }, STATE_REFRESH_MS);
     return () => clearInterval(interval);
-  }, [])
+  }, [indexerClient])
 
   return (
     <ul className="no-bp">
@@ -337,7 +337,7 @@ function DAppCard(props) {
       getUserState();
     }, STATE_REFRESH_MS);
     return () => clearInterval(interval);
-  }, [userAccount, optedIn, tickets])
+  }, [userAccount, optedIn, tickets, indexerClient])
 
   return (
     <Row>
