@@ -322,10 +322,14 @@ function DAppCard(props) {
       const lottoKeyValues = getAppLocalState(accountInfo);
       setUserBalance(accountInfo.amount);
       if (lottoKeyValues) {
-        let tickets = getTicketsFromKeyVals(lottoKeyValues);
+        let userTickets = getTicketsFromKeyVals(lottoKeyValues);
         const userRound = getUserRoundFromKeyVals(lottoKeyValues);
-        setOptedIn(true);
-        setTickets(tickets);
+        if (!optedIn) {
+          setOptedIn(true);
+        }
+        if (userTickets.length !== tickets.length) {
+          setTickets(userTickets);
+        }
         setUserRound(userRound);
       }
     }
@@ -337,7 +341,7 @@ function DAppCard(props) {
       getUserState();
     }, STATE_REFRESH_MS);
     return () => clearInterval(interval);
-  }, [userAccount, optedIn, tickets, indexerClient])
+  }, [userAccount, optedIn, tickets])
 
   return (
     <Row>
