@@ -69,6 +69,30 @@ function AdminButtons() {
     const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
   }
 
+  async function update_testnet(e) {
+    const localInts = 16;
+    const localBytes = 0;
+    const globalInts = 6;
+    const globalBytes = 2;
+
+    const approvalProgramBinary = await compileProgram(algodClient, approval.target.textContent);
+    const clearProgramBinary = await compileProgram(algodClient, clear.target.textContent);
+
+    let params = await algodClient.getTransactionParams().do();
+    const onComplete = algosdk.OnApplicationComplete.NoOpOC;
+
+    console.log("Deploying Application. . . . ");
+
+    let txn = algosdk.makeApplicationUpdateTxn(userAccount, params, 100328257,
+      approvalProgramBinary, clearProgramBinary);
+    let txId = txn.txID().toString();
+
+    // Sign the transaction
+    const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
+    const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
+    console.log(result);
+  }
+
   async function triggerDraw(e) {
     const params = await algodClient.getTransactionParams().do();
     // Purchase Ticket Transaction
@@ -126,6 +150,15 @@ function AdminButtons() {
         onClick={deploy_testnet}
       >
         Deploy to Testet
+      </Button>
+      <Button
+        className="user-interaction-button"
+        shape="round"
+        size="large"
+        block
+        onClick={update_testnet}
+      >
+        Update on Testnet
       </Button>
       <Button
         className="user-interaction-button"
