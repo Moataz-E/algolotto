@@ -52,5 +52,11 @@ goal account balance -a $TWO
 goal clerk send -a 100000 -f $ONE -t $TWO
 ```
 
+### Deployment Operations
+* To retrieve application address using application id
+```
+python3 -c "import algosdk.encoding as e; print(e.encode_address(e.checksum(b'appID'+(<app id>).to_bytes(8, 'big'))))"
+```
+
 ### Notes
 * Integer arguments still have to be converted using Btoi as specifying "int:x" as an argument only tells TEAL how to encode the argument but it is still passed as a byte.
