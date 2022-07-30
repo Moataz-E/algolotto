@@ -51,8 +51,8 @@ const APP_CONFIG = {
     address: ""
   },
   "testnet": {
-    id: 100328257,
-    address: "ORLFFUY4L4MK2V2SDH7BZJR2PDOPN6CZ3NROM6IE7HO7WAWTB2TIRXQB7Y"
+    id: 101851233,
+    address: "VLPVPT4L4P7VYVUROGLECOFW6VKIHRCTLKD5NWA736KA4XXND5HGMAM7QQ"
   },
   "localhost": {
     id: 2,
