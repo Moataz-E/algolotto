@@ -420,6 +420,8 @@ def approval():
         )
 
     ## Intialize Contract #####################################################
+    is_owner = Txn.sender() == App.globalGet(global_owner)
+
     init_round_epoch = Add(Global.latest_timestamp(), Int(WEEK_IN_SECONDS))
     on_init = Seq([
         App.globalPut(global_owner, Txn.sender()),
@@ -441,6 +443,8 @@ def approval():
 
     return program.event(
         init=on_init,
+        delete=Return(is_owner),
+        update=Return(is_owner),
         opt_in=opt_in,
         no_op=Seq(
             Cond(
