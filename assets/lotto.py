@@ -78,8 +78,7 @@ from pyteal_helpers import program
 MICRO_ALGO = 1
 ALGO = MICRO_ALGO * (10 ** 6)
 TICKET_COST_ALGO = ALGO * 1
-# WEEK_IN_SECONDS = 604800
-WEEK_IN_SECONDS = 60
+WEEK_IN_SECONDS = 604800
 COMMISION = Int(100)  # 1 / 100
 
 DONATION_ADDR = Txn.sender()
