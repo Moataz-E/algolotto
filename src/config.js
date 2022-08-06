@@ -60,9 +60,12 @@ const APP_CONFIG = {
   }
 }
 
+const PRIMARY_COLOR = "#b1277c"
+
 module.exports = {
   INDX_CONFIG,
   ALGOD_CONFIG,
   NETWORKS,
-  APP_CONFIG
+  APP_CONFIG,
+  PRIMARY_COLOR
 }

@@ -1,5 +1,5 @@
 .team {
-    background: linear-gradient(to top, #ffff, #d539b5);
+    background: linear-gradient(to top, #ffff, var(--tertiary-color));
     margin-top: 4rem;
     padding-left: 10rem;
 }

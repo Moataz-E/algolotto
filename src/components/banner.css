@@ -3,14 +3,14 @@
 }
 
 .banner-bar {
-    color: #d539b5;
+    color: var(--primary-color);
 }
 
 .banner-title {
-    color: #d539b5;
+    color: var(--primary-color);
     font-size: 2em;
 }
 
 .banner-subtext {
-    color: #000 !important;
+    color: var(--secondary-color) !important;
 }

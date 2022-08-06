@@ -1,34 +1,42 @@
+:root {
+  --primary-color: #b1277c;
+  --secondary-color: #54424b;
+  --tertiary-color: #eee5f3;
+  --quaternary-color: #8b5700;
+  --quinary-color: #c6891e;
+}
+
 .App {
-  background-color: #ffff;
-  background: linear-gradient(to bottom, #ffff, #ffe5fa);
+  background-color: white;
+  background: linear-gradient(to bottom, white, var(--tertiary-color));
 }
 
 .header {
-  background: #d539b5;
-  color: #fafcff;
+  background: var(--primary-color);
+  color: white;
 }
 
 .header-menu {
-  background-color: #d539b5;
-  color: #fafcff;
+  background-color: var(--primary-color);
+  color: white;
   border: none !important;
 }
 
 ul.header-menu>.ant-menu-item-active {
-  color: #ffff !important;
+  color: white !important;
 }
 
 ul.header-menu>.ant-menu-item-active::after {
-  border-bottom-color: #ffff !important;
+  border-bottom-color: white !important;
 }
 
 ul.header-menu>.ant-menu-item-selected {
-  color: #ffff !important;
+  color: white !important;
   font-weight: bold;
 }
 
 ul.header-menu>.ant-menu-item-selected::after {
-  border-bottom-color: #ffff !important;
+  border-bottom-color: white !important;
   border-bottom-width: 10rem;
 }
 
@@ -42,12 +50,12 @@ iframe {
 
 .footer {
   text-align: center;
-  background: #ffe5fa;
+  background: var(--tertiary-color);
 }
 
 .footer-dapp {
   text-align: center;
-  background: #ffe5fa;
+  background: var(--tertiary-color);
   position: fixed;
   bottom: 0px;
   right: 0px;
