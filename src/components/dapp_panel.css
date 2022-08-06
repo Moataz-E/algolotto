@@ -1,6 +1,6 @@
 .dapp-panel {
     margin-top: 10rem;
-    margin-bottom: 22rem;
+    min-height: 42rem;
 }
 
 .panel-card {
