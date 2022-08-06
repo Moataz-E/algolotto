@@ -6,8 +6,9 @@ import MyAlgoConnect from '@randlabs/myalgo-connect';
 import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
 
-import "./admin_panel.css";
 import { ALGOD_CONFIG, APP_ID } from "../config";
+
+import "./admin_panel.css";
 
 const { TextArea } = Input;
 

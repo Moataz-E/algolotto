@@ -10,25 +10,25 @@
 }
 
 .user-interaction-button {
-    background: var(--tertiary-color);
+    background: var(--secondary-color);
     color: whitesmoke;
     margin-top: 0.5rem;
 }
 
 .user-interaction-button:hover {
     font-size: 1.1rem !important;
-    background: var(--tertiary-color);
+    background: var(--secondary-color);
     color: whitesmoke;
     border-width: 0rem;
 }
 
 .user-interaction-button::selection {
-    background: var(--tertiary-color) !important;
+    background: var(--secondary-color) !important;
     font-weight: bold;
 }
 
 .user-interaction-button:focus {
-    background: var(--tertiary-color);
+    background: var(--secondary-color);
     font-weight: bold;
     color: whitesmoke;
     border-width: 0rem;

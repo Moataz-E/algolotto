@@ -5,11 +5,12 @@ import MyAlgoConnect from '@randlabs/myalgo-connect';
 
 import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
-import "./dapp_panel.css";
 import { ToCommas } from '../utils';
 import { INDX_CONFIG, ALGOD_CONFIG, NETWORKS, APP_CONFIG } from "../config";
-import { QuestionCircleOutlined } from '@ant-design/icons';
+
+import "./dapp_panel.css";
 
 const { Option } = Select;
 
