@@ -1,6 +1,6 @@
-.dapp-panel {
+.admin-panel {
     margin-top: 10rem;
-    margin-bottom: 32rem;
+    min-height: 45rem;
 }
 
 .user-interaction-button {

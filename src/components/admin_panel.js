@@ -190,7 +190,7 @@ export default function AdminPanel() {
   return (
     <div>
       <Row justify="center" align="middle" className="dapp-panel-row">
-        <Col lg={{ span: 8 }} md={{ span: 10 }} sm={{ span: 12 }} xs={{ span: 15 }} className="dapp-panel">
+        <Col lg={{ span: 8 }} md={{ span: 10 }} sm={{ span: 12 }} xs={{ span: 15 }} className="admin-panel">
           <TweenOne animation={{ y: '-5rem' }}>
             <Card className="panel-card" title="Admin" bordered={true} style={{ textAlign: 'left' }}>
               <div className="banner-card-body">
