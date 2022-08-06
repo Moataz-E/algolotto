@@ -29,3 +29,9 @@
 .bubble-image {
     font-size: 7em;
 }
+
+@media (max-width: 765px) {
+    .banner-card {
+        margin-bottom: 3rem;
+    }
+}

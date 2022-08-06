@@ -136,7 +136,7 @@ export default function Banner() {
           <Image src="/logo512.png" preview={false}></Image>
         </TweenOne>
       </Col>
-      <Col span={6} md={9} xs={{ span: 22 }} sm={{ span: 16, offset: 1 }} className="banner-right">
+      <Col span={6} md={9} xs={{ span: 24 }} sm={{ span: 16, offset: 1 }} className="banner-right">
         <BannerAnimatedContent />
       </Col>
     </Row>
