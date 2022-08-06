@@ -8,25 +8,25 @@ import {
   HeartTwoTone
 } from '@ant-design/icons';
 
-import { PRIMARY_COLOR } from '../config';
+import { SECONDARY_COLOR } from '../config';
 import "./info_bubbles.css"
 
 
 const bubbles = [
   {
-    img: <DollarCircleTwoTone twoToneColor={PRIMARY_COLOR} className="bubble-image" />,
+    img: <DollarCircleTwoTone twoToneColor={SECONDARY_COLOR} className="bubble-image" />,
     href: ``,
     title: 'Weekly Draws',
     description: 'A new winner every week. Draws end a week after the previous draw concludes.',
   },
   {
-    img: <LockTwoTone twoToneColor={PRIMARY_COLOR} className="bubble-image" />,
+    img: <LockTwoTone twoToneColor={SECONDARY_COLOR} className="bubble-image" />,
     title: 'Secure',
     href: ``,
     description: 'Public verifiable draw results and audited smart contracts.',
   },
   {
-    img: <HeartTwoTone twoToneColor={PRIMARY_COLOR} className="bubble-image" />,
+    img: <HeartTwoTone twoToneColor={SECONDARY_COLOR} className="bubble-image" />,
     title: 'Altruistic',
     href: ``,
     description: '15% of all ALGO spent on tickets is allocated to the Algolotto Community Fund (ACF) for funding projects in the Algorand ecosystem.',
