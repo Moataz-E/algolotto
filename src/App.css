@@ -62,6 +62,10 @@ iframe {
   left: 0px;
 }
 
+.launch-dapp-btn {
+  transition: border-color 0ms;
+}
+
 .launch-dapp-btn:hover {
   background: var(--secondary-color);
   color: whitesmoke;
