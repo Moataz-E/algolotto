@@ -251,6 +251,7 @@ function LottoInfo(props) {
     <Table
       className="lotto-info-table"
       size="small"
+      loading={appState === null}
       showHeader={false}
       pagination={false}
       dataSource={data}
