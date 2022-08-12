@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import algosdk from 'algosdk';
-import { Row, Col, Card, Button, Select, Tooltip, Image } from 'antd';
+import { Row, Col, Card, Button, Select, Tooltip, Image, Table } from 'antd';
 import MyAlgoConnect from '@randlabs/myalgo-connect';
 
 import 'rc-texty/assets/index.css';
@@ -204,7 +204,17 @@ function LottoInfo(props) {
     if (appState) {
       const draw_ts = appState.next_draw_epoch;
       const draw_date = new Date(draw_ts * 1000);
-      return draw_date.toDateString("en-GB") + " " + draw_date.toTimeString("en-GB")
+      return draw_date.toDateString("en-GB")
+    } else {
+      return "";
+    }
+  }
+
+  function getDrawTime() {
+    if (appState) {
+      const draw_ts = appState.next_draw_epoch;
+      const draw_date = new Date(draw_ts * 1000);
+      return draw_date.toTimeString("en-GB")
     } else {
       return "";
     }
@@ -218,16 +228,34 @@ function LottoInfo(props) {
     return () => clearInterval(interval);
   }, [indexerClient])
 
+  const data = [
+    { key: "1", label: <strong>Current Raffle Round</strong>, val: appState?.round_num },
+    { key: "2", label: <strong>Total Tickets Sold</strong>, val: appState?.tickets_sold },
+    {
+      key: "3", label: <strong>Ticket Price</strong>, val: (
+        <>
+          {appState?.ticket_cost / MICROALGOS}
+          <Image className="currency-icon" src="/algorand_icon.png" preview={false}></Image>
+        </>)
+    },
+    { key: "4", label: <strong>Draw Date</strong>, val: getDrawDate() },
+    { key: "5", label: <strong>Draw Time</strong>, val: getDrawTime() }
+  ]
+
+  const columns = [
+    { title: "", dataIndex: "label", key: "label" },
+    { title: "", dataIndex: "val", key: "val" }
+  ]
+
   return (
-    <ul className="no-bp">
-      <li><strong>Current Raffle Round: </strong>{appState?.round_num}</li>
-      <li><strong>Total Tickets Sold: </strong>{appState?.tickets_sold}</li>
-      <li><strong>Ticket Price: </strong>
-        {appState?.ticket_cost / MICROALGOS}
-        <Image className="currency-icon" src="/algorand_icon.png" preview={false}></Image>
-      </li>
-      <li><strong>Draw Date: </strong> {getDrawDate()}</li>
-    </ul >
+    <Table
+      className="lotto-info-table"
+      size="small"
+      showHeader={false}
+      pagination={false}
+      dataSource={data}
+      columns={columns}
+    />
   )
 }
 
@@ -347,7 +375,7 @@ function DAppCard(props) {
   return (
     <Row>
       <Card className="panel-card" title="Weekly Raffle" bordered={true} style={{ textAlign: 'left' }}>
-        <div className="banner-card-body">
+        <div className="dapp-card-body">
           <LottoInfo indexerClient={indexerClient} appId={appId} />
         </div>
       </Card>

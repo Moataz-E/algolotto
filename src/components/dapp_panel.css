@@ -62,3 +62,8 @@ ul.no-bp {
     height: 1em;
     width: 1em;
 }
+
+.lotto-info-table tr>td {
+    border-bottom: none !important;
+    padding-bottom: 0.1em !important;
+}
