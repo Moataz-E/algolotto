@@ -67,3 +67,8 @@ ul.no-bp {
     border-bottom: none !important;
     padding-bottom: 0.1em !important;
 }
+
+.lotto-account-table tr>td {
+    border-bottom: none !important;
+    padding-bottom: 0.1em !important;
+}

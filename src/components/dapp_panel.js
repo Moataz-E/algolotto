@@ -243,7 +243,7 @@ function LottoInfo(props) {
   ]
 
   const columns = [
-    { title: "", dataIndex: "label", key: "label" },
+    { title: "", dataIndex: "label", key: "label", width: "40%" },
     { title: "", dataIndex: "val", key: "val" }
   ]
 
@@ -272,29 +272,59 @@ function AccountInfo(props) {
     }
   }
 
-  return (
-    <span>
-      <ul className="no-bp">
-        <li><strong>Connected Wallet: </strong>{userAccount.slice(0, 4)}... {userAccount.slice(-4)}</li>
-        <li><strong>Account Balance: </strong>{
-          ToCommas((userBalance / MICROALGOS).toFixed(2))}
+
+  const data = [
+    {
+      key: "1",
+      label: <strong>Connected Wallet</strong>,
+      val: <>{userAccount.slice(0, 4)}...{userAccount.slice(-4)}</>
+    },
+    {
+      key: "2",
+      label: <strong>Account Balance</strong>,
+      val:
+        <>
+          {ToCommas((userBalance / MICROALGOS).toFixed(2))}
           <Image className="currency-icon" src="/algorand_icon.png" preview={false}></Image>
-        </li>
-        <li>
-          <strong>Tickets Round</strong>
-          <Tooltip title="Raffle round in which the participant's tickets were bought." className="form-tooltip">
-            <QuestionCircleOutlined />
-          </Tooltip>:&nbsp;
-          {userRound ? userRound : "No Participation"}
-        </li>
-        <li>
-          <strong>Owned Raffle Numbers</strong>
-          <Tooltip title="Serial numbers of tickets owned by the participant." className="form-tooltip">
-            <QuestionCircleOutlined />
-          </Tooltip>:&nbsp;
-          {printTickets()}</li>
-      </ul>
-    </span>
+        </>
+    },
+    {
+      key: "3",
+      label: <>
+        <strong>Tickets Round</strong>
+        <Tooltip title="Raffle round in which the participant's tickets were bought." className="form-tooltip">
+          <QuestionCircleOutlined />
+        </Tooltip>
+      </>,
+      val: (<>{userRound ? userRound : "No Participation"}</>)
+    },
+    {
+      key: "4",
+      label: <>
+        <strong>Owned Raffle Numbers</strong>
+        <Tooltip title="Serial numbers of tickets owned by the participant." className="form-tooltip">
+          <QuestionCircleOutlined />
+        </Tooltip>
+      </>,
+      val: printTickets()
+    },
+  ]
+
+  const columns = [
+    { title: "", dataIndex: "label", key: "label", width: "40%" },
+    { title: "", dataIndex: "val", key: "val" }
+  ]
+
+  return (
+    <Table
+      className="lotto-account-table"
+      size="small"
+      loading={userAccount === null}
+      showHeader={false}
+      pagination={false}
+      dataSource={data}
+      columns={columns}
+    />
   )
 }
 
@@ -375,7 +405,7 @@ function DAppCard(props) {
 
   return (
     <Row>
-      <Card className="panel-card" title="Weekly Raffle" bordered={true} style={{ textAlign: 'left' }}>
+      <Card className="panel-card" title="Weekly Raffle">
         <div className="dapp-card-body">
           <LottoInfo indexerClient={indexerClient} appId={appId} />
         </div>
