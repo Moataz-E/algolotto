@@ -128,17 +128,50 @@ function BannerAnimatedContent() {
   );
 }
 
+function CircleAnimation() {
+
+  function duplicateElements(array, times) {
+    return array.reduce((res, current) => {
+      return res.concat(Array(times).fill(current));
+    }, []);
+  }
+
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+
+  const getCircles = () => {
+    let keyFrames = duplicateElements(["x1", "x2", "y1", "y2"], 5);
+    shuffleArray(keyFrames);
+
+    return [...keyFrames].map((v, i) => (
+      <div key={i} className={`circle-container c${i}`} style={{ animation: "5s linear 0s infinite normal none running z" }}>
+        <div className={`circle i${i}`} style={{ animation: `7.5s linear ${i / 10}s infinite normal none running ${v}` }}>
+        </div>
+      </div >
+    ))
+  }
+
+  return (
+    <div className="circles" style={{ width: "100%", minHeight: "100%" }}>
+      {getCircles()}
+    </div>
+  )
+}
+
 export default function Banner() {
   return (
     <Row justify="center" align="middle" className="banner">
-      <Col span={6} md={6} xs={{ span: 20, offset: 4 }} sm={{ span: 16 }}>
-        <TweenOne animation={{ x: 20 }}>
-          <Image src="/logo512.png" preview={false} className="banner-image"></Image>
+      <Col>
+        <TweenOne animation={{ y: 20 }}>
+          <BannerAnimatedContent />
+          <CircleAnimation />
         </TweenOne>
       </Col>
-      <Col span={6} md={13} xs={{ span: 24 }} sm={{ span: 16, offset: 1 }} className="banner-right">
-        <BannerAnimatedContent />
-      </Col>
-    </Row>
+    </Row >
   )
 }
