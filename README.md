@@ -43,6 +43,10 @@ tealdbg debug -d tx.dr --listen 0.0.0.0
 ```
 goal app read --app-id 1 -f $TWO --local
 ```
+* To view all available accounts
+```
+goal accounts list
+```
 * To check balance of an account
 ```
 goal account balance -a $TWO
