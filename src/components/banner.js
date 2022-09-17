@@ -25,9 +25,9 @@ function BannerAnimatedContent() {
       case 4:
       case 5:
       case 6:
-        return 150 + 450 + (e.index - 2) * 10;
+        return 150 + 250 + (e.index - 2) * 10;
       default:
-        return 150 + 450 + (e.index - 6) * 150;
+        return 150 + 250 + (e.index - 6) * 30;
     }
   }
   const getEnter = (e) => {
