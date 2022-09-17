@@ -163,15 +163,32 @@ function CircleAnimation() {
   )
 }
 
-export default function Banner() {
+function MetricsBanner() {
   return (
-    <Row justify="center" align="middle" className="banner">
-      <Col>
-        <TweenOne animation={{ y: 20 }}>
-          <BannerAnimatedContent />
-          <CircleAnimation />
-        </TweenOne>
+    <Row className="banner-metrics-row" align="middle" justify="center">
+      <Col className="banner-metrics" md={11} sm={15} xs={19}>
+        <Row justify="center">
+          <Col md={8} sm={11} xs={15}>Tickets Sold<br /><strong className="banner-metric">16</strong></Col>
+          <Col md={8} sm={11} xs={15}>Raffles Created<br /><strong className="banner-metric">3</strong></Col>
+          <Col md={8} sm={11} xs={15}>ALGO Donated<br /><strong className="banner-metric">2.4</strong></Col>
+        </Row>
       </Col>
     </Row >
+  )
+}
+
+export default function Banner() {
+  return (
+    <>
+      <Row justify="center" align="middle" className="banner">
+        <Col>
+          <TweenOne animation={{ y: 20 }}>
+            <BannerAnimatedContent />
+            <CircleAnimation />
+          </TweenOne>
+        </Col>
+      </Row >
+      <MetricsBanner />
+    </>
   )
 }
