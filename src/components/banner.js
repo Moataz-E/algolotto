@@ -121,7 +121,7 @@ function BannerAnimatedContent() {
           delay={1200}
           interval={25}
         >
-          Participate in raffles, or create your own!
+          Participate in raffles, or create your own
         </Texty>
       </Title>
     </div>
