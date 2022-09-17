@@ -82,7 +82,7 @@ function BannerAnimatedContent() {
         <Texty
           className="banner-title"
           type="mask-top"
-          delay={200}
+          delay={100}
           enter={getEnter}
           interval={geInterval}
           component={TweenOne}
@@ -102,11 +102,11 @@ function BannerAnimatedContent() {
                 ease: 'easeInOutQuint',
                 duration: 800,
               },
-              { scale: 1, width: '100%', delay: -300, duration: 1000, ease: 'easeInOutQuint' },
+              { scale: 1, width: '100%', delay: -300, duration: 250, ease: 'easeInOutQuint' },
             ],
           }}
         >
-          Algolotto
+          Win and Grow Algorand!
         </Texty>
       </Title>
       <TweenOne
@@ -118,10 +118,10 @@ function BannerAnimatedContent() {
           className="banner-subtext"
           type="bottom"
           split={getSplit}
-          delay={1500}
-          interval={30}
+          delay={1200}
+          interval={25}
         >
-          Win Big and Grow Algorand!
+          Participate in raffles, or create your own!
         </Texty>
       </Title>
     </div>
