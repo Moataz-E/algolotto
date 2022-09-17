@@ -61,6 +61,7 @@ ul.no-bp {
 .currency-icon {
     height: 1em;
     width: 1em;
+    margin-left: 0.3rem;
 }
 
 .lotto-info-table tr>td {
