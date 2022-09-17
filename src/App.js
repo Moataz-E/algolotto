@@ -20,7 +20,7 @@ function AppHeader(props) {
   const headerItems = [
     { label: 'Docs' },
     // { label: <Link to="/admin">Admin</Link> },
-    { label: <Button shape="round" className="launch-dapp-btn"><Link to="/app">Lanuch dApp</Link></Button> }
+    { label: <Button shape="round" className="launch-dapp-btn"><Link to="/app">Launch dApp</Link></Button> }
   ]
 
   return (
