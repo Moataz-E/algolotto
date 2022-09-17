@@ -60,8 +60,8 @@
     bottom: 0;
     left: 0;
     margin: auto;
-    width: 650px;
-    height: 650px;
+    width: 450px;
+    height: 450px;
 }
 
 .circles {
@@ -76,7 +76,7 @@
 
 @keyframes x1 {
     0% {
-        transform: rotateX(0deg) translate(-150px, 0);
+        transform: rotateX(0deg) translate(-120px, 0);
         opacity: 0;
     }
 
@@ -86,7 +86,7 @@
     }
 
     50% {
-        transform: rotateX(0deg) translate(150px, 0);
+        transform: rotateX(0deg) translate(120px, 0);
         opacity: 0;
     }
 
@@ -96,14 +96,14 @@
     }
 
     100% {
-        transform: rotateX(0deg) translate(-150px, 0);
+        transform: rotateX(0deg) translate(-120px, 0);
         opacity: 0;
     }
 }
 
 @keyframes x2 {
     0% {
-        transform: rotateX(0deg) translate(150px, 0);
+        transform: rotateX(0deg) translate(120px, 0);
         opacity: 0;
     }
 
@@ -113,7 +113,7 @@
     }
 
     50% {
-        transform: rotateX(0deg) translate(-150px, 0);
+        transform: rotateX(0deg) translate(-120px, 0);
         opacity: 0;
     }
 
@@ -123,14 +123,14 @@
     }
 
     100% {
-        transform: rotateX(0deg) translate(150px, 0);
+        transform: rotateX(0deg) translate(120px, 0);
         opacity: 0;
     }
 }
 
 @keyframes y1 {
     0% {
-        transform: rotateY(0deg) translate(0, -150px);
+        transform: rotateY(0deg) translate(0, -120px);
         opacity: 0;
     }
 
@@ -140,7 +140,7 @@
     }
 
     50% {
-        transform: rotateY(0deg) translate(0, 150px);
+        transform: rotateY(0deg) translate(0, 120px);
         opacity: 0;
     }
 
@@ -150,14 +150,14 @@
     }
 
     100% {
-        transform: rotateY(0deg) translate(0, -150px);
+        transform: rotateY(0deg) translate(0, -120px);
         opacity: 0;
     }
 }
 
 @keyframes y2 {
     0% {
-        transform: rotateY(0deg) translate(0, 150px);
+        transform: rotateY(0deg) translate(0, 120px);
         opacity: 0;
     }
 
@@ -167,7 +167,7 @@
     }
 
     50% {
-        transform: rotateY(0deg) translate(0, -150px);
+        transform: rotateY(0deg) translate(0, -120px);
         opacity: 0;
     }
 
@@ -177,7 +177,7 @@
     }
 
     100% {
-        transform: rotateY(0deg) translate(0, 150px);
+        transform: rotateY(0deg) translate(0, 120px);
         opacity: 0;
     }
 }

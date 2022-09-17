@@ -150,7 +150,7 @@ function CircleAnimation() {
 
     return [...keyFrames].map((v, i) => (
       <div key={i} className={`circle-container c${i}`} style={{ animation: "5s linear 0s infinite normal none running z" }}>
-        <div className={`circle i${i}`} style={{ animation: `7.5s linear ${i / 10}s infinite normal none running ${v}` }}>
+        <div className={`circle i${i}`} style={{ animation: `15.5s linear ${i / 10}s infinite normal none running ${v}` }}>
         </div>
       </div >
     ))
