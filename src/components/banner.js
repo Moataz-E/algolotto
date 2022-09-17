@@ -91,10 +91,6 @@ function BannerAnimatedContent() {
           Win and Grow Algorand!
         </Texty>
       </Title>
-      <TweenOne
-        className="banner-bar"
-        animation={{ delay: 2000, width: 0, x: 158, type: 'from', ease: 'easeInOutExpo' }}
-      />
       <Title level={3}>
         <Texty
           className="banner-subtext"

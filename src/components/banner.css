@@ -4,10 +4,6 @@
     text-align: center;
 }
 
-.banner-bar {
-    color: var(--primary-color);
-}
-
 .banner-title {
     color: var(--primary-color);
     font-size: 2em;
