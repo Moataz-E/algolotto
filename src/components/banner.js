@@ -60,24 +60,6 @@ function BannerAnimatedContent() {
 
   return (
     <div className="combined">
-      <div className="combined-shape">
-        <div className="shape-left">
-          <TweenOne
-            animation={[
-              { x: 158, type: 'from', ease: 'easeInOutQuint', duration: 600 },
-              { x: -158, ease: 'easeInOutQuart', duration: 450, delay: -150 },
-            ]}
-          />
-        </div>
-        <div className="shape-right">
-          <TweenOne
-            animation={[
-              { x: -158, type: 'from', ease: 'easeInOutQuint', duration: 600 },
-              { x: 158, ease: 'easeInOutQuart', duration: 450, delay: -150 },
-            ]}
-          />
-        </div>
-      </div>
       <Title>
         <Texty
           className="banner-title"
@@ -121,7 +103,7 @@ function BannerAnimatedContent() {
           delay={1200}
           interval={25}
         >
-          Participate in raffles, or create your own
+          Participate in raffles, or create your own!
         </Texty>
       </Title>
     </div>
