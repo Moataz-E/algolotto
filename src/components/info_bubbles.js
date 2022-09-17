@@ -5,7 +5,8 @@ import { Row, Col, Card } from 'antd';
 import {
   DollarCircleTwoTone,
   LockTwoTone,
-  HeartTwoTone
+  HeartTwoTone,
+  HourglassTwoTone
 } from '@ant-design/icons';
 
 import { SECONDARY_COLOR } from '../config';
@@ -23,7 +24,13 @@ const bubbles = [
     img: <LockTwoTone twoToneColor={SECONDARY_COLOR} className="bubble-image" />,
     title: 'Secure',
     href: ``,
-    description: 'Public verifiable draw results and audited smart contracts.',
+    description: 'Publicly verifiable draw results and (soon) audited smart contracts.',
+  },
+  {
+    img: <HourglassTwoTone twoToneColor={SECONDARY_COLOR} className="bubble-image" />,
+    title: 'Verifiable Randomness',
+    href: ``,
+    description: 'Our smart contracts use a Verifiable Random Function (VRF) service to generate randomness.',
   },
   {
     img: <HeartTwoTone twoToneColor={SECONDARY_COLOR} className="bubble-image" />,
