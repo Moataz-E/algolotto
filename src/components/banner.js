@@ -1,13 +1,14 @@
 import React from 'react';
-import { Typography, Image, Row, Col } from 'antd';
+import { Typography, Row, Col } from 'antd';
 
 import Texty from 'rc-texty';
 import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
-
+import Children from 'rc-tween-one/lib/plugin/ChildrenPlugin';
 
 import "./banner.css"
 
+TweenOne.plugins.push(Children);
 
 const { Title } = Typography;
 
@@ -142,13 +143,30 @@ function CircleAnimation() {
 }
 
 function MetricsBanner() {
+
+  function getAnimation(val, dur, fl) {
+    return {
+      Children: { value: val, floatLength: fl },
+      duration: dur,
+    }
+  }
+
   return (
     <Row className="banner-metrics-row" align="middle" justify="center">
       <Col className="banner-metrics" md={11} sm={15} xs={19}>
         <Row justify="center">
-          <Col md={8} sm={11} xs={15}>Tickets Sold<br /><strong className="banner-metric">16</strong></Col>
-          <Col md={8} sm={11} xs={15}>Raffles Created<br /><strong className="banner-metric">3</strong></Col>
-          <Col md={8} sm={11} xs={15}>ALGO Donated<br /><strong className="banner-metric">2.4</strong></Col>
+          <Col md={8} sm={11} xs={15}>
+            Tickets Sold<br />
+            <TweenOne className="banner-metric" animation={getAnimation(16, 1500, 0)} />
+          </Col>
+          <Col md={8} sm={11} xs={15}>
+            Raffles Created<br />
+            <TweenOne className="banner-metric" animation={getAnimation(3, 2000, 0)} />
+          </Col>
+          <Col md={8} sm={11} xs={15}>
+            ALGO Donated
+            <TweenOne className="banner-metric" animation={getAnimation(2.4, 2000, 1)} />
+          </Col>
         </Row>
       </Col>
     </Row >

@@ -31,6 +31,7 @@
 .banner-metric {
     color: var(--primary-color);
     font-size: 3rem;
+    font-weight: bold;
 }
 
 @media (max-width: 992px) {
