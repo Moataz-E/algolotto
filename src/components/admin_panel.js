@@ -6,7 +6,7 @@ import MyAlgoConnect from '@randlabs/myalgo-connect';
 import 'rc-texty/assets/index.css';
 import TweenOne from 'rc-tween-one';
 
-import { ALGOD_CONFIG, APP_ID } from "../config";
+import { ALGOD_CONFIG, APP_CONFIG } from "../config";
 
 import "./admin_panel.css";
 
@@ -102,11 +102,12 @@ function AdminButtons() {
         ...params,
       },
       from: userAccount,
-      appIndex: APP_ID,
+      appIndex: APP_CONFIG[NETWORK].id,
       appArgs: [new Uint8Array(Buffer.from("draw"))]
     });
     const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
     const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
+    console.log(result);
   }
 
   async function dispenseReward(e) {
@@ -117,7 +118,7 @@ function AdminButtons() {
         ...params, fee: 3000, flatFee: true
       },
       from: userAccount,
-      appIndex: APP_ID,
+      appIndex: APP_CONFIG[NETWORK].id,
       appArgs: [
         new Uint8Array(Buffer.from("dispense_and_restart")),
         algosdk.decodeAddress(winner.target.textContent).publicKey
