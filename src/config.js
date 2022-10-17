@@ -60,7 +60,7 @@ const APP_CONFIG = {
   }
 }
 
-const PRIMARY_COLOR = "#b1277c"
+const PRIMARY_COLOR = "b1277c"
 const SECONDARY_COLOR = "54424b"
 
 module.exports = {
