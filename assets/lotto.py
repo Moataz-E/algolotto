@@ -79,7 +79,7 @@ MICRO_ALGO = 1
 ALGO = MICRO_ALGO * (10 ** 6)
 TICKET_COST_ALGO = ALGO * 1
 WEEK_IN_SECONDS = 604800
-COMMISION = Int(100)  # 1 / 100
+COMMISSION = Int(100)  # 1 / 100
 
 DONATION_ADDR = Txn.sender()
 MAX_TICKETS = 15
@@ -407,7 +407,7 @@ def approval():
     def handle_participation():
         winner_addr = Txn.application_args[1]
         total = ScratchVar()
-        commision = ScratchVar()
+        commission = ScratchVar()
         return Seq(
             # Ensure transaction fees cover cost of sending three trxs
             Assert(Txn.fee() >= Global.min_txn_fee() * Int(3)),
@@ -415,12 +415,12 @@ def approval():
             is_winner(winner_addr),
             # Calculate total pot amount
             total.store(calc_total()),
-            # Calculate commision
-            commision.store(total.load() / COMMISION),
+            # Calculate commission
+            commission.store(total.load() / COMMISSION),
             # Send prize money to winner
-            send_algo(winner_addr, total.load() - commision.load()),
-            # Send commision to umpire
-            send_algo(Txn.sender(), commision.load())
+            send_algo(winner_addr, total.load() - commission.load()),
+            # Send commission to umpire
+            send_algo(Txn.sender(), commission.load())
         )
 
     @Subroutine(TealType.none)
