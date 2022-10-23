@@ -284,6 +284,21 @@ def approval():
             )
         )
 
+    @Subroutine(TealType.bytes)
+    def get_randomness(comm_round: Expr):
+        return Seq(
+            (round := abi.Uint64()).set(comm_round),
+            (user_data := abi.make(abi.DynamicArray[abi.Byte])).set([]),
+            # Get randomness from Oracle
+            InnerTxnBuilder.ExecuteMethodCall(
+                app_id=App.globalGet(global_rand_app_id),
+                method_signature="must_get(uint64,byte[])byte[]",
+                args=[round, user_data]
+            ),
+            # Remove first 4 bytes (ABI return prefix)
+            Return(Suffix(InnerTxn.last_log(), Int(4)))
+        )
+
     # TODO: need a better way of randomly selecting tickets
     @Subroutine(TealType.uint64)
     def select_winner():
