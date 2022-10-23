@@ -299,7 +299,15 @@ def approval():
             Return(Suffix(InnerTxn.last_log(), Int(4)))
         )
 
-    # TODO: need a better way of randomly selecting tickets
+    @Subroutine(TealType.uint64)
+    def select_rand_winner(comm_round: Expr):
+        # TODO: figure ot what type of byte I get back from the beacon
+        return Seq(
+            (randomness := abi.DynamicBytes()).decode(
+                get_randomness(comm_round)),
+        )
+
+    # TODO: this should be removed
     @Subroutine(TealType.uint64)
     def select_winner():
         return Return(
@@ -314,6 +322,7 @@ def approval():
 
     @Subroutine(TealType.none)
     def trigger_draw():
+        # TODO: this should use the select_rand_winner function
         return Seq(
             *generic_checks(1, 1),
             can_draw(),
@@ -475,6 +484,7 @@ def approval():
                     Txn.application_args[0] == op_purchase,
                     purchase_tickets(),
                 ],
+                # TODO: need to add another operation to commit to randomness
                 [
                     Txn.application_args[0] == op_draw,
                     trigger_draw(),
