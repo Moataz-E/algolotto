@@ -83,6 +83,12 @@ COMMISION = Int(100)  # 1 / 100
 
 DONATION_ADDR = Txn.sender()
 MAX_TICKETS = 15
+RAND_APP_ID = 110096026
+
+MAINNET = False
+if MAINNET:
+    # TODO: Change to mainnet randomness app id
+    RAND_APP_ID = 1
 
 TRUE = Int(1)
 FALSE = Int(0)
@@ -98,6 +104,7 @@ def approval():
     global_next_draw_epoch = Bytes("next_draw_epoch")  # uint64
     global_ticket_cost = Bytes("ticket_cost")  # uint64
     global_winner = Bytes("winner")  # uint64
+    global_rand_app_id = Bytes("rand_app_id")  # uint64
 
     ## Locals #################################################################
     ticket_vars = [f"t{i}" for i in range(1, MAX_TICKETS+1)]
@@ -432,6 +439,7 @@ def approval():
         App.globalPut(global_round_num, Int(1)),
         App.globalPut(global_drawn, Int(0)),
         App.globalPut(global_winner, Int(0)),
+        App.globalPut(global_rand_app_id, Int(RAND_APP_ID)),
         Approve(),
     ])
 
