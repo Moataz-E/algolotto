@@ -46,7 +46,7 @@ function Home() {
         <InfoBubbles />
         {/* <Signer /> */}
       </Content>
-      <Footer className="footer">Hachi Sittah Technologies ©2022</Footer>
+      <Footer className="footer">Hachi Sitta Technologies ©2022</Footer>
     </Layout>
   );
 }
@@ -56,7 +56,7 @@ function DApp() {
     <Layout className="App">
       <AppHeader className="header" />
       <DAppPanel />
-      <Footer className="footer-dapp">Hachi Sittah Technologies ©2022</Footer>
+      <Footer className="footer-dapp">Hachi Sitta Technologies ©2022</Footer>
     </Layout>
   );
 }
@@ -66,7 +66,7 @@ function Admin() {
     <Layout className="App">
       <AppHeader className="header" />
       <AdminPanel />
-      <Footer className="footer-dapp">Hachi Sittah Technologies ©2022</Footer>
+      <Footer className="footer-dapp">Hachi Sitta Technologies ©2022</Footer>
     </Layout>
   );
 }
