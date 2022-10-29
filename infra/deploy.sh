@@ -11,7 +11,7 @@ goal app create \
     --approval-prog /data/approval.teal \
     --clear-prog /data/clear.teal \
     --global-byteslices 2 \
-    --global-ints 6 \
+    --global-ints 7 \
     --local-byteslices 0 \
     --local-ints 16
 
