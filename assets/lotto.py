@@ -93,6 +93,10 @@ if MAINNET:
 TRUE = Int(1)
 FALSE = Int(0)
 
+# Local Development
+RAND_APP_ID = 16
+WEEK_IN_SECONDS = 30
+
 
 def approval():
     ## Globals ################################################################
@@ -105,6 +109,7 @@ def approval():
     global_ticket_cost = Bytes("ticket_cost")  # uint64
     global_winner = Bytes("winner")  # uint64
     global_rand_app_id = Bytes("rand_app_id")  # uint64
+    global_commit_round = Bytes("commit_round")  # uint64
 
     ## Locals #################################################################
     ticket_vars = [f"t{i}" for i in range(1, MAX_TICKETS+1)]
@@ -116,11 +121,14 @@ def approval():
     # Purchase tickets
     # Additional Inputs: num_of_tickets
     op_purchase = Bytes("purchase")
+    # Commit to round for which randomness will be retrieved from beacon
+    # Additional Inputs: None
+    op_commit_rand = Bytes("commit_rand")
     # Triggers the draw if the minimum time has elapsed.
     # Additional Inputs: None
     op_draw = Bytes("draw")
     # Rewards winner of lottery and restart draw
-    # Additonal Inputs: winner_address
+    # Additional Inputs: winner_address
     op_dispense_restart = Bytes("dispense_and_restart")
 
     ## General ################################################################
@@ -137,7 +145,8 @@ def approval():
         return Seq(
             Assert(App.optedIn(Txn.sender(), Global.current_application_id())),
             Assert(tickets_to_buy <= Int(MAX_TICKETS)),
-            Assert(App.globalGet(global_drawn) == FALSE)
+            Assert(App.globalGet(global_drawn) == FALSE),
+            Assert(App.globalGet(global_commit_round) == Int(0))
         )
 
     @Subroutine(TealType.uint64)
@@ -272,12 +281,24 @@ def approval():
             Approve()
         )
 
+    ## Commit Randomness ######################################################
+    @Subroutine(TealType.none)
+    def commit_rand():
+        # TODO: test operation of this function
+        return Seq(
+            *generic_checks(1, 1),
+            Assert(App.globalGet(global_commit_round) == Int(0)),
+            App.globalPut(global_commit_round, Global.round() + Int(3)),
+            Approve()
+        )
+
     ## Trigger Draw ###########################################################
     @Subroutine(TealType.none)
     def can_draw():
         return Seq(
             Assert(App.globalGet(global_tickets_sold) > Int(0)),
             Assert(App.globalGet(global_drawn) == FALSE),
+            Assert(App.globalGet(global_commit_round) > Int(0)),
             Assert(
                 Global.latest_timestamp() >
                 App.globalGet(global_next_draw_epoch)
@@ -299,12 +320,13 @@ def approval():
             Return(Suffix(InnerTxn.last_log(), Int(4)))
         )
 
-    @Subroutine(TealType.uint64)
+    @Subroutine(TealType.bytes)
     def select_rand_winner(comm_round: Expr):
         # TODO: figure ot what type of byte I get back from the beacon
         return Seq(
             (randomness := abi.DynamicBytes()).decode(
                 get_randomness(comm_round)),
+            Return(randomness.get())
         )
 
     # TODO: this should be removed
@@ -403,7 +425,8 @@ def approval():
                 Global.latest_timestamp() + Int(WEEK_IN_SECONDS)
             ),
             App.globalPut(global_drawn, Int(0)),
-            App.globalPut(global_winner, Int(0))
+            App.globalPut(global_winner, Int(0)),
+            App.globalPut(global_commit_round, Int(0))
         )
 
     @Subroutine(TealType.none)
@@ -484,7 +507,10 @@ def approval():
                     Txn.application_args[0] == op_purchase,
                     purchase_tickets(),
                 ],
-                # TODO: need to add another operation to commit to randomness
+                [
+                    Txn.application_args[0] == op_commit_rand,
+                    commit_rand(),
+                ]
                 [
                     Txn.application_args[0] == op_draw,
                     trigger_draw(),
