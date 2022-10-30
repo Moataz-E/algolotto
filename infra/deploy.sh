@@ -3,7 +3,10 @@ ONE=E2HNFPXPVZSVIKOVM4FA7MFXHNOGLKMMBNUQ7H5XR3TLKLTPJIYWR4AWEY
 TWO=KTSPLIRCNAUUZTGARMAF5VESLSESKMEDBE4MPCDCZUGXVN4QIWDTKEKFLQ
 THREE=3OZ34J4SUB5BYRWUZY6XSODMJLFKSIQQGPE44NL7LGCGMTTXT5SV4TFSE4
 FOUR=NJD25R7GLHLE75IFFMWT3VT2GVBVWRN5EIBR7JY4WYATOVJ3EU6ARE4JZQ
+
+# Fund randomness beacon
 SERVICE_ACCT=LWOXAHEF32ISGGQSQTOFFTVSVUGJIRRFSIJYRFVL4PK4KS7MNG4SBWKYK4
+goal clerk send -a 100000000 -f $ONE -t $SERVICE_ACCT
 
 # Deploy application to alogrand
 goal app create \
@@ -15,17 +18,15 @@ goal app create \
     --local-byteslices 0 \
     --local-ints 16
 
-APP_ID=72
-APP_ADDR=Y5YQ5A4BKSVFE6E6HC5FT3VK72W7MCEYNJ4F2H6F76SJ56VJXBUM66UTS4
+APP_ID=39
+APP_ADDR=55VWZPQYI3VTDONPQX2RD77F2VULZ3SXPTIZ42QXO7TETRU5TJ5VZYLT44
 
 # Send balance to user account
-goal clerk send -a 100000000 -f $ONE -t $FOUR
-
-# Send balance to randomness beacon
-goal clerk send -a 100000000 -f $ONE -t $SERVICE_ACCT
+goal clerk send -a 100000000 -f $ONE -t $THREE
 
 # Opt-in to contract
 goal app optin --app-id $APP_ID --from $TWO
+goal app optin --app-id $APP_ID --from $THREE
 
 # Purchase ####################################################################
 # Create purchase ticket transaction
@@ -48,8 +49,11 @@ cat purchase-signed-0.tx purchase-signed-1.tx > purchase-signed.tx
 # goal clerk dryrun --dryrun-dump -t purchase-signed.tx -o tx.dr
 goal clerk rawsend -f purchase-signed.tx
 
+# Commit Randomness ###########################################################
+goal app call --app-id $APP_ID --from $TWO --app-arg "str:commit_rand"
+
 # Trigger Draw ################################################################
-goal app call --app-id $APP_ID --from $TWO --app-arg "str:draw"
+goal app call --app-id $APP_ID --from $TWO --app-arg "str:draw" --foreign-app 16
 
 # Dispense and Restart ########################################################
 goal app call --app-id $APP_ID --from $TWO --app-arg "str:dispense_and_restart" --app-arg "addr:$ONE" --fee 3000 --app-account $ONE
