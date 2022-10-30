@@ -286,7 +286,6 @@ def approval():
     ## Commit Randomness ######################################################
     @Subroutine(TealType.none)
     def commit_rand():
-        # TODO: test operation of this function
         return Seq(
             *generic_checks(1, 1),
             Assert(App.globalGet(global_commit_round) == Int(0)),
@@ -322,36 +321,33 @@ def approval():
             Return(Suffix(InnerTxn.last_log(), Int(4)))
         )
 
-    @Subroutine(TealType.bytes)
+    @Subroutine(TealType.uint64)
     def select_rand_winner(comm_round: Expr):
-        # TODO: figure ot what type of byte I get back from the beacon
         return Seq(
             (randomness := abi.DynamicBytes()).decode(
                 get_randomness(comm_round)),
-            Return(randomness.get())
-        )
-
-    # TODO: this should be removed
-    @Subroutine(TealType.uint64)
-    def select_winner():
-        return Return(
-            Add(
-                Mod(
-                    Global.latest_timestamp(), 
-                    App.globalGet(global_tickets_sold)
-                ),
-                Int(1)
+            Return(
+                Add(
+                    Mod(
+                        ExtractUint64(randomness.get(), offset=Int(0)),
+                        App.globalGet(global_tickets_sold)
+                    ),
+                    Int(1)
+                )
             )
         )
 
     @Subroutine(TealType.none)
     def trigger_draw():
-        # TODO: this should use the select_rand_winner function
+        t = ScratchVar()
         return Seq(
             *generic_checks(1, 1),
             can_draw(),
             App.globalPut(global_drawn, Int(1)),
-            App.globalPut(global_winner, select_winner()),
+            App.globalPut(
+                global_winner, 
+                select_rand_winner(App.globalGet(global_commit_round)),
+            ),
             Approve()
         )
 
