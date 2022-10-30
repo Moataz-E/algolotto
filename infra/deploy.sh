@@ -56,4 +56,11 @@ goal app call --app-id $APP_ID --from $TWO --app-arg "str:commit_rand"
 goal app call --app-id $APP_ID --from $TWO --app-arg "str:draw" --foreign-app 16
 
 # Dispense and Restart ########################################################
-goal app call --app-id $APP_ID --from $TWO --app-arg "str:dispense_and_restart" --app-arg "addr:$ONE" --fee 3000 --app-account $ONE
+WINNER=$THREE
+goal app call \
+    --app-id $APP_ID \
+    --from $TWO \
+    --app-arg "str:dispense_and_restart" \
+    --app-arg "addr:$WINNER" \
+    --fee 3000 \
+    --app-account $WINNER
