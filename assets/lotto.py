@@ -83,19 +83,21 @@ COMMISSION = Int(100)  # 1 / 100
 
 DONATION_ADDR = Txn.sender()
 MAX_TICKETS = 15
-RAND_APP_ID = 110096026
+
 
 MAINNET = False
+TESTNET = False
 if MAINNET:
     # TODO: Change to mainnet randomness app id
     RAND_APP_ID = 1
+elif TESTNET:
+    RAND_APP_ID = 110096026
+else:
+    RAND_APP_ID = 16
+    WEEK_IN_SECONDS = 30
 
 TRUE = Int(1)
 FALSE = Int(0)
-
-# Local Development
-RAND_APP_ID = 16
-WEEK_IN_SECONDS = 30
 
 
 def approval():
