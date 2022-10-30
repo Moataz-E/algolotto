@@ -45,7 +45,8 @@ Reward Winner
     round), wallet is a holder of the winning ticket, and that wallet
     has opted into this contract.
 * If true, send prize pot to winning wallet and reward umpire with 1% of prize
-    pot floored at 1 ALGO and capped at 10 ALGO.
+    pot floored at 1 ALGO and capped at 10 ALGO, minus 200 microAlgos to cover
+    servicing of contract.
 * Set drawn to False.
 
 Restart Draw
@@ -450,7 +451,7 @@ def approval():
             # Send prize money to winner
             send_algo(winner_addr, total.load() - commission.load()),
             # Send commission to umpire
-            send_algo(Txn.sender(), commission.load())
+            send_algo(Txn.sender(), commission.load() - Int(100))
         )
 
     @Subroutine(TealType.none)
@@ -460,6 +461,7 @@ def approval():
             Assert(
                 Or(
                     App.globalGet(global_drawn) == TRUE,
+                    # TODO: check draw time has lapsed in an AND below
                     App.globalGet(global_tickets_sold) == Int(0)
                 )
             ),
