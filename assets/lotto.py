@@ -510,7 +510,7 @@ def approval():
                 [
                     Txn.application_args[0] == op_commit_rand,
                     commit_rand(),
-                ]
+                ],
                 [
                     Txn.application_args[0] == op_draw,
                     trigger_draw(),
