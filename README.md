@@ -45,7 +45,7 @@ goal app read --app-id 1 -f $TWO --local
 ```
 * To view all available accounts
 ```
-goal accounts list
+goal account list
 ```
 * To check balance of an account
 ```
