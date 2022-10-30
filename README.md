@@ -35,7 +35,7 @@ goal app call --app-id 1 --from $TWO --app-arg "str:purchase" --app-arg "int:1"
 ```
 goal app call ... --dryrun-dump -o tx.dr
 ```
-* To launch debuger for a given transaction dump
+* To launch debugger for a given transaction dump
 ```
 tealdbg debug -d tx.dr --listen 0.0.0.0
 ```
