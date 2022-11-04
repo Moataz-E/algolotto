@@ -64,7 +64,7 @@ python3 -c "import algosdk.encoding as e; print(e.encode_address(e.checksum(b'ap
 
 * To run local randomness beacon
 ```
-export VRF_LOG_LEVEL=debug
+export VRF_LOG_LEVEL=debug;
 export AF_ALGOD_ADDRESS=http://localhost:4001;
 export AF_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
 

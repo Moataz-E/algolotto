@@ -45,7 +45,7 @@ Reward Winner
     round), wallet is a holder of the winning ticket, and that wallet
     has opted into this contract.
 * If true, send prize pot to winning wallet and reward umpire with 1% of prize
-    pot floored at 1 ALGO and capped at 10 ALGO, minus 200 microAlgos to cover
+    pot floored at 1 ALGO and capped at 10 ALGO, minus 1000 microAlgos to cover
     servicing of contract.
 * Set drawn to False.
 
@@ -81,6 +81,7 @@ ALGO = MICRO_ALGO * (10 ** 6)
 TICKET_COST_ALGO = ALGO * 1
 WEEK_IN_SECONDS = 604800
 COMMISSION = Int(100)  # 1 / 100
+TRX_COST = MICRO_ALGO * 1000
 
 DONATION_ADDR = Txn.sender()
 MAX_TICKETS = 15
@@ -451,7 +452,7 @@ def approval():
             # Send prize money to winner
             send_algo(winner_addr, total.load() - commission.load()),
             # Send commission to umpire
-            send_algo(Txn.sender(), commission.load() - Int(100))
+            send_algo(Txn.sender(), commission.load() - Int(TRX_COST))
         )
 
     @Subroutine(TealType.none)
