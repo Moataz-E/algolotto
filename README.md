@@ -62,5 +62,18 @@ goal clerk send -a 100000 -f $ONE -t $TWO
 python3 -c "import algosdk.encoding as e; print(e.encode_address(e.checksum(b'appID'+(<app id>).to_bytes(8, 'big'))))"
 ```
 
+* To run local randomness beacon
+```
+export VRF_LOG_LEVEL=debug
+export AF_ALGOD_ADDRESS=http://localhost:4001;
+export AF_ALGOD_TOKEN=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;
+
+go run ./cmd run-daemon \
+  --vrf-mnemonic "boil frequent harvest donkey outside start thought road insane wine tooth fame assault any advice belt walk again proud debate culture omit diary able treat" \
+  --service-mnemonic "chat glory west mobile desk coin hockey swallow tilt chunk task model hidden helmet toddler tortoise always afraid absorb valve bar distance history absorb exercise"\
+  --app-creator-mnemonic "chat glory west mobile desk coin hockey swallow tilt chunk task model hidden helmet toddler tortoise always afraid absorb valve bar distance history absorb exercise"\
+  --approval-program pyteal/vrf_beacon_abi_approval.teal --clear-program pyteal/vrf_beacon_abi_clear.teal --starting-round 8
+```
+
 ### Notes
 * Integer arguments still have to be converted using Btoi as specifying "int:x" as an argument only tells TEAL how to encode the argument but it is still passed as a byte.
