@@ -82,6 +82,7 @@ TICKET_COST_ALGO = ALGO * 1
 WEEK_IN_SECONDS = 604800
 COMMISSION = Int(100)  # 1 / 100
 TRX_COST = MICRO_ALGO * 1000
+MIN_BAL = MICRO_ALGO * 100000
 
 DONATION_ADDR = Txn.sender()
 MAX_TICKETS = 15
@@ -150,7 +151,8 @@ def approval():
             Assert(App.optedIn(Txn.sender(), Global.current_application_id())),
             Assert(tickets_to_buy <= Int(MAX_TICKETS)),
             Assert(App.globalGet(global_drawn) == FALSE),
-            Assert(App.globalGet(global_commit_round) == Int(0))
+            Assert(App.globalGet(global_commit_round) == Int(0)),
+            Assert(Balance(Global.current_application_address()) >= Int(MIN_BAL)),
         )
 
     @Subroutine(TealType.uint64)
