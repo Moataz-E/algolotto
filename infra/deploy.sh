@@ -18,8 +18,8 @@ goal app create \
     --local-byteslices 0 \
     --local-ints 16
 
-APP_ID=39
-APP_ADDR=55VWZPQYI3VTDONPQX2RD77F2VULZ3SXPTIZ42QXO7TETRU5TJ5VZYLT44
+# Seed application with minimum balance
+goal clerk send -a 1 -f $ONE -t $APP_ADDR
 
 # Send balance to user account
 goal clerk send -a 100000000 -f $ONE -t $THREE
