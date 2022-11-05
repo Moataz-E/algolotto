@@ -100,7 +100,7 @@ function AdminButtons() {
     let txn = algosdk.makeApplicationDeleteTxn(
       userAccount,
       params,
-      100328257
+      APP_CONFIG[NETWORK].id
     );
     let txId = txn.txID().toString();
 
@@ -136,7 +136,7 @@ function AdminButtons() {
       from: userAccount,
       appIndex: APP_CONFIG[NETWORK].id,
       appArgs: [new Uint8Array(Buffer.from("draw"))],
-      foreignApps: APP_CONFIG[NETWORK].randomness_app_id,
+      foreignApps: [APP_CONFIG[NETWORK].randomness_app_id],
     });
     const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
     const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
@@ -160,6 +160,7 @@ function AdminButtons() {
     });
     const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
     const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
+    console.log(result);
   }
 
   return (
@@ -184,7 +185,7 @@ function AdminButtons() {
         block
         onClick={deployApp}
       >
-        Deploy to Testet
+        Deploy App
       </Button>
       <Button
         className="user-interaction-button"
@@ -193,7 +194,7 @@ function AdminButtons() {
         block
         onClick={updateApp}
       >
-        Update on Testnet
+        Update App
       </Button>
       <Button
         className="user-interaction-button"
@@ -202,7 +203,7 @@ function AdminButtons() {
         block
         onClick={deleteApp}
       >
-        Delete on Testnet
+        Delete App
       </Button>
       <Button
         className="user-interaction-button"
