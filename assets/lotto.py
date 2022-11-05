@@ -465,8 +465,11 @@ def approval():
             Assert(
                 Or(
                     App.globalGet(global_drawn) == TRUE,
-                    # TODO: check draw time has lapsed in an AND below
-                    App.globalGet(global_tickets_sold) == Int(0)
+                    And(
+                        App.globalGet(global_tickets_sold) == Int(0),
+                        Global.latest_timestamp() >
+                            App.globalGet(global_next_draw_epoch)
+                    )
                 )
             ),
             If(App.globalGet(global_tickets_sold) == Int(0))
