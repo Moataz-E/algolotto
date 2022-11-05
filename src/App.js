@@ -51,10 +51,21 @@ function Home() {
   );
 }
 
+function DevCycleBanner() {
+  return (
+    <Row className="dev-cycle-banner" justify='center'>
+      <Col>
+        <strong>Algolotto is in alpha development stage. <a href="mailto:moataz@hachisitta.com">Your feedback is welcome!</a></strong >
+      </Col >
+    </Row >
+  )
+}
+
 function DApp() {
   return (
     <Layout className="App">
       <AppHeader className="header" />
+      <DevCycleBanner />
       <DAppPanel />
       <Footer className="footer-dapp">Hachi Sitta Technologies ©2022</Footer>
     </Layout>
