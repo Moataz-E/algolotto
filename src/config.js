@@ -48,15 +48,18 @@ const ALGOD_CONFIG = {
 const APP_CONFIG = {
   "mainnet": {
     id: "",
-    address: ""
+    address: "",
+    randomness_app_id: ""
   },
   "testnet": {
     id: 101851233,
-    address: "VLPVPT4L4P7VYVUROGLECOFW6VKIHRCTLKD5NWA736KA4XXND5HGMAM7QQ"
+    address: "VLPVPT4L4P7VYVUROGLECOFW6VKIHRCTLKD5NWA736KA4XXND5HGMAM7QQ",
+    randomness_app_id: 110096026
   },
   "localhost": {
-    id: 1,
-    address: "WCS6TVPJRBSARHLN2326LRU5BYVJZUKI2VJ53CAWKYYHDE455ZGKANWMGM"
+    id: 54,
+    address: "3Z2RSO2F5NJ3GWC4TN6ZQVMJ6EGH6ZZCHLF4PAEK2FNE4ZXKO4TTLEY3UQ",
+    randomness_app_id: 16
   }
 }
 
