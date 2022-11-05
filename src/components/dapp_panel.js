@@ -379,6 +379,7 @@ function DAppCard(props) {
   async function getUserState() {
     if (userAccount) {
       const accountInfo = await indexerClient.lookupAccountByID(userAccount).do();
+      // Check user is opted in first before returning local state
       const lottoKeyValues = getAppLocalState(accountInfo);
       setUserBalance(accountInfo.amount);
       if (lottoKeyValues) {
