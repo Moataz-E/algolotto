@@ -45,8 +45,8 @@ Reward Winner
     round), wallet is a holder of the winning ticket, and that wallet
     has opted into this contract.
 * If true, send prize pot to winning wallet and reward umpire with 1% of prize
-    pot floored at 1 ALGO and capped at 10 ALGO, minus 1000 microAlgos to cover
-    servicing of contract.
+    pot (consider flooring at 1 ALGO and capping to 10 ALGO), minus 1000 
+    microAlgos to cover servicing of contract.
 * Set drawn to False.
 
 Restart Draw
