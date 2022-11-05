@@ -89,12 +89,13 @@ MAX_TICKETS = 15
 
 
 MAINNET = False
-TESTNET = False
+TESTNET = True
 if MAINNET:
     # TODO: Change to mainnet randomness app id
     RAND_APP_ID = 1
 elif TESTNET:
     RAND_APP_ID = 110096026
+    WEEK_IN_SECONDS = 30
 else:
     RAND_APP_ID = 16
     WEEK_IN_SECONDS = 30
