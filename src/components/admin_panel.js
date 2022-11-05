@@ -34,6 +34,11 @@ const algodClient = new algosdk.Algodv2(
   ALGOD_CONFIG[NETWORK].port
 )
 
+const localInts = 16;
+const localBytes = 0;
+const globalInts = 8;
+const globalBytes = 2;
+
 function AdminButtons() {
   const [approval, setApproval] = useState("");
   const [clear, setClear] = useState("");
@@ -47,11 +52,6 @@ function AdminButtons() {
   };
 
   async function deploy_testnet(e) {
-    const localInts = 16;
-    const localBytes = 0;
-    const globalInts = 6;
-    const globalBytes = 2;
-
     const approvalProgramBinary = await compileProgram(algodClient, approval.target.textContent);
     const clearProgramBinary = await compileProgram(algodClient, clear.target.textContent);
 
@@ -71,24 +71,55 @@ function AdminButtons() {
   }
 
   async function update_testnet(e) {
-    const localInts = 16;
-    const localBytes = 0;
-    const globalInts = 6;
-    const globalBytes = 2;
-
     const approvalProgramBinary = await compileProgram(algodClient, approval.target.textContent);
     const clearProgramBinary = await compileProgram(algodClient, clear.target.textContent);
 
     let params = await algodClient.getTransactionParams().do();
-    const onComplete = algosdk.OnApplicationComplete.NoOpOC;
+    console.log("Updating Application. . . . ");
 
-    console.log("Deploying Application. . . . ");
-
-    let txn = algosdk.makeApplicationUpdateTxn(userAccount, params, 100328257,
-      approvalProgramBinary, clearProgramBinary);
+    let txn = algosdk.makeApplicationUpdateTxn(
+      userAccount,
+      params,
+      APP_CONFIG[NETWORK].id,
+      approvalProgramBinary,
+      clearProgramBinary
+    );
     let txId = txn.txID().toString();
 
     // Sign the transaction
+    const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
+    const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
+    console.log(result);
+  }
+
+  async function deleteTestnet(e) {
+    let params = await algodClient.getTransactionParams().do();
+    console.log("Deleting Application. . . . ");
+
+    let txn = algosdk.makeApplicationDeleteTxn(
+      userAccount,
+      params,
+      100328257
+    );
+    let txId = txn.txID().toString();
+
+    // Sign the transaction
+    const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
+    const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
+    console.log(result);
+  }
+
+  async function commitRandomness(e) {
+    const params = await algodClient.getTransactionParams().do();
+    // Commit Randomness
+    const txn = algosdk.makeApplicationNoOpTxnFromObject({
+      suggestedParams: {
+        ...params,
+      },
+      from: userAccount,
+      appIndex: APP_CONFIG[NETWORK].id,
+      appArgs: [new Uint8Array(Buffer.from("commit_rand"))],
+    });
     const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
     const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
     console.log(result);
@@ -103,7 +134,8 @@ function AdminButtons() {
       },
       from: userAccount,
       appIndex: APP_CONFIG[NETWORK].id,
-      appArgs: [new Uint8Array(Buffer.from("draw"))]
+      appArgs: [new Uint8Array(Buffer.from("draw"))],
+      foreignApps: APP_CONFIG[NETWORK].randomness_app_id,
     });
     const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
     const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
@@ -161,6 +193,24 @@ function AdminButtons() {
         onClick={update_testnet}
       >
         Update on Testnet
+      </Button>
+      <Button
+        className="user-interaction-button"
+        shape="round"
+        size="large"
+        block
+        onClick={deleteTestnet}
+      >
+        Delete on Testnet
+      </Button>
+      <Button
+        className="user-interaction-button"
+        shape="round"
+        size="large"
+        block
+        onClick={commitRandomness}
+      >
+        Commit Randomness
       </Button>
       <Button
         className="user-interaction-button"
