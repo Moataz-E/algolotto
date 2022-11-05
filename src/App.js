@@ -46,7 +46,7 @@ function Home() {
         <InfoBubbles />
         {/* <Signer /> */}
       </Content>
-      <Footer className="footer">Hachi Sitta Technologies ©2022</Footer>
+      <Footer className="footer">Hachisita Technologies ©2022</Footer>
     </Layout>
   );
 }
@@ -55,7 +55,7 @@ function DevCycleBanner() {
   return (
     <Row className="dev-cycle-banner" justify='center'>
       <Col>
-        <strong>Algolotto is in alpha development stage. <a href="mailto:moataz@hachisitta.com">Your feedback is welcome!</a></strong >
+        <strong>Algolotto is in alpha development stage. <a href="mailto:moataz@hachisita.com">Your feedback is welcome!</a></strong >
       </Col >
     </Row >
   )
@@ -67,7 +67,7 @@ function DApp() {
       <AppHeader className="header" />
       <DevCycleBanner />
       <DAppPanel />
-      <Footer className="footer-dapp">Hachi Sitta Technologies ©2022</Footer>
+      <Footer className="footer-dapp">Hachisita Technologies ©2022</Footer>
     </Layout>
   );
 }
@@ -77,7 +77,7 @@ function Admin() {
     <Layout className="App">
       <AppHeader className="header" />
       <AdminPanel />
-      <Footer className="footer-dapp">Hachi Sitta Technologies ©2022</Footer>
+      <Footer className="footer-dapp">Hachisita Technologies ©2022</Footer>
     </Layout>
   );
 }

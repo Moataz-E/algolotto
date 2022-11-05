@@ -16,7 +16,7 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Hachi Sitta Technologies', // Usually your GitHub org/user name.
+  organizationName: 'Hachisita Technologies', // Usually your GitHub org/user name.
   projectName: 'algolotto', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
@@ -75,7 +75,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Hachi Sitta Technologies, Inc.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Hachisita Technologies, Inc.`,
       },
       prism: {
         theme: lightCodeTheme,
