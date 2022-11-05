@@ -52,8 +52,8 @@ const APP_CONFIG = {
     randomness_app_id: ""
   },
   "testnet": {
-    id: 101851233,
-    address: "VLPVPT4L4P7VYVUROGLECOFW6VKIHRCTLKD5NWA736KA4XXND5HGMAM7QQ",
+    id: 120779838,
+    address: "CLCZPX4O4K2GAF7WRVMKR3HIBDJW4UVXJOJWRIG6O46QPKW2ODQVMUGFW4",
     randomness_app_id: 110096026
   },
   "localhost": {
