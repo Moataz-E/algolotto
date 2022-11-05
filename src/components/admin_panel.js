@@ -51,7 +51,7 @@ function AdminButtons() {
     setUserAccount(accounts[0].address);
   };
 
-  async function deploy_testnet(e) {
+  async function deployApp(e) {
     const approvalProgramBinary = await compileProgram(algodClient, approval.target.textContent);
     const clearProgramBinary = await compileProgram(algodClient, clear.target.textContent);
 
@@ -68,9 +68,10 @@ function AdminButtons() {
     // Sign the transaction
     const signedTxn = await myAlgoConnect.signTransaction(txn.toByte());
     const result = await algodClient.sendRawTransaction(signedTxn.blob).do();
+    console.log(result);
   }
 
-  async function update_testnet(e) {
+  async function updateApp(e) {
     const approvalProgramBinary = await compileProgram(algodClient, approval.target.textContent);
     const clearProgramBinary = await compileProgram(algodClient, clear.target.textContent);
 
@@ -92,7 +93,7 @@ function AdminButtons() {
     console.log(result);
   }
 
-  async function deleteTestnet(e) {
+  async function deleteApp(e) {
     let params = await algodClient.getTransactionParams().do();
     console.log("Deleting Application. . . . ");
 
@@ -181,7 +182,7 @@ function AdminButtons() {
         shape="round"
         size="large"
         block
-        onClick={deploy_testnet}
+        onClick={deployApp}
       >
         Deploy to Testet
       </Button>
@@ -190,7 +191,7 @@ function AdminButtons() {
         shape="round"
         size="large"
         block
-        onClick={update_testnet}
+        onClick={updateApp}
       >
         Update on Testnet
       </Button>
@@ -199,7 +200,7 @@ function AdminButtons() {
         shape="round"
         size="large"
         block
-        onClick={deleteTestnet}
+        onClick={deleteApp}
       >
         Delete on Testnet
       </Button>
