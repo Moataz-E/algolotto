@@ -22,7 +22,7 @@ APP_ID=124
 APP_ADDR=OGPRA6AC2GD3MCNGV3SCTQVPF2FRIN3UOVK2HC5CN5XA4UKOSIXKRMND7Y
 
 # Seed application with minimum balance
-goal clerk send -a 1 -f $ONE -t $APP_ADDR
+goal clerk send -a 100000 -f $ONE -t $APP_ADDR
 
 # Send balance to user account
 goal clerk send -a 100000000 -f $ONE -t $THREE
