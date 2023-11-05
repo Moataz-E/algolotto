@@ -1,6 +1,8 @@
 # Algolotto
 Algorand Lottery
 
+Main smart contract can be found at: /assets/lotto.py
+
 ## Development Environment
 
 ### Sandbox
