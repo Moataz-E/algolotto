@@ -1,6 +1,8 @@
 # Algolotto
 A fully on-chain lottery built for the Algorand blockchain using pyTEAL.
 
+![Algolotto logo](algolotto_logo.png)
+
 Main smart contract can be found at: /assets/lotto.py, the flow consists of the following key stages:
 
 * Initialisation: initialize contract and global variables.
