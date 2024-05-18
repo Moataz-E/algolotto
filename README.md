@@ -1,7 +1,14 @@
 # Algolotto
-Algorand Lottery
+A fully on-chain lottery built for the Algorand blockchain using pyTEAL.
 
-Main smart contract can be found at: /assets/lotto.py
+Main smart contract can be found at: /assets/lotto.py, the flow consists of the following key stages:
+
+* Initialisation: initialize contract and global variables.
+* Ticket Purchase: allow participants to purchase tickets while using their local storage to storage ticket numbers. If user has tickets for previous draw, then erase their local storage.
+* Commit randomness: requirement to interact with randomness beacon.
+* Trigger draw and identify winner: retrieve pseudo-randomness and draw winning ticket.
+* Dispense reward: send lottery pot to winner and reward bot that triggered the command.
+* Restart draw: Reset relevant variables and start a new lottery.
 
 ## Development Environment
 
